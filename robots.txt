@@ -1,0 +1,8 @@
+User-agent: * Allow: /
+Allow: /archives/
+Allow: /categories/
+Disallow: /vendors/
+
+
+Sitemap: https://congtf.top/sitemap.xml
+Sitemap: https://congtf.top/baidusitemap.xml

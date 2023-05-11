@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+       
+      <meta name="keywords" content="前端、程序员、编程、代码" />
+       
+      <meta name="description" content="记录前端知识学习，经验积累，记录生活" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <meta name="baidu-site-verification" content="codeva-GuqF1B4xr5" />
+      <title>ES6补充 |  从天风</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link rel="alternate" href="/atom.xml" title="从天风" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-ES6补充"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  ES6补充
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/05/11/ES6%E8%A1%A5%E5%85%85/" class="article-date">
+  <time datetime="2023-05-11T07:48:05.000Z" itemprop="datePublished">2023-05-11</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">6.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">26 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><em>更多请参考</em></p>
+<p><em>阮一峰老师 ES6 入门教程<a target="_blank" rel="noopener" href="https://es6.ruanyifeng.com/">https://es6.ruanyifeng.com/</a></em></p>
+<p><em>MDN 官方文档<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/">https://developer.mozilla.org/zh-CN/</a></em></p>
+<h2 id="一、作用域"><a href="#一、作用域" class="headerlink" title="一、作用域"></a>一、作用域</h2><h3 id="1、作用域链"><a href="#1、作用域链" class="headerlink" title="1、作用域链"></a>1、作用域链</h3><p>作用域链本质上是底层的变量查找机制。在函数被执行时，会优先查找当前函数作用域中查找变量，如果当前作用域查找不到则会依次逐级查找父级作用域直到全局作用域。这种嵌套关系的作用域串联起来就形成了作用域链</p>
+<h3 id="2、JS-垃圾回收机制"><a href="#2、JS-垃圾回收机制" class="headerlink" title="2、JS 垃圾回收机制"></a>2、JS 垃圾回收机制</h3><p>垃圾回收机制(Garbage Collection) 简称 GC</p>
+<p>JS 中内存的分配和回收都是自动完成的，内存在不使用的时候会被垃圾回收器自动回收</p>
+<p>虽然垃圾回收器会帮我们自动回收内存，但我们仍有必要了解 JS 的内存管理机制。它可以帮助我们理解内存泄漏（内存无法被回收）</p>
+<p>不再用到的内存，没有及时释放，就叫做内存泄漏</p>
+<p>内存的生命周期</p>
+<p>JS 环境中分配的内存, 一般有如下生命周期：</p>
+<ol>
+<li>内存分配：当我们声明变量、函数、对象的时候，系统会自动为他们分配内存</li>
+</ol>
+<p>​ 2. 内存使用：即读写内存，也就是使用变量、函数等</p>
+<ol start="3">
+<li>内存回收：使用完毕，由垃圾回收自动回收不再使用的内存</li>
+</ol>
+<p>说明：</p>
+<p>全局变量一般不会回收(关闭页面回收)；</p>
+<p>一般情况下局部变量的值, 不用了, 会被自动回收掉</p>
+<p>两种常见的浏览器垃圾回收算法</p>
+<p>引用计数法</p>
+<p>IE 采用的引用计数算法, 定义“内存不再使用”，就是看一个对象是否有指向它的引用，没有引用了就回收对象</p>
+<p>具体步骤：</p>
+<ol>
+<li><p>跟踪记录被引用的次数</p>
+</li>
+<li><p>如果被引用了一次，那么就记录次数 1,多次引用会累加</p>
+</li>
+<li><p>如果减少一个引用就减 1</p>
+</li>
+<li><p>当引用次数是 0 时 ，则释放内存</p>
+</li>
+</ol>
+<p>它存在一个致命的问题：嵌套引用（循环引用）</p>
+<p>如果两个对象相互引用，尽管他们已不再使用，垃圾回收器不会进行回收，导致内存泄露。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> o1 = &#123;&#125;;</span><br><span class="line">  <span class="keyword">let</span> o2 = &#123;&#125;;</span><br><span class="line">  o1.<span class="property">a</span> = o2;</span><br><span class="line">  o2.<span class="property">a</span> = o1;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;引用计数无法回收&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">fn</span>();</span><br></pre></td></tr></table></figure>
+
+<p>正常情况下，上述代码中的变量 o1、o2 在函数 fn 执行完毕之后就应该被回收掉，但是根据引用计数法，虽然函数 fn 已经执行完成，但是由于 o1、o2 中存在着相互引用的关系，因此实际上并不会被回收，这就造成了内存泄漏。于是就有了标记清除法</p>
+<p>标记清除法</p>
+<p>现代的浏览器已经不再使用引用计数算法了</p>
+<p>现代浏览器通用的大多是基于标记清除算法的某些改进算法，总体思想都是一致的。</p>
+<p>核心：</p>
+<ol>
+<li><p>标记清除算法将“不再使用的对象”定义为“无法达到的对象”。</p>
+</li>
+<li><p>就是从根部（在 JS 中就是全局对象）出发定时扫描内存中的对象。 凡是能从根部到达的对象，都是还需要使用的。</p>
+</li>
+<li><p>那些无法由根部出发触及到的对象被标记为不再使用，稍后进行回收。</p>
+</li>
+</ol>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230510142831343.png" alt="image-20230510142831343"></p>
+<p>同样上述的代码，如果用标记清除法，在函数 fn 执行完毕之后，函数作用域里面的变量，从全局对象开始已经访问不到了，因此会被回收掉</p>
+<h3 id="3、闭包"><a href="#3、闭包" class="headerlink" title="3、闭包"></a>3、闭包</h3><p>MDN 官方解释：一个函数对周围状态的引用捆绑在一起，内层函数中访问到其外层函数的作用域</p>
+<p>从代码结构上看，闭包 &#x3D; 内层函数 + 外层函数的变量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">outer</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> a = <span class="number">100</span>;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">inner</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">inner</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">outer</span>();</span><br></pre></td></tr></table></figure>
+
+<p>闭包作用：封闭数据，提供操作，外部也可以访问函数内部的变量</p>
+<p>闭包的基本形式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">outer</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> a = <span class="number">100</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">inner</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> fun = <span class="title function_">outer</span>();</span><br><span class="line"><span class="title function_">fun</span>();</span><br></pre></td></tr></table></figure>
+
+<p>闭包应用：实现数据的私有</p>
+<p>比如，我们要做个统计函数调用次数，函数调用一次，就++</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">count</span>(<span class="params"></span>) &#123;</span><br><span class="line">  i++;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`函数被调用了<span class="subst">$&#123;i&#125;</span>次`</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">count</span>(); <span class="comment">// 2</span></span><br><span class="line"><span class="title function_">count</span>(); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>但是这样定义的全局变量 i 很容易被修改，一旦修改，统计的函数调用次数就不准确了。可以通过闭包解决这个问题</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">count</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> i = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params"></span>) &#123;</span><br><span class="line">    i++;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`函数被调用了<span class="subst">$&#123;i&#125;</span>次`</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> fun = <span class="title function_">count</span>();</span><br><span class="line"><span class="title function_">fun</span>(); <span class="comment">// 2</span></span><br><span class="line"><span class="title function_">fun</span>(); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>这样实现了数据私有，无法直接修改 count</p>
+<h2 id="二、深入对象"><a href="#二、深入对象" class="headerlink" title="二、深入对象"></a>二、深入对象</h2><p>创建对象的三种方式</p>
+<ul>
+<li><p>利用对象字面量创建对象</p>
+</li>
+<li><p>利用 new Object 创建对象</p>
+</li>
+<li><p>利用构造函数创建对象</p>
+</li>
+</ul>
+<h3 id="1、构造函数"><a href="#1、构造函数" class="headerlink" title="1、构造函数"></a>1、构造函数</h3><p>构造函数 ：是一种特殊的函数，主要用来初始化对象</p>
+<p>使用场景：常规的 {…} 语法允许创建一个对象。比如我们创建了佩奇的对象，继续创建乔治的对象还需要重新写一 遍。此时可以通过构造函数，它就像一个模子一样，能帮助我们快速创建多个类似的对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xiaoming = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">  <span class="attr">gender</span>: <span class="string">&#x27;男&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> xiaohong = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;小红&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">17</span>,</span><br><span class="line">  <span class="attr">gender</span>: <span class="string">&#x27;女&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这种类似的结构，我们可以通过构造函数来创建</span></span><br><span class="line"><span class="comment">// 声明一个&quot;人类&quot;的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name,age,gender</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">gender</span> = gender</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过实例化来批量生产“人类”</span></span><br><span class="line"><span class="keyword">const</span> xiaoming = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;小明&#x27;</span>，<span class="number">18</span>，<span class="string">&#x27;男&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> xiaohong = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;小红&#x27;</span>，<span class="number">18</span>，<span class="string">&#x27;女&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>构造函数本质上也函数，不过一般情况下：</p>
+<ul>
+<li><p>它们的命名以大写字母开头，以表明这是一个构造函数</p>
+</li>
+<li><p>它们只能由 “new” 操作符来执行</p>
+</li>
+</ul>
+<p>new Object()、new Date()这些都是内置的构造函数</p>
+<p>构造函数的实例化执行过程</p>
+<ol>
+<li>创建新对象</li>
+</ol>
+<p>​ 2.构造函数 this 指向新对象</p>
+<p>​ 3.执行构造函数代码，修改 this，添加新的属性</p>
+<p>​ 4.返回新对象</p>
+<p>实例成员&amp;静态成员</p>
+<p>实例成员：通过构造函数创建的对象称为实例对象，实例对象中的属性和方法称为实例成员。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age, gender</span>) &#123;</span><br><span class="line">  <span class="comment">// 构造函数中直接声明的这些方法和属性就是实例成员</span></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">gender</span> = gender;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 直接为构造函数添加的这些方法和属性就是静态成员</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property">say</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;会说话&quot;</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>请注意：</p>
+<ul>
+<li>构造函数创建的实例对象彼此独立互不影响</li>
+<li>一般公共特征的属性或方法静态成员设置为静态成员</li>
+<li>静态成员方法中的 this 指向构造函数本身</li>
+</ul>
+<h3 id="2、内置构造函数"><a href="#2、内置构造函数" class="headerlink" title="2、内置构造函数"></a>2、内置构造函数</h3><p>引用类型：Object，Array，RegExp，Date 等</p>
+<p>包装类型：String，Number，Boolean 等</p>
+<p>数组常见实例方法-核心方法</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511084102099.png" alt="image-20230511084102099"></p>
+<p>reduce 语法</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511084301258.png" alt="image-20230511084301258"></p>
+<p>求和</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">const</span> result = arr.<span class="title function_">reduce</span>(<span class="function">(<span class="params">prev, current</span>) =&gt;</span> prev + current);</span><br></pre></td></tr></table></figure>
+
+<p>数组常见实例方法-其他方法</p>
+<ol>
+<li>实例方法 <code>join</code> 数组元素拼接为字符串，返回字符串(重点)</li>
+<li>实例方法 <code>find</code> 查找元素， 返回符合测试条件的第一个数组元素值，如果没有符合条件的则返回 undefined(重点)</li>
+<li>实例方法<code>every</code> 检测数组所有元素是否都符合指定条件，如果<strong>所有元素</strong>都通过检测返回 true，否则返回 false(重点)</li>
+<li>实例方法<code>some</code> 检测数组中的元素是否满足指定条件 <strong>如果数组中有</strong>元素满足条件返回 true，否则返回 false</li>
+<li>实例方法 <code>concat</code> 合并两个数组，返回生成新数组</li>
+<li>实例方法 <code>sort</code> 对原数组单元值排序</li>
+<li>实例方法 <code>splice</code> 删除或替换原数组单元</li>
+<li>实例方法<code>slice</code>返回一个新的数组对象，这一对象是一个由 begin 和 end 决定的原数组的浅拷贝（包括 begin，不包括 end）（此截取方法字符串也有）</li>
+<li>实例方法 <code>reverse</code> 反转数组</li>
+<li>实例方法 <code>findIndex</code> 返回数组中满足提供的测试函数的第一个元素的索引。若没有找到对应元素则返回 -1</li>
+<li>实例方法<code>includes</code>用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回 false</li>
+<li>实例方法<code>push</code>添加元素到数组末尾</li>
+<li>实例方法<code>pop</code>（弹出）删除数组末尾的元素</li>
+<li>实例方法<code>shift</code>删除数组头部元素</li>
+<li>实例方法<code>unshift</code>添加元素到数组的头部</li>
+<li>实例方法<code>indexOf</code>返回数组中第一次出现给定元素的下标，如果不存在则返回 -1</li>
+<li>实例方法<code>fill</code>用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引</li>
+</ol>
+<p>数组常见静态方法</p>
+<ol>
+<li>Array.from()：对一个伪数组或可迭代对象创建一个新的，浅拷贝的数组实例</li>
+<li>Array.isArray()：用于确定传递的值是否是一个 Array</li>
+</ol>
+<p>String 常见实例方法</p>
+<p>在 JavaScript 中的字符串、数值、布尔具有对象的使用特征，如具有属性和方法。这是因为它们是 JavaScript 底层使用 Object 构造函数“包装”来的</p>
+<p>String 常见实例方法</p>
+<ol>
+<li>实例属性 <code>length</code> 用来获取字符串的度长(重点)</li>
+<li>实例方法 <code>split(&#39;分隔符&#39;)</code> 用来将字符串拆分成数组(重点)</li>
+<li>实例方法 <code>substring（需要截取的第一个字符的索引[,结束的索引号]）</code> 用于字符串截取(重点)</li>
+<li>实例方法 <code>startsWith(检测字符串[, 检测位置索引号])</code> 检测是否以某字符开头(重点)</li>
+<li>实例方法 <code>includes(搜索的字符串[, 检测位置索引号])</code> 判断一个字符串是否包含在另一个字符串中，根据情况返回 true 或 false(重点)</li>
+<li>实例方法 <code>toUpperCase</code> 用于将字母转换成大写</li>
+<li>实例方法 <code>toLowerCase</code> 用于将就转换成小写</li>
+<li>实例方法 <code>indexOf</code> 检测是否包含某字符</li>
+<li>实例方法 <code>endsWith</code> 检测是否以某字符结尾</li>
+<li>实例方法 <code>replace</code> 用于替换字符串，支持正则匹配</li>
+<li>实例方法 <code>match</code> 用于查找字符串，支持正则匹配</li>
+<li>实例方法<code>trim</code>从字符串的两端清除空格，返回一个新的字符串，而不修改原始字符串</li>
+<li>实例方法<code>slice</code> 方法提取某个字符串的一部分，并返回一个新的字符串，且不会改动原字符串</li>
+</ol>
+<p>Number 常见方法</p>
+<ol>
+<li>实例方法<code>toFixed</code>设置保留小数位的长度</li>
+<li>静态方法 Number.parseInt()&#96; 方法依据指定基数，解析字符串并返回一个整数。</li>
+<li>静态方法<code>Number.parseFloat()</code> 方法可以把一个字符串解析成浮点数</li>
+</ol>
+<p>Date 常见方法</p>
+<ol>
+<li>实例方法<code>toLocaleString</code>方法返回该日期对象的字符串</li>
+<li>实例方法<code>toLocaleDateString</code> 方法返回指定日期对象日期部分的字符串</li>
+<li>实例方法<code>getDate</code>根据本地时间，返回一个指定的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> 对象为一个月中的哪一日（<code>1</code>-<code>31</code>）</li>
+<li>实例方法<code>getDay</code>根据本地时间，返回一个指定的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> 对象是在一周中的第几天（<code>0</code>-<code>6</code>），0 表示星期天</li>
+<li>实例方法<code>getFullYear</code>根据本地时间，返回一个指定的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> 对象的完整年份（四位数年份）</li>
+<li>实例方法<code>getHours</code>根据本地时间，返回一个指定的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> 对象的小时（<code>0</code>–<code>23</code>）</li>
+<li>实例方法<code>getMinutes</code>根据本地时间，返回一个指定的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> 对象的分钟数（<code>0</code>–<code>59</code>）</li>
+<li>实例方法<code>getMonth</code>根据本地时间，返回一个指定的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> 对象的月份（<code>0</code>–<code>11</code>），0 表示一年中的第一月</li>
+<li>实例方法<code>getSeconds</code>根据本地时间，返回一个指定的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> 对象的秒数（<code>0</code>–<code>59）</code></li>
+<li>实例方法<code>getTime</code>返回一个数值，表示从 1970 年 1 月 1 日 0 时 0 分 0 秒（UTC，即协调世界时）距离该 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> 对象所代表时间的毫秒数（时间戳）</li>
+<li>静态方法<code>Date.now()</code>返回自 1970-1-1 00:00:00 UTC（世界标准时间）至今所经过的毫秒数(时间戳)</li>
+</ol>
+<p>Math 常见方法</p>
+<p>静态方法<code>Math.floor(x)</code>返回小于一个数的最大整数，即一个数向下取整后的值</p>
+<p>静态方法<code>Math.ceil(x)</code>返回大于一个数的最大整数，即一个数向上取整后的值</p>
+<p>静态方法<code>Math.max(x,y,...)</code>返回零到多个数值中最大值</p>
+<p>静态方法<code>Math.min(x,y,...)</code>返回零到多个数值中最小值</p>
+<p>静态方法<code>Math.pow(x,y)</code>返回一个数的 y 次幂</p>
+<p>静态方法<code>Math.random()</code>返回一个 0 到 1 之间的伪随机数</p>
+<p>静态方法<code>Math.round(x)</code>返回四舍五入后的整数</p>
+<h2 id="三、面向对象"><a href="#三、面向对象" class="headerlink" title="三、面向对象"></a>三、面向对象</h2><h3 id="1、面向对象的编程思想"><a href="#1、面向对象的编程思想" class="headerlink" title="1、面向对象的编程思想"></a>1、面向对象的编程思想</h3><p>面向过程编程</p>
+<p>面向过程就是分析出解决问题所需要的步骤，然后用函数把这些步骤一步一步实现，使用的时候再一个一个的依次调用</p>
+<p>优点：性能比面向对象高，适合跟硬件联系很紧密的东西，例如单片机就采用的面向过程编程</p>
+<p>缺点：没有面向对象易维护、易复用、易扩展</p>
+<p>面向对象编程 (oop)</p>
+<p>面向对象是把事务分解成为一个个对象，然后由对象之间分工与合作</p>
+<p>在面向对象程序开发思想中，每一个对象都是功能中心，具有明确分工。</p>
+<p>面向对象编程具有灵活、代码可复用、容易维护和开发的优点，更适合多人合作的大型软件项目</p>
+<p>面向对象的特性：</p>
+<ul>
+<li>封装性</li>
+<li>继承性</li>
+<li>多态性</li>
+</ul>
+<p>优点：易维护、易复用、易扩展，由于面向对象有封装 、继承、多态性的特性，可以设计出低耦合的系统，使 系统 更加灵活、更加易于维护</p>
+<p>缺点：性能比面向过程低</p>
+<h3 id="2、封装"><a href="#2、封装" class="headerlink" title="2、封装"></a>2、封装</h3><p>JavaScript 中可以通过构造函数实现面向对象的封装</p>
+<p>将相同的结构封装在构造函数中，通过 this 指向实现数据的共享。并且通过构造函数创造出来的实例对象之间彼此独立、互不影响</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age, gender</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">gender</span> = gender;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">sing</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;说话&quot;</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> ldh = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;刘德华&quot;</span>, <span class="number">18</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> zxy = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;张学友&quot;</span>, <span class="number">20</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(ldh.<span class="property">sing</span> === zxy.<span class="property">sing</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>然而，由于构造函数创造出来的实例对象之间彼此独立、互不影响。我们会发现<code>ldh.sing</code>和<code>zxy.sing</code>并不相等，这不是我们想要的，因为实际上每个实例对象（比如<code>ldh</code>和<code>zxy</code>）之间的<code>sing</code>方法应该是相同的，他们实现的是相同的功能，因此没必要单独给它们各自分配内存。</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511101913432.png" alt="image-20230511101913432"></p>
+<p>原型</p>
+<p>使用原型对象就可以实现方法的共享</p>
+<ul>
+<li>构造函数通过原型分配的函数是所有实例对象所共享的</li>
+<li>JavaScript 规定，每一个构造函数都有一个 prototype 属性，指向另一个对象，所以我们也称为原型对象</li>
+<li>这个对象可以挂载函数，对象实例化不会多次创建原型上的函数，节约内存</li>
+<li>我们可以把那些不变的方法，直接定义在 prototype 对象上，这样所有对象的实例就可以共享这些方法</li>
+<li><strong><em>构造函数和原型对象中的 this 都指向实例化的对象</em></strong></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age, gender</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">gender</span> = gender;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">sing</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;说话&quot;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> ldh = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;刘德华&quot;</span>, <span class="number">18</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> zxy = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;张学友&quot;</span>, <span class="number">20</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(ldh.<span class="property">sing</span> === zxy.<span class="property">sing</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>constructor 属性</p>
+<p>每个原型对象里面都有个 constructor 属性（constructor 构造函数）</p>
+<p>该属性指向该原型对象的构造函数</p>
+<p>使用场景：</p>
+<p>如果有多个对象的方法，我们可以给原型对象采取对象形式赋值. 但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 constructor 就不再指向当前构造函数了 。也就是说正常情况下，原型对象上是存在着 constructor 属性的，现在我们想往原型对象上挂载多个方法，我们不想一个一个的添加，于是我们采用直接赋值的方式。但是我们通过赋值的形式往原型对象上挂载方法后，把原来的原型对象上的 constructor 属性覆盖掉了。此时，我们可以在修改后的原型对象中，添加一个 constructor 指向原来的构造函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age, gender</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">gender</span> = gender;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//  多个方法挂载到原型对象上，为了方便不想一个一个的挂载</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">sing</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;说话&quot;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">dance</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;跳舞&quot;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 于是直接给prototype属性赋值</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span> = &#123;</span><br><span class="line">  <span class="attr">sing</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;说话&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">dance</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;跳舞&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//  但是这样，原本原型对象prototype上的constructor 属性就被赋值给覆盖掉了</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span> = &#123;</span><br><span class="line">  <span class="comment">// 因此利用constructor，手动指回Person构造函数</span></span><br><span class="line">  <span class="attr">constructor</span>: <span class="title class_">Person</span>,</span><br><span class="line">  <span class="attr">sing</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;说话&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">dance</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;跳舞&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> ldh = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;刘德华&quot;</span>, <span class="number">18</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> zxy = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;张学友&quot;</span>, <span class="number">20</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(ldh.<span class="property">sing</span> === zxy.<span class="property">sing</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>但是当我们把原本放在构造函数上的一些公共属性或方法放到原型对象上后，实例对象如何访问到原型对象上的公共属性或方法呢？</p>
+<p><em>proto</em></p>
+<p>对象都会有一个属性 <strong>proto</strong> 指向构造函数的 prototype 原型对象，之所以我们对象可以使用构造函数 prototype 原型对象的属性和方法，就是因为对象有 <strong>proto</strong> 原型的存在</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511105014332.png" alt="image-20230511105014332"></p>
+<h3 id="3、原型继承"><a href="#3、原型继承" class="headerlink" title="3、原型继承"></a>3、原型继承</h3><p>继承是面向对象编程的另一个特征，通过继承进一步提升代码封装的程度，JavaScript 中大多是借助原型对象实现继承 的特性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个中国人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Chinese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">header</span> = <span class="number">1</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;chinese&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 定义一个日本人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Japanese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">header</span> = <span class="number">1</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;japanese&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，不管是中国人还是日本人，他们都属于人类。因此可以将人类的一些公共特征抽取出来，单独封装成一个人类的构造函数，让中国人和日本人共享这个构造函数的属性和方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 封装一个人类的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Human</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">header</span> = <span class="number">1</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 中国人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Chinese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;chinese&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 日本人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Japanese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;japanese&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过改变中国人和日本人的原型对象指向到Human，以此继承Human上的方法和属性</span></span><br><span class="line"><span class="title class_">Chinese</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Human</span>;</span><br><span class="line"><span class="comment">// 不要忘了constructor 指回Chinese</span></span><br><span class="line"><span class="title class_">Chinese</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> = <span class="title class_">Chinese</span>;</span><br><span class="line"><span class="comment">// 同理日本人</span></span><br><span class="line"><span class="title class_">Japanese</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Human</span>;</span><br><span class="line"><span class="title class_">Japanese</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> = <span class="title class_">Japanese</span>;</span><br></pre></td></tr></table></figure>
+
+<p>但是此时会有一个问题，当我们向单独给 Chinese 添加一个属性或者方法时，我们会发现 Japanese 也被自动添加了这个属性或方法。并且由于<code>Japanese.prototype.constructor</code>是后来定义的，它将<code>Chinese.prototype.constructor = Chinese</code>覆盖掉了，因此<code>Chinese.prototype.constructor</code>竟然也指向了<code>Japanese</code>！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 封装一个人类的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Human</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">header</span> = <span class="number">1</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 中国人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Chinese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;chinese&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 日本人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Japanese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;japanese&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过改变中国人和日本人的原型对象指向到Human，以此继承Human上的方法和属性</span></span><br><span class="line"><span class="title class_">Chinese</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Human</span>;</span><br><span class="line"><span class="comment">// 不要忘了constructor 指回Chinese</span></span><br><span class="line"><span class="title class_">Chinese</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> = <span class="title class_">Chinese</span>;</span><br><span class="line"><span class="comment">// 同理日本人</span></span><br><span class="line"><span class="title class_">Japanese</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="title class_">Human</span>;</span><br><span class="line"><span class="title class_">Japanese</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> = <span class="title class_">Japanese</span>;</span><br><span class="line"><span class="title class_">Chinese</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">smoking</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;抽烟&quot;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> xiaoming = <span class="keyword">new</span> <span class="title class_">Chinese</span>();</span><br><span class="line"><span class="keyword">const</span> guitian = <span class="keyword">new</span> <span class="title class_">Japanese</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(xiaoming, guitian);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511111944145.png" alt="image-20230511111944145"></p>
+<p>这是因为<code>Chinese.prototype</code>和<code>Japanese.prototype</code>都是一个指向了构造函数<code>Human</code>的地址，通过<code>Chinese.prototype.smoking</code>修改了<code>Human</code>的值，<code>Japanese.prototype</code>也会受到影响。因此我们可以将<code>Chinese.prototype</code>和<code>Japanese.prototype</code>各自指向一个 Human 的实例对象，这样它们就互不影响了！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 封装一个人类的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Human</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">header</span> = <span class="number">1</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 中国人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Chinese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;chinese&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 日本人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Japanese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;japanese&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过改变中国人和日本人的原型对象指向到Human，以此继承Human上的方法和属性</span></span><br><span class="line"><span class="title class_">Chinese</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="keyword">new</span> <span class="title class_">Human</span>();</span><br><span class="line"><span class="comment">// 不要忘了constructor 指回Chinese</span></span><br><span class="line"><span class="title class_">Chinese</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> = <span class="title class_">Chinese</span>;</span><br><span class="line"><span class="comment">// 同理日本人</span></span><br><span class="line"><span class="title class_">Japanese</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="keyword">new</span> <span class="title class_">Human</span>();</span><br><span class="line"><span class="title class_">Japanese</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> = <span class="title class_">Japanese</span>;</span><br><span class="line"><span class="title class_">Chinese</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">smoking</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;抽烟&quot;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> xiaoming = <span class="keyword">new</span> <span class="title class_">Chinese</span>();</span><br><span class="line"><span class="keyword">const</span> guitian = <span class="keyword">new</span> <span class="title class_">Japanese</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(xiaoming, guitian);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511115553081.png" alt="image-20230511115553081"></p>
+<p>原型链</p>
+<p>基于原型对象的继承使得不同构造函数的原型对象关联在一起，并且这种关联的关系是一种链状的结构，我们将原型对 象的链状结构关系称为原型链</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511115754927.png" alt="image-20230511115754927"></p>
+<p>原型链-查找规则</p>
+<p>当访问一个对象的属性（包括方法）时，首先查找这个对象自身有没有该属性。</p>
+<p>如果没有就查找它的原型（也就是 <strong>proto</strong>指向的 prototype 原型对象）</p>
+<p>如果还没有就查找原型对象的原型（Object 的原型对象）</p>
+<p>依此类推一直找到 Object 为止（null）</p>
+<p><strong>proto</strong>对象原型的意义就在于为对象成员查找机制提供一个方向，或者说一条路线</p>
+<p>可以使用 instanceof 运算符检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上</p>
+<h3 id="4、深浅拷贝"><a href="#4、深浅拷贝" class="headerlink" title="4、深浅拷贝"></a>4、深浅拷贝</h3><p>开发中我们经常需要复制一个引用类型。如果直接赋值，当我们修改一个值时，另一个值也变了</p>
+<p>浅拷贝和深拷贝只针对引用类型</p>
+<p>浅拷贝常见方法：</p>
+<ul>
+<li>拷贝对象：Object.assgin() &#x2F; 展开运算符</li>
+<li>拷贝数组：Array.prototype.concat() 或者展开运算符</li>
+</ul>
+<p>但是如果引用数据类型里面出现了嵌套引用数据类型的情况，深拷贝就又会出现上述问题，这时需要深拷贝</p>
+<p>深拷贝常见方法：</p>
+<ul>
+<li>通过递归实现深拷贝</li>
+<li>lodash 库 cloneDeep 函数</li>
+<li>通过 JSON.stringify()实现</li>
+</ul>
+<p>递归</p>
+<p>如果一个函数在内部调用其本身，那么这个函数就是递归函数</p>
+<p>由于递归很容易发生“栈溢出”错误（stack overflow），所以必须要加退出条件 return</p>
+<p>利用递归函数实现 setTimeout 模拟 setInterval 效果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getTime</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toLocaleString</span>());</span><br><span class="line">  <span class="built_in">setTimeout</span>(getTime, <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">getTime</span>();</span><br></pre></td></tr></table></figure>
+
+<p>利用递归函数实现基本的深拷贝</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">deepCopy</span>(<span class="params">newData, oldData</span>) &#123;</span><br><span class="line">  <span class="comment">// 遍历原对象</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> k <span class="keyword">in</span> oldData) &#123;</span><br><span class="line">    <span class="comment">// 如果是数组</span></span><br><span class="line">    <span class="keyword">if</span> (oldData[k] <span class="keyword">instanceof</span> <span class="title class_">Array</span>) &#123;</span><br><span class="line">      newData[k] = [];</span><br><span class="line">      <span class="title function_">deepCopy</span>(newData[k], oldData[k]);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (oldData[k] <span class="keyword">instanceof</span> <span class="title class_">Object</span>) &#123;</span><br><span class="line">      <span class="comment">// 如果是对象</span></span><br><span class="line">      newData[k] = &#123;&#125;;</span><br><span class="line">      <span class="title function_">deepCopy</span>(newData[k], oldData[k]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 基本数据类型直接赋值</span></span><br><span class="line">      newData[k] = oldData[k];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 JSON.stringify()实现深拷贝</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;佩奇&quot;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">  <span class="attr">hobby</span>: [<span class="string">&quot;抽烟&quot;</span>, <span class="string">&quot;喝酒&quot;</span>, <span class="string">&quot;烫头&quot;</span>],</span><br><span class="line">  <span class="attr">family</span>: &#123;</span><br><span class="line">    <span class="attr">sister</span>: <span class="string">&quot;乔治&quot;</span>,</span><br><span class="line">    <span class="attr">father</span>: <span class="string">&quot;猪爸爸&quot;</span>,</span><br><span class="line">    <span class="attr">mother</span>: <span class="string">&quot;猪妈妈&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> obj2 = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(obj));</span><br></pre></td></tr></table></figure>
+
+<p><em>JSON.stringify()可以将 JS 对象转化为 JSON 字符串，JSON 字符串就是一个字符串，就不存在所谓的地址引用了</em></p>
+<h3 id="5、异常处理"><a href="#5、异常处理" class="headerlink" title="5、异常处理"></a>5、异常处理</h3><p>throw 抛异常</p>
+<p>异常处理是指预估代码执行过程中可能发生的错误，然后最大程度的避免错误的发生导致整个程序无法继续运行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">counter</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!x || !y) &#123;</span><br><span class="line">    <span class="comment">// throw &#x27;参数不能为空！&#x27;</span></span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;参数不能为空！&quot;</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">111</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">222</span>);</span><br><span class="line">  <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">counter</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">333</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511144023536.png" alt="image-20230511144023536"></p>
+<ul>
+<li>throw 抛出异常信息，整个程序也会终止执行</li>
+<li>throw 后面跟的是错误提示信息,可以直接跟字符串</li>
+<li>Error 对象配合 throw 使用，能够设置更详细的错误信息</li>
+</ul>
+<p>try &#x2F;catch 捕获异常</p>
+<p>可以通过 try &#x2F; catch 捕获错误信息（浏览器提供的错误信息）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> p = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.p&quot;</span>);</span><br><span class="line">    p.<span class="property">style</span>.<span class="property">color</span> = <span class="string">&quot;red&quot;</span>;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(error.<span class="property">message</span>);</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;finally执行了！&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;我是函数fn中的最后打印&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">fn</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;我是函数fn外的打印&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将预估可能发生错误的代码写在 try 代码段中</li>
+<li>如果 try 代码段中出现错误后，会执行 catch 代码段，并截获到错误信息</li>
+<li>finally 不管是否有错误，都会执行</li>
+<li>使用 try &#x2F; catch 捕获错误信息，发生异常后程序不会终止执行</li>
+</ul>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511145301739.png" alt="image-20230511145301739"></p>
+<p>debugger</p>
+<p>可以在代码中用 debugger 打断点调试程序，它和我们在控制台打断点的效果是一样的</p>
+<h3 id="6、this"><a href="#6、this" class="headerlink" title="6、this"></a>6、this</h3><p>this 指向</p>
+<ul>
+<li>普通函数中的 this：指向 window</li>
+<li>构造函数、原型对象中的 this：指向实例化对象</li>
+<li>对象中的方法中的 this：指向改对象</li>
+<li>定时器、延时器中的 this：指向 window</li>
+<li>事件处理函数中的 this：指向事件源</li>
+<li>箭头函数中的 this：实际上箭头函数中并不存在 this，箭头函数中的 this 指向上层作用域的 this，如果上层作用域也没有 this，则一级一级向上查找</li>
+</ul>
+<p><em>简单来说，this 总是指向调用者。我们所说的 this 指向是按作用域划分的</em></p>
+<p>改变 this 指向</p>
+<p>JavaScript 中还允许指定函数中 this 的指向，有 3 个方法可以动态指定普通函数中 this 的指向</p>
+<p>call()</p>
+<p>语法：</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511152012252.png" alt="image-20230511152012252"></p>
+<ul>
+<li>thisArg：在 fun 函数运行时指定的 this 值</li>
+<li>arg1，arg2：函数 fun 正常的参数</li>
+<li>返回值就是函数的返回值，因为它就是调用函数（当一个函数调用了 call 方法时，这个函数也被调用执行了）</li>
+</ul>
+<p>apply()</p>
+<p>语法：</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511152310061.png" alt="image-20230511152310061"></p>
+<ul>
+<li>thisArg：在 fun 函数运行时指定的 this 值</li>
+<li>argsArray：函数 fun 正常的参数，但是在 apply 中必须包含在数组里面</li>
+<li>因为 apply 的参数主要跟数组有关系，因此在涉及到数组处理时，应该想到 apply 比如使用 Math.max() 求数组的最大值</li>
+<li>返回值就是函数的返回值，因为它就是调用函数当一个函数调用了 apply 方法时，这个函数也被调用执行了）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 求数组最大值</span></span><br><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>];</span><br><span class="line"><span class="comment">// console.log(Math.max(...arr))</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Math</span>.<span class="property">max</span>.<span class="title function_">apply</span>(<span class="literal">null</span>, arr));</span><br></pre></td></tr></table></figure>
+
+<p>bind()</p>
+<p>语法：</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511153919522.png" alt="image-20230511153919522"></p>
+<ul>
+<li>thisArg：在 fun 函数运行时指定的 this 值</li>
+<li>arg1，arg2：函数 fun 具体的参数</li>
+<li>返回由指定的 this 值和初始化参数改造的原函数拷贝 （新函数），并不调用原函数</li>
+<li>因此当我们只是想改变 this 指向，并且不想调用这个函数的时候，可以使用 bind，比如改变定时器内部的 this 指向</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2023/05/11/ES6%E8%A1%A5%E5%85%85/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2023/05/04/AJAX/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">AJAX</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.staticfile.org/valine/1.4.16/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0bopYVx4sO64oTLDQAKpdWL-gzGzoHsz",
+    app_key: "ZIGRaMZuxeA2bIKoFHcvLagh",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2023
+        <i class="ri-heart-fill heart_icon"></i> congtianfeng
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="从天风" style="border-radius: 50%;"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%8A%80%E6%9C%AF">技术</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E7%BE%8E%E9%A3%9F">美食</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=541326593&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>
