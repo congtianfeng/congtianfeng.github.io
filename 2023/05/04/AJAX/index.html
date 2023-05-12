@@ -156,7 +156,7 @@
 <p>JSON 和 JS 对象的关系</p>
 <p>JSON 是 JS 对象的字符串表示法，它使用文本表示一个 JS 对象的信息， 本质是一个字符串</p>
 <p>JSON 和 JS 对象的互转</p>
-<p>可以使用 JSON.parse()和 JSON.stringfy()方法</p>
+<p>可以使用 JSON.parse()和 JSON.stringify()方法</p>
 <h2 id="二、AJAX-的使用"><a href="#二、AJAX-的使用" class="headerlink" title="二、AJAX 的使用"></a>二、AJAX 的使用</h2><p>核心对象</p>
 <p>XMLHttpRequest，AJAX 的所有操作都是通过该对象进行的</p>
 <p>使用步骤</p>
@@ -165,7 +165,7 @@
 </ol>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br></pre></td></tr></table></figure>
 
-<p>​ 2.设置请求信息</p>
+<p>2.设置请求信息</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="title function_">open</span>(method, url);</span><br><span class="line"><span class="comment">//可以设置请求头，一般不设置</span></span><br><span class="line">xhr.<span class="title function_">setRequestHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
@@ -173,7 +173,7 @@
 </ol>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="title function_">send</span>(body); <span class="comment">//get 请求不传 body 参数，只有 post 请求</span></span><br></pre></td></tr></table></figure>
 
-<p>​ 4.接收响应</p>
+<p>4.接收响应</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//xhr.responseXML 接收 xml 格式的响应数据</span></span><br><span class="line"><span class="comment">//xhr.responseText 接收文本格式的响应数据</span></span><br><span class="line">xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (xhr.<span class="property">readyState</span> == <span class="number">4</span> &amp;&amp; xhr.<span class="property">status</span> == <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> text = xhr.<span class="property">responseText</span>;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(text);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>xhr.readyState 可以用来查看请求当前的状态</p>
@@ -265,7 +265,7 @@
 <p>注意：浏览器允许发起跨域请求，但是，跨域请求回来的数据，会被浏览器 拦截，无法被页面获取到！</p>
 <p>如何实现跨域数据请求</p>
 <h3 id="2、JSONP"><a href="#2、JSONP" class="headerlink" title="2、JSONP"></a>2、JSONP</h3><p>出现的早，兼容性好（兼容低版本 IE）。是前端程序员为了解决跨域问题， 被迫想出来的一种临时解决方案。缺点是只支持 GET 请求，不支持 POST 请求。</p>
-<p>JSONP (JSON with Padding) 是 JSON 的一种“使用模式”，可用于解决主 流浏览器的跨域数据访问的问题。</p>
+<p>JSONP (JSON with Padding) 是 JSON 的一种“使用模式”，可用于解决主流浏览器的跨域数据访问的问题。</p>
 <p>JSONP 的实现原理</p>
 <p>由于浏览器同源策略的限制，网页中无法通过 Ajax 请求非同源的接口数据。 但是在网页中有一些标签天生具有跨域能力，比如：img link iframe script。因此，JSONP 的实现原理，就是通过 script 标签的 src 属性，请求跨<br>域的数据接口，并通过函数调用的形式，接收跨域接口响应回来的数据。</p>
 <p>JSONP 的使用</p>

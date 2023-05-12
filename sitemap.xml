@@ -13,7 +13,7 @@
   <url>
     <loc>https://congtf.top/2023/05/04/AJAX/</loc>
     
-    <lastmod>2023-05-05</lastmod>
+    <lastmod>2023-05-12</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://congtf.top/friends/index.html</loc>
+    <loc>https://congtf.top/categories/index.html</loc>
     
     <lastmod>2021-09-06</lastmod>
     
@@ -74,7 +74,7 @@
   </url>
   
   <url>
-    <loc>https://congtf.top/player/index.html</loc>
+    <loc>https://congtf.top/friends/index.html</loc>
     
     <lastmod>2021-09-06</lastmod>
     
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>https://congtf.top/categories/index.html</loc>
+    <loc>https://congtf.top/player/index.html</loc>
     
     <lastmod>2021-09-06</lastmod>
     

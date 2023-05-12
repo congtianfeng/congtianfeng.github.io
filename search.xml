@@ -96,11 +96,12 @@
 <p>new Object()、new Date()这些都是内置的构造函数</p>
 <p>构造函数的实例化执行过程</p>
 <ol>
-<li>创建新对象</li>
+<li><p>创建新对象</p>
+<p>2.构造函数 this 指向新对象</p>
+<p>3.执行构造函数代码，修改 this，添加新的属性</p>
+<p>4.返回新对象</p>
+</li>
 </ol>
-<p>​ 2.构造函数 this 指向新对象</p>
-<p>​ 3.执行构造函数代码，修改 this，添加新的属性</p>
-<p>​ 4.返回新对象</p>
 <p>实例成员&amp;静态成员</p>
 <p>实例成员：通过构造函数创建的对象称为实例对象，实例对象中的属性和方法称为实例成员。</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age, gender</span>) &#123;</span><br><span class="line">  <span class="comment">// 构造函数中直接声明的这些方法和属性就是实例成员</span></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">gender</span> = gender;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 直接为构造函数添加的这些方法和属性就是静态成员</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property">say</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;会说话&quot;</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -166,7 +167,7 @@
 <p>Number 常见方法</p>
 <ol>
 <li>实例方法<code>toFixed</code>设置保留小数位的长度</li>
-<li>静态方法 Number.parseInt()&#96; 方法依据指定基数，解析字符串并返回一个整数。</li>
+<li>静态方法 <code>Number.parseInt()</code> 方法依据指定基数，解析字符串并返回一个整数。</li>
 <li>静态方法<code>Number.parseFloat()</code> 方法可以把一个字符串解析成浮点数</li>
 </ol>
 <p>Date 常见方法</p>
@@ -184,13 +185,22 @@
 <li>静态方法<code>Date.now()</code>返回自 1970-1-1 00:00:00 UTC（世界标准时间）至今所经过的毫秒数(时间戳)</li>
 </ol>
 <p>Math 常见方法</p>
-<p>静态方法<code>Math.floor(x)</code>返回小于一个数的最大整数，即一个数向下取整后的值</p>
-<p>静态方法<code>Math.ceil(x)</code>返回大于一个数的最大整数，即一个数向上取整后的值</p>
-<p>静态方法<code>Math.max(x,y,...)</code>返回零到多个数值中最大值</p>
-<p>静态方法<code>Math.min(x,y,...)</code>返回零到多个数值中最小值</p>
-<p>静态方法<code>Math.pow(x,y)</code>返回一个数的 y 次幂</p>
-<p>静态方法<code>Math.random()</code>返回一个 0 到 1 之间的伪随机数</p>
-<p>静态方法<code>Math.round(x)</code>返回四舍五入后的整数</p>
+<ol>
+<li><p>静态方法<code>Math.floor(x)</code>返回小于一个数的最大整数，即一个数向下取整后的值</p>
+</li>
+<li><p>静态方法<code>Math.ceil(x)</code>返回大于一个数的最大整数，即一个数向上取整后的值</p>
+</li>
+<li><p>静态方法<code>Math.max(x,y,...)</code>返回零到多个数值中最大值</p>
+</li>
+<li><p>静态方法<code>Math.min(x,y,...)</code>返回零到多个数值中最小值</p>
+</li>
+<li><p>静态方法<code>Math.pow(x,y)</code>返回一个数的 y 次幂</p>
+</li>
+<li><p>静态方法<code>Math.random()</code>返回一个 0 到 1 之间的伪随机数</p>
+</li>
+<li><p>静态方法<code>Math.round(x)</code>返回四舍五入后的整数</p>
+</li>
+</ol>
 <h2 id="三、面向对象"><a href="#三、面向对象" class="headerlink" title="三、面向对象"></a>三、面向对象</h2><h3 id="1、面向对象的编程思想"><a href="#1、面向对象的编程思想" class="headerlink" title="1、面向对象的编程思想"></a>1、面向对象的编程思想</h3><p>面向过程编程</p>
 <p>面向过程就是分析出解决问题所需要的步骤，然后用函数把这些步骤一步一步实现，使用的时候再一个一个的依次调用</p>
 <p>优点：性能比面向对象高，适合跟硬件联系很紧密的东西，例如单片机就采用的面向过程编程</p>
@@ -205,7 +215,7 @@
 <li>继承性</li>
 <li>多态性</li>
 </ul>
-<p>优点：易维护、易复用、易扩展，由于面向对象有封装 、继承、多态性的特性，可以设计出低耦合的系统，使 系统 更加灵活、更加易于维护</p>
+<p>优点：易维护、易复用、易扩展，由于面向对象有封装 、继承、多态性的特性，可以设计出低耦合的系统，使系统更加灵活、更加易于维护</p>
 <p>缺点：性能比面向过程低</p>
 <h3 id="2、封装"><a href="#2、封装" class="headerlink" title="2、封装"></a>2、封装</h3><p>JavaScript 中可以通过构造函数实现面向对象的封装</p>
 <p>将相同的结构封装在构造函数中，通过 this 指向实现数据的共享。并且通过构造函数创造出来的实例对象之间彼此独立、互不影响</p>
@@ -235,7 +245,7 @@
 <p><em>proto</em></p>
 <p>对象都会有一个属性 <strong>proto</strong> 指向构造函数的 prototype 原型对象，之所以我们对象可以使用构造函数 prototype 原型对象的属性和方法，就是因为对象有 <strong>proto</strong> 原型的存在</p>
 <p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230511105014332.png" alt="image-20230511105014332"></p>
-<h3 id="3、原型继承"><a href="#3、原型继承" class="headerlink" title="3、原型继承"></a>3、原型继承</h3><p>继承是面向对象编程的另一个特征，通过继承进一步提升代码封装的程度，JavaScript 中大多是借助原型对象实现继承 的特性</p>
+<h3 id="3、原型继承"><a href="#3、原型继承" class="headerlink" title="3、原型继承"></a>3、原型继承</h3><p>继承是面向对象编程的另一个特征，通过继承进一步提升代码封装的程度，JavaScript 中大多是借助原型对象实现继承的特性</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义一个中国人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Chinese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">header</span> = <span class="number">1</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;chinese&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 定义一个日本人的构造函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Japanese</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">header</span> = <span class="number">1</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">eyes</span> = <span class="number">2</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">language</span> = <span class="string">&quot;japanese&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>我们发现，不管是中国人还是日本人，他们都属于人类。因此可以将人类的一些公共特征抽取出来，单独封装成一个人类的构造函数，让中国人和日本人共享这个构造函数的属性和方法</p>
@@ -313,7 +323,7 @@
 <ul>
 <li>普通函数中的 this：指向 window</li>
 <li>构造函数、原型对象中的 this：指向实例化对象</li>
-<li>对象中的方法中的 this：指向改对象</li>
+<li>对象中的方法中的 this：指向该对象</li>
 <li>定时器、延时器中的 this：指向 window</li>
 <li>事件处理函数中的 this：指向事件源</li>
 <li>箭头函数中的 this：实际上箭头函数中并不存在 this，箭头函数中的 this 指向上层作用域的 this，如果上层作用域也没有 this，则一级一级向上查找</li>
@@ -402,7 +412,7 @@
 <p>JSON 和 JS 对象的关系</p>
 <p>JSON 是 JS 对象的字符串表示法，它使用文本表示一个 JS 对象的信息， 本质是一个字符串</p>
 <p>JSON 和 JS 对象的互转</p>
-<p>可以使用 JSON.parse()和 JSON.stringfy()方法</p>
+<p>可以使用 JSON.parse()和 JSON.stringify()方法</p>
 <h2 id="二、AJAX-的使用"><a href="#二、AJAX-的使用" class="headerlink" title="二、AJAX 的使用"></a>二、AJAX 的使用</h2><p>核心对象</p>
 <p>XMLHttpRequest，AJAX 的所有操作都是通过该对象进行的</p>
 <p>使用步骤</p>
@@ -411,7 +421,7 @@
 </ol>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br></pre></td></tr></table></figure>
 
-<p>​ 2.设置请求信息</p>
+<p>2.设置请求信息</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">xhr.<span class="title function_">open</span>(method, url);</span><br><span class="line"><span class="comment">//可以设置请求头，一般不设置</span></span><br><span class="line">xhr.<span class="title function_">setRequestHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
@@ -419,7 +429,7 @@
 </ol>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">xhr.<span class="title function_">send</span>(body); <span class="comment">//get 请求不传 body 参数，只有 post 请求</span></span><br></pre></td></tr></table></figure>
 
-<p>​ 4.接收响应</p>
+<p>4.接收响应</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//xhr.responseXML 接收 xml 格式的响应数据</span></span><br><span class="line"><span class="comment">//xhr.responseText 接收文本格式的响应数据</span></span><br><span class="line">xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (xhr.<span class="property">readyState</span> == <span class="number">4</span> &amp;&amp; xhr.<span class="property">status</span> == <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> text = xhr.<span class="property">responseText</span>;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(text);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>xhr.readyState 可以用来查看请求当前的状态</p>
@@ -511,7 +521,7 @@
 <p>注意：浏览器允许发起跨域请求，但是，跨域请求回来的数据，会被浏览器 拦截，无法被页面获取到！</p>
 <p>如何实现跨域数据请求</p>
 <h3 id="2、JSONP"><a href="#2、JSONP" class="headerlink" title="2、JSONP"></a>2、JSONP</h3><p>出现的早，兼容性好（兼容低版本 IE）。是前端程序员为了解决跨域问题， 被迫想出来的一种临时解决方案。缺点是只支持 GET 请求，不支持 POST 请求。</p>
-<p>JSONP (JSON with Padding) 是 JSON 的一种“使用模式”，可用于解决主 流浏览器的跨域数据访问的问题。</p>
+<p>JSONP (JSON with Padding) 是 JSON 的一种“使用模式”，可用于解决主流浏览器的跨域数据访问的问题。</p>
 <p>JSONP 的实现原理</p>
 <p>由于浏览器同源策略的限制，网页中无法通过 Ajax 请求非同源的接口数据。 但是在网页中有一些标签天生具有跨域能力，比如：img link iframe script。因此，JSONP 的实现原理，就是通过 script 标签的 src 属性，请求跨<br>域的数据接口，并通过函数调用的形式，接收跨域接口响应回来的数据。</p>
 <p>JSONP 的使用</p>
