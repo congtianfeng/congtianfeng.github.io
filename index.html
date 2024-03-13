@@ -174,6 +174,257 @@
     
     
     <article
+  id="post-文件预览功能"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2024/03/13/%E6%96%87%E4%BB%B6%E9%A2%84%E8%A7%88%E5%8A%9F%E8%83%BD/"
+    >文件预览功能</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2024/03/13/%E6%96%87%E4%BB%B6%E9%A2%84%E8%A7%88%E5%8A%9F%E8%83%BD/" class="article-date">
+  <time datetime="2024-03-13T08:27:46.000Z" itemprop="datePublished">2024-03-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>我这里实现了图片、excel、docx、pdf 格式的文件在浏览器中预览</p>
+<h2 id="一、插件安装"><a href="#一、插件安装" class="headerlink" title="一、插件安装"></a>一、插件安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @vue-office/docx @vue-office/excel @vue-office/pdf</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、路由配置"><a href="#二、路由配置" class="headerlink" title="二、路由配置"></a>二、路由配置</h2><p>我将预览页做成了一个单独的路由页面（一级），因此需要配置下路由</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createRouter, createWebHashHistory &#125; <span class="keyword">from</span> <span class="string">&quot;vue-router&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Login</span> <span class="keyword">from</span> <span class="string">&quot;../views/Login.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Home</span> <span class="keyword">from</span> <span class="string">&quot;../views/Home.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Welcome</span> <span class="keyword">from</span> <span class="string">&quot;../views/Welcome.vue&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&quot;/&quot;</span>,</span><br><span class="line">    <span class="attr">redirect</span>: <span class="string">&quot;/login&quot;</span>,</span><br><span class="line">    <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;登录页&quot;</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&quot;/login&quot;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;login&quot;</span>,</span><br><span class="line">    <span class="attr">component</span>: <span class="title class_">Login</span>,</span><br><span class="line">    <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;登录页&quot;</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&quot;/home&quot;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;home&quot;</span>,</span><br><span class="line">    <span class="attr">component</span>: <span class="title class_">Home</span>,</span><br><span class="line">    <span class="attr">redirect</span>: <span class="string">&quot;welcome&quot;</span>,</span><br><span class="line">    <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;欢迎页&quot;</span> &#125;,</span><br><span class="line">    <span class="attr">children</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&quot;/welcome&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;welcome&quot;</span>,</span><br><span class="line">        <span class="attr">component</span>: <span class="title class_">Welcome</span>,</span><br><span class="line">        <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;欢迎页&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&quot;/myDoTask&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;myDoTask&quot;</span>,</span><br><span class="line">        <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/workBench/MyDoTask.vue&quot;</span>),</span><br><span class="line">        <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;我的待办&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&quot;/myDidTask&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;myDidTask&quot;</span>,</span><br><span class="line">        <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/workBench/MyDidTask.vue&quot;</span>),</span><br><span class="line">        <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;我的已办&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&quot;/myApplyTask&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;myApplyTask&quot;</span>,</span><br><span class="line">        <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/workBench/MyApplyTask.vue&quot;</span>),</span><br><span class="line">        <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;我的申请&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&quot;/myReadTask&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;myReadTask&quot;</span>,</span><br><span class="line">        <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/workBench/MyReadTask.vue&quot;</span>),</span><br><span class="line">        <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;我的阅知&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&quot;/myReadDoneTask&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;myReadDoneTask&quot;</span>,</span><br><span class="line">        <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/workBench/MyReadDoneTask.vue&quot;</span>),</span><br><span class="line">        <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;我的已阅&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&quot;/myDraftTask&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;myDraftTask&quot;</span>,</span><br><span class="line">        <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/workBench/MyDraftTask.vue&quot;</span>),</span><br><span class="line">        <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;我的草稿箱&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&quot;/marketingGeFix/:WfCode&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;marketingGeFix/:WfCode&quot;</span>,</span><br><span class="line">        <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/marketing/MarketingGeFix.vue&quot;</span>),</span><br><span class="line">        <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;营销审批-政企产品类(含高校)-固话&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&quot;/printDidTask&quot;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;printDidTask&quot;</span>,</span><br><span class="line">    <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/print/PrintDidTask.vue&quot;</span>),</span><br><span class="line">    <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;已办打印&quot;</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 附件预览页面</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&quot;/preview&quot;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;preview&quot;</span>,</span><br><span class="line">    <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/preview/preview.vue&quot;</span>),</span><br><span class="line">    <span class="attr">meta</span>: &#123; <span class="attr">title</span>: <span class="string">&quot;附件预览&quot;</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&quot;/403&quot;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;403&quot;</span>,</span><br><span class="line">    <span class="attr">meta</span>: &#123;</span><br><span class="line">      <span class="attr">title</span>: <span class="string">&quot;没有权限&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/403.vue&quot;</span>),</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&quot;/:pathMatch(.*)&quot;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;404&quot;</span>,</span><br><span class="line">    <span class="attr">meta</span>: &#123;</span><br><span class="line">      <span class="attr">title</span>: <span class="string">&quot;页面不存在&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/views/404.vue&quot;</span>),</span><br><span class="line">  &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> router = <span class="title function_">createRouter</span>(&#123;</span><br><span class="line">  <span class="attr">history</span>: <span class="title function_">createWebHashHistory</span>(),</span><br><span class="line">  routes,</span><br><span class="line">  <span class="attr">base</span>: <span class="string">&quot;/approve/&quot;</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> whiteList = [</span><br><span class="line">  <span class="string">&quot;/403&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/404&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/home&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/welcome&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/myDoTask&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/myDidTask&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/myApplyTask&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/myReadTask&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/myReadDoneTask&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/myDraftTask&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/printDidTask&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/printDidTaskPrettyNumber&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/preview&quot;</span>,</span><br><span class="line">];</span><br><span class="line"><span class="comment">// 挂载路由导航守卫</span></span><br><span class="line">router.<span class="title function_">beforeEach</span>(<span class="keyword">async</span> (to, <span class="keyword">from</span>, next) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (to.<span class="property">path</span> === <span class="string">&quot;/login&quot;</span> || to.<span class="property">path</span> === <span class="string">&quot;/403&quot;</span> || to.<span class="property">path</span> === <span class="string">&quot;/404&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">next</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 获取token</span></span><br><span class="line">  <span class="keyword">const</span> tokenStr = <span class="variable language_">window</span>.<span class="property">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;token&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> (!tokenStr) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">next</span>(<span class="string">&quot;/login&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (whiteList.<span class="title function_">includes</span>(to.<span class="property">path</span>)) <span class="keyword">return</span> <span class="title function_">next</span>();</span><br><span class="line">    <span class="comment">// 获取to.path对应的menu_id</span></span><br><span class="line">    <span class="comment">// const &#123; data &#125; = await getMenuIdByURLAPI(&#123; menu_url: to.path.substring(1) &#125;)</span></span><br><span class="line">    <span class="comment">// debugger</span></span><br><span class="line">    <span class="keyword">const</span> menuInfoList = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="variable language_">window</span>.<span class="property">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;menuInfo&quot;</span>));</span><br><span class="line">    <span class="keyword">const</span> result = menuInfoList.<span class="title function_">filter</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> item.<span class="property">menu_url</span> === to.<span class="property">path</span>.<span class="title function_">substring</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">const</span> menuIdList = result.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">menu_id</span> + <span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (result) &#123;</span><br><span class="line">      <span class="comment">// 根据staff_code 和menu_id获取用户页面访问权限</span></span><br><span class="line">      <span class="keyword">const</span> userMenuAccessList = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(</span><br><span class="line">        <span class="variable language_">window</span>.<span class="property">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;userMenuAccess&quot;</span>)</span><br><span class="line">      );</span><br><span class="line">      <span class="keyword">const</span> res = userMenuAccessList.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span></span><br><span class="line">        menuIdList.<span class="title function_">includes</span>(item.<span class="property">menu_id</span>)</span><br><span class="line">      );</span><br><span class="line">      <span class="keyword">if</span> (res) &#123;</span><br><span class="line">        <span class="title function_">next</span>();</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="title function_">next</span>(<span class="string">&quot;/403&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="title function_">next</span>(<span class="string">&quot;/404&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> router;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、预览组件"><a href="#三、预览组件" class="headerlink" title="三、预览组件"></a>三、预览组件</h2><p>创建路由中对应的预览组件 preview.vue</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;previewContainer&quot;&gt;</span><br><span class="line">    &lt;el-image</span><br><span class="line">      v-if=&quot;fileType === &#x27;jpg&#x27; || fileType === &#x27;png&#x27; || fileType === &#x27;bmp&#x27;&quot;</span><br><span class="line">      :src=&quot;fileURL&quot;</span><br><span class="line">      @error=&quot;errorHandler&quot;</span><br><span class="line">    &gt;&lt;/el-image&gt;</span><br><span class="line">    &lt;vue-office-docx</span><br><span class="line">      v-if=&quot;fileType === &#x27;docx&#x27;&quot;</span><br><span class="line">      :src=&quot;fileURL&quot;</span><br><span class="line">      style=&quot;height: 100vh&quot;</span><br><span class="line">      @error=&quot;errorHandler&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;vue-office-excel</span><br><span class="line">      v-if=&quot;fileType === &#x27;xlsx&#x27;&quot;</span><br><span class="line">      :src=&quot;fileURL&quot;</span><br><span class="line">      style=&quot;height: 100vh&quot;</span><br><span class="line">      @error=&quot;errorHandler&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;vue-office-pdf</span><br><span class="line">      v-if=&quot;fileType === &#x27;pdf&#x27;&quot;</span><br><span class="line">      :src=&quot;fileURL&quot;</span><br><span class="line">      @error=&quot;errorHandler&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;el-button type=&quot;success&quot; round class=&quot;returnBtn&quot; @click=&quot;$router.back()&quot;</span><br><span class="line">      &gt;返回&lt;/el-button</span><br><span class="line">    &gt;</span><br><span class="line">    &lt;el-button</span><br><span class="line">      type=&quot;success&quot;</span><br><span class="line">      round</span><br><span class="line">      class=&quot;downloadBtn&quot;</span><br><span class="line">      @click=&quot;download(appendHandler)&quot;</span><br><span class="line">      &gt;下载&lt;/el-button</span><br><span class="line">    &gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">import &#123; useRoute &#125; from &quot;vue-router&quot;;</span><br><span class="line">// 引入VueOfficeDocx组件</span><br><span class="line">import VueOfficeDocx from &quot;@vue-office/docx&quot;;</span><br><span class="line">// 引入相关样式</span><br><span class="line">import &quot;@vue-office/docx/lib/index.css&quot;;</span><br><span class="line">// 引入VueOfficeExcel组件</span><br><span class="line">import VueOfficeExcel from &quot;@vue-office/excel&quot;;</span><br><span class="line">// 引入相关样式</span><br><span class="line">import &quot;@vue-office/excel/lib/index.css&quot;;</span><br><span class="line">// 引入VueOfficePdf组件</span><br><span class="line">import VueOfficePdf from &quot;@vue-office/pdf&quot;;</span><br><span class="line">import &#123; ElMessage &#125; from &quot;element-plus&quot;;</span><br><span class="line">import &#123; gdownloadAPI, getDownloadUrlAPI &#125; from &quot;@/api/TaskDetail&quot;;</span><br><span class="line">import &#123; ref, onMounted &#125; from &quot;vue&quot;;</span><br><span class="line">const route = useRoute();</span><br><span class="line">const fileType = route.params.fileType;</span><br><span class="line">const fileURL = ref(null);</span><br><span class="line">const getfileURL = async () =&gt; &#123;</span><br><span class="line">  if (fileType === &quot;jpg&quot; || fileType === &quot;png&quot; || fileType === &quot;bmp&quot;) &#123;</span><br><span class="line">    getDownloadUrlAPI(&#123; fileNameHandler: route.params.appendHandler &#125;).then(</span><br><span class="line">      (res) =&gt; &#123;</span><br><span class="line">        // 通过row.fileName.substring(row.fileName.lastIndexOf(&#x27;.&#x27;) + 1)获取文件的后缀名</span><br><span class="line">        fileURL.value = res.data.fileDownloadUrl;</span><br><span class="line">      &#125;</span><br><span class="line">    );</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const &#123; data &#125; = await gdownloadAPI(&#123;</span><br><span class="line">      fileNameHandler: route.params.appendHandler,</span><br><span class="line">    &#125;);</span><br><span class="line">    const binaryStr = window.atob(data.fileContent);</span><br><span class="line">    const ab = new ArrayBuffer(binaryStr.length);</span><br><span class="line">    const ia = new Uint8Array(ab);</span><br><span class="line">    for (let i = 0; i &lt; binaryStr.length; i++) &#123;</span><br><span class="line">      ia[i] = binaryStr.charCodeAt(i);</span><br><span class="line">    &#125;</span><br><span class="line">    const blob = new Blob([ia]); // new Blob([res])中不加data就会返回下图中[objece objece]内容（少取一层）</span><br><span class="line"></span><br><span class="line">    const fileReader = new FileReader();</span><br><span class="line">    fileReader.readAsArrayBuffer(blob);</span><br><span class="line">    fileReader.onload = () =&gt; &#123;</span><br><span class="line">      // 将 ArrayBuffer 数据转换为 Base64 字符串</span><br><span class="line">      fileURL.value = fileReader.result;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">onMounted(() =&gt; &#123;</span><br><span class="line">  getfileURL();</span><br><span class="line">&#125;);</span><br><span class="line">const appendHandler = route.params.appendHandler;</span><br><span class="line">const errorHandler = () =&gt; &#123;</span><br><span class="line">  ElMessage.error(&quot;文件预览失败！&quot;);</span><br><span class="line">&#125;;</span><br><span class="line">const download = async (item) =&gt; &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const &#123; data &#125; = await gdownloadAPI(&#123;</span><br><span class="line">      fileNameHandler: item,</span><br><span class="line">    &#125;);</span><br><span class="line">    const binaryStr = window.atob(data.fileContent);</span><br><span class="line">    const ab = new ArrayBuffer(binaryStr.length);</span><br><span class="line">    const ia = new Uint8Array(ab);</span><br><span class="line">    for (let i = 0; i &lt; binaryStr.length; i++) &#123;</span><br><span class="line">      ia[i] = binaryStr.charCodeAt(i);</span><br><span class="line">    &#125;</span><br><span class="line">    const blob = new Blob([ia]); // new Blob([res])中不加data就会返回下图中[objece objece]内容（少取一层）</span><br><span class="line">    const fileName = route.params.filename; // 下载文件名称</span><br><span class="line">    const alink = document.createElement(&quot;a&quot;);</span><br><span class="line">    alink.download = fileName;</span><br><span class="line">    alink.style.display = &quot;none&quot;;</span><br><span class="line">    alink.href = URL.createObjectURL(blob);</span><br><span class="line">    document.body.appendChild(alink);</span><br><span class="line">    alink.click();</span><br><span class="line">    URL.revokeObjectURL(alink.href); // 释放URL 对象</span><br><span class="line">    document.body.removeChild(alink);</span><br><span class="line">    ElMessage.success(&quot;下载成功&quot;);</span><br><span class="line">  &#125; catch &#123;</span><br><span class="line">    ElMessage.error(&quot;下载失败&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style scoped lang=&quot;less&quot;&gt;</span><br><span class="line">.previewContainer &#123;</span><br><span class="line">  margin: 0;</span><br><span class="line">  padding: 0 100px;</span><br><span class="line">  background-color: rgb(14, 14, 14);</span><br><span class="line">  .returnBtn &#123;</span><br><span class="line">    position: fixed;</span><br><span class="line">    bottom: 5px;</span><br><span class="line">    right: 52%;</span><br><span class="line">    opacity: 0.8;</span><br><span class="line">  &#125;</span><br><span class="line">  .downloadBtn &#123;</span><br><span class="line">    position: fixed;</span><br><span class="line">    bottom: 5px;</span><br><span class="line">    right: 47%;</span><br><span class="line">    opacity: 0.8;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、使用预览功能"><a href="#四、使用预览功能" class="headerlink" title="四、使用预览功能"></a>四、使用预览功能</h2><p>当在其他地方需要预览文件时，跳转到预览组件，并通过路由传递参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;el-button type=&quot;primary&quot; @click=&quot;preview(scope.$index, scope.row)&quot;</span><br><span class="line">    &gt;预览&lt;/el-button</span><br><span class="line">  &gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">const preview = async (index, row) =&gt; &#123;</span><br><span class="line">  // 跳转之前先通知父组件保存页面的状态数据，这样预览返回的时候可以保持原来的状态</span><br><span class="line">  emit(&quot;saveStateData&quot;);</span><br><span class="line">  router.push(&#123;</span><br><span class="line">    name: &quot;preview&quot;,</span><br><span class="line">    params: &#123;</span><br><span class="line">      fileType: row.filename.substring(row.filename.lastIndexOf(&quot;.&quot;) + 1),</span><br><span class="line">      appendHandler: row.appendHandler,</span><br><span class="line">      filename: row.filename,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>顺便一提，由于跳转页面之后，原页面的数据丢失，我还将原页面的数据放在了 store 中方便返回时回显。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-打印功能"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2024/03/13/%E6%89%93%E5%8D%B0%E5%8A%9F%E8%83%BD/"
+    >打印功能</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2024/03/13/%E6%89%93%E5%8D%B0%E5%8A%9F%E8%83%BD/" class="article-date">
+  <time datetime="2024-03-13T08:27:23.000Z" itemprop="datePublished">2024-03-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-print-nb --save-dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、注册"><a href="#二、注册" class="headerlink" title="二、注册"></a>二、注册</h2><p>在 main.js 中引入并注册</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> print <span class="keyword">from</span> <span class="string">&quot;vue3-print-nb&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>);</span><br><span class="line">app.<span class="title function_">use</span>(print).<span class="title function_">mount</span>(<span class="string">&quot;#app&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、组件中使用"><a href="#三、组件中使用" class="headerlink" title="三、组件中使用"></a>三、组件中使用</h2><p>定义一个 printObj 对象，注意局部打印必须在 printObj 对象上配置 id 属性，并将其绑定在需要打印的容器上。打印按钮通过 v-print&#x3D;”printObj”实现打印效果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;myPrint&quot;&gt;</span><br><span class="line">    &lt;!-- 流程信息详情 --&gt;</span><br><span class="line">    &lt;el-table :data=&quot;wfData&quot; style=&quot;margin-top: 70px&quot;&gt;</span><br><span class="line">      &lt;el-table-column type=&quot;index&quot; width=&quot;auto&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;node_name&quot; label=&quot;环节名称&quot; width=&quot;auto&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;proc_type&quot; label=&quot;环节类型&quot; width=&quot;auto&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;deal_state&quot; label=&quot;环节状态&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;username&quot; label=&quot;办理人&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;dept&quot; label=&quot;办理人部门&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;action_value&quot; label=&quot;办理意见&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;create_date&quot; label=&quot;创建时间&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;complete_date&quot; label=&quot;完成时间&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;deal_content&quot; label=&quot;审批意见&quot; /&gt;</span><br><span class="line">    &lt;/el-table&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;el-row type=&quot;flex&quot; justify=&quot;center&quot; style=&quot;margin-top: 10px&quot;&gt;</span><br><span class="line">    &lt;el-button v-print=&quot;printObj&quot; type=&quot;primary&quot;&gt;打印&lt;/el-button&gt;</span><br><span class="line">    &lt;el-button @click=&quot;$router.back()&quot;&gt;返回&lt;/el-button&gt;</span><br><span class="line">  &lt;/el-row&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; ref, onMounted, defineComponent &#125; from &quot;vue&quot;;</span><br><span class="line">import &#123; useRoute &#125; from &quot;vue-router&quot;;</span><br><span class="line"></span><br><span class="line">export default defineComponent(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const route = useRoute();</span><br><span class="line">    const wfData = ref(null);</span><br><span class="line">    const printObj = ref(&#123;</span><br><span class="line">      id: &quot;myPrint&quot;,</span><br><span class="line">    &#125;);</span><br><span class="line">    onMounted(() =&gt; &#123;</span><br><span class="line">      wfData.value = JSON.parse(route.params.wfData);</span><br><span class="line">    &#125;);</span><br><span class="line">    return &#123; detailPage, applyIdValue, rowData, printObj, wfData &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style scoped lang=&quot;less&quot;&gt;&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-路由复用时页面不刷新显示的解决办法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2024/03/13/%E8%B7%AF%E7%94%B1%E5%A4%8D%E7%94%A8%E6%97%B6%E9%A1%B5%E9%9D%A2%E4%B8%8D%E5%88%B7%E6%96%B0%E6%98%BE%E7%A4%BA%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"
+    >路由复用时页面不刷新显示的解决办法</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2024/03/13/%E8%B7%AF%E7%94%B1%E5%A4%8D%E7%94%A8%E6%97%B6%E9%A1%B5%E9%9D%A2%E4%B8%8D%E5%88%B7%E6%96%B0%E6%98%BE%E7%A4%BA%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" class="article-date">
+  <time datetime="2024-03-13T08:27:08.000Z" itemprop="datePublished">2024-03-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>今天在项目中新增了很多修改功能。需要复用之前的路由</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20240313150329705.png" alt="image-20240313150329705"></p>
+<p>这是路由文件，其中的每个路由地址对应着一个菜单栏</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20240313150624228.png" alt="image-20240313150624228"></p>
+<p>现在修改功能需要复用新发起的路由，在路由的 query 参数携带相应的参数，方便在修改页面中复显数据</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20240313151115776.png" alt="image-20240313151115776"></p>
+<p>但是如果我直接在声明周期函数里获取修改的数据会不生效。原因是当修改和新发起复用同一个路由时，vue 考虑到效率问题，并没有重新销毁再重建组件，它们使用的是同一个组件。这也导致了当我在别的页面点击修改想跳转到修改页面时，我在声明周期函数里写的获取修改数据的代码并不会生效，页面仍是一片空白。这个问题也在小兔鲜项目中遇到过。因此手动 watch 一下</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20240313151854119.png" alt="image-20240313151854119"></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-文件导入导出功能"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2024/03/13/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%8A%9F%E8%83%BD/"
+    >文件导入导出功能</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2024/03/13/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%8A%9F%E8%83%BD/" class="article-date">
+  <time datetime="2024-03-13T08:26:04.000Z" itemprop="datePublished">2024-03-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install file-saver --save</span><br><span class="line">npm install xlsx --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、创建工具函数"><a href="#二、创建工具函数" class="headerlink" title="二、创建工具函数"></a>二、创建工具函数</h2><p>为了使用方便，可以在 src&#x2F;utils 下封装一个工具文件 Export2Excel.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* eslint-disable */</span></span><br><span class="line"><span class="keyword">import</span> &#123; saveAs &#125; <span class="keyword">from</span> <span class="string">&quot;file-saver&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> <span class="variable constant_">XLSX</span> <span class="keyword">from</span> <span class="string">&quot;xlsx&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">generateArray</span>(<span class="params">table</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> out = [];</span><br><span class="line">  <span class="keyword">var</span> rows = table.<span class="title function_">querySelectorAll</span>(<span class="string">&quot;tr&quot;</span>);</span><br><span class="line">  <span class="keyword">var</span> ranges = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> R = <span class="number">0</span>; R &lt; rows.<span class="property">length</span>; ++R) &#123;</span><br><span class="line">    <span class="keyword">var</span> outRow = [];</span><br><span class="line">    <span class="keyword">var</span> row = rows[R];</span><br><span class="line">    <span class="keyword">var</span> columns = row.<span class="title function_">querySelectorAll</span>(<span class="string">&quot;td&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> C = <span class="number">0</span>; C &lt; columns.<span class="property">length</span>; ++C) &#123;</span><br><span class="line">      <span class="keyword">var</span> cell = columns[C];</span><br><span class="line">      <span class="keyword">var</span> colspan = cell.<span class="title function_">getAttribute</span>(<span class="string">&quot;colspan&quot;</span>);</span><br><span class="line">      <span class="keyword">var</span> rowspan = cell.<span class="title function_">getAttribute</span>(<span class="string">&quot;rowspan&quot;</span>);</span><br><span class="line">      <span class="keyword">var</span> cellValue = cell.<span class="property">innerText</span>;</span><br><span class="line">      <span class="keyword">if</span> (cellValue !== <span class="string">&quot;&quot;</span> &amp;&amp; cellValue == +cellValue) cellValue = +cellValue;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Skip ranges</span></span><br><span class="line">      ranges.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">range</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (</span><br><span class="line">          R &gt;= range.<span class="property">s</span>.<span class="property">r</span> &amp;&amp;</span><br><span class="line">          R &lt;= range.<span class="property">e</span>.<span class="property">r</span> &amp;&amp;</span><br><span class="line">          outRow.<span class="property">length</span> &gt;= range.<span class="property">s</span>.<span class="property">c</span> &amp;&amp;</span><br><span class="line">          outRow.<span class="property">length</span> &lt;= range.<span class="property">e</span>.<span class="property">c</span></span><br><span class="line">        ) &#123;</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt;= range.<span class="property">e</span>.<span class="property">c</span> - range.<span class="property">s</span>.<span class="property">c</span>; ++i) outRow.<span class="title function_">push</span>(<span class="literal">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Handle Row Span</span></span><br><span class="line">      <span class="keyword">if</span> (rowspan || colspan) &#123;</span><br><span class="line">        rowspan = rowspan || <span class="number">1</span>;</span><br><span class="line">        colspan = colspan || <span class="number">1</span>;</span><br><span class="line">        ranges.<span class="title function_">push</span>(&#123;</span><br><span class="line">          <span class="attr">s</span>: &#123;</span><br><span class="line">            <span class="attr">r</span>: R,</span><br><span class="line">            <span class="attr">c</span>: outRow.<span class="property">length</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="attr">e</span>: &#123;</span><br><span class="line">            <span class="attr">r</span>: R + rowspan - <span class="number">1</span>,</span><br><span class="line">            <span class="attr">c</span>: outRow.<span class="property">length</span> + colspan - <span class="number">1</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Handle Value</span></span><br><span class="line">      outRow.<span class="title function_">push</span>(cellValue !== <span class="string">&quot;&quot;</span> ? cellValue : <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Handle Colspan</span></span><br><span class="line">      <span class="keyword">if</span> (colspan) <span class="keyword">for</span> (<span class="keyword">var</span> k = <span class="number">0</span>; k &lt; colspan - <span class="number">1</span>; ++k) outRow.<span class="title function_">push</span>(<span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    out.<span class="title function_">push</span>(outRow);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> [out, ranges];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">datenum</span>(<span class="params">v, date1904</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (date1904) v += <span class="number">1462</span>;</span><br><span class="line">  <span class="keyword">var</span> epoch = <span class="title class_">Date</span>.<span class="title function_">parse</span>(v);</span><br><span class="line">  <span class="keyword">return</span> (epoch - <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="title class_">Date</span>.<span class="title function_">UTC</span>(<span class="number">1899</span>, <span class="number">11</span>, <span class="number">30</span>))) / (<span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sheet_from_array_of_arrays</span>(<span class="params">data, opts</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> ws = &#123;&#125;;</span><br><span class="line">  <span class="keyword">var</span> range = &#123;</span><br><span class="line">    <span class="attr">s</span>: &#123;</span><br><span class="line">      <span class="attr">c</span>: <span class="number">10000000</span>,</span><br><span class="line">      <span class="attr">r</span>: <span class="number">10000000</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">e</span>: &#123;</span><br><span class="line">      <span class="attr">c</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="attr">r</span>: <span class="number">0</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> R = <span class="number">0</span>; R != data.<span class="property">length</span>; ++R) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> C = <span class="number">0</span>; C != data[R].<span class="property">length</span>; ++C) &#123;</span><br><span class="line">      <span class="keyword">if</span> (range.<span class="property">s</span>.<span class="property">r</span> &gt; R) range.<span class="property">s</span>.<span class="property">r</span> = R;</span><br><span class="line">      <span class="keyword">if</span> (range.<span class="property">s</span>.<span class="property">c</span> &gt; C) range.<span class="property">s</span>.<span class="property">c</span> = C;</span><br><span class="line">      <span class="keyword">if</span> (range.<span class="property">e</span>.<span class="property">r</span> &lt; R) range.<span class="property">e</span>.<span class="property">r</span> = R;</span><br><span class="line">      <span class="keyword">if</span> (range.<span class="property">e</span>.<span class="property">c</span> &lt; C) range.<span class="property">e</span>.<span class="property">c</span> = C;</span><br><span class="line">      <span class="keyword">var</span> cell = &#123;</span><br><span class="line">        <span class="attr">v</span>: data[R][C],</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">if</span> (cell.<span class="property">v</span> == <span class="literal">null</span>) <span class="keyword">continue</span>;</span><br><span class="line">      <span class="keyword">var</span> cell_ref = <span class="variable constant_">XLSX</span>.<span class="property">utils</span>.<span class="title function_">encode_cell</span>(&#123;</span><br><span class="line">        <span class="attr">c</span>: C,</span><br><span class="line">        <span class="attr">r</span>: R,</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> cell.<span class="property">v</span> === <span class="string">&quot;number&quot;</span>) cell.<span class="property">t</span> = <span class="string">&quot;n&quot;</span>;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> cell.<span class="property">v</span> === <span class="string">&quot;boolean&quot;</span>) cell.<span class="property">t</span> = <span class="string">&quot;b&quot;</span>;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (cell.<span class="property">v</span> <span class="keyword">instanceof</span> <span class="title class_">Date</span>) &#123;</span><br><span class="line">        cell.<span class="property">t</span> = <span class="string">&quot;n&quot;</span>;</span><br><span class="line">        cell.<span class="property">z</span> = <span class="variable constant_">XLSX</span>.<span class="property">SSF</span>.<span class="property">_table</span>[<span class="number">14</span>];</span><br><span class="line">        cell.<span class="property">v</span> = <span class="title function_">datenum</span>(cell.<span class="property">v</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> cell.<span class="property">t</span> = <span class="string">&quot;s&quot;</span>;</span><br><span class="line"></span><br><span class="line">      ws[cell_ref] = cell;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (range.<span class="property">s</span>.<span class="property">c</span> &lt; <span class="number">10000000</span>) ws[<span class="string">&quot;!ref&quot;</span>] = <span class="variable constant_">XLSX</span>.<span class="property">utils</span>.<span class="title function_">encode_range</span>(range);</span><br><span class="line">  <span class="keyword">return</span> ws;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Workbook</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!(<span class="variable language_">this</span> <span class="keyword">instanceof</span> <span class="title class_">Workbook</span>)) <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Workbook</span>();</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">SheetNames</span> = [];</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">Sheets</span> = &#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">s2ab</span>(<span class="params">s</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> buf = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(s.<span class="property">length</span>);</span><br><span class="line">  <span class="keyword">var</span> view = <span class="keyword">new</span> <span class="title class_">Uint8Array</span>(buf);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i != s.<span class="property">length</span>; ++i) view[i] = s.<span class="title function_">charCodeAt</span>(i) &amp; <span class="number">0xff</span>;</span><br><span class="line">  <span class="keyword">return</span> buf;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">export_table_to_excel</span>(<span class="params">id</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> theTable = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(id);</span><br><span class="line">  <span class="keyword">var</span> oo = <span class="title function_">generateArray</span>(theTable);</span><br><span class="line">  <span class="keyword">var</span> ranges = oo[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* original data */</span></span><br><span class="line">  <span class="keyword">var</span> data = oo[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">var</span> ws_name = <span class="string">&quot;SheetJS&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> wb = <span class="keyword">new</span> <span class="title class_">Workbook</span>(),</span><br><span class="line">    ws = <span class="title function_">sheet_from_array_of_arrays</span>(data);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* add ranges to worksheet */</span></span><br><span class="line">  <span class="comment">// ws[&#x27;!cols&#x27;] = [&#x27;apple&#x27;, &#x27;banan&#x27;];</span></span><br><span class="line">  ws[<span class="string">&quot;!merges&quot;</span>] = ranges;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* add worksheet to workbook */</span></span><br><span class="line">  wb.<span class="property">SheetNames</span>.<span class="title function_">push</span>(ws_name);</span><br><span class="line">  wb.<span class="property">Sheets</span>[ws_name] = ws;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> wbout = <span class="variable constant_">XLSX</span>.<span class="title function_">write</span>(wb, &#123;</span><br><span class="line">    <span class="attr">bookType</span>: <span class="string">&quot;xlsx&quot;</span>,</span><br><span class="line">    <span class="attr">bookSST</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;binary&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">saveAs</span>(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Blob</span>([<span class="title function_">s2ab</span>(wbout)], &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;application/octet-stream&quot;</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="string">&quot;test.xlsx&quot;</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">export_json_to_excel</span>(<span class="params">&#123;</span></span><br><span class="line"><span class="params">  multiHeader = [],</span></span><br><span class="line"><span class="params">  header,</span></span><br><span class="line"><span class="params">  data,</span></span><br><span class="line"><span class="params">  filename,</span></span><br><span class="line"><span class="params">  merges = [],</span></span><br><span class="line"><span class="params">  autoWidth = <span class="literal">true</span>,</span></span><br><span class="line"><span class="params">  bookType = <span class="string">&quot;xlsx&quot;</span>,</span></span><br><span class="line"><span class="params">&#125; = &#123;&#125;</span>) &#123;</span><br><span class="line">  <span class="comment">/* original data */</span></span><br><span class="line">  filename = filename || <span class="string">&quot;excel-list&quot;</span>;</span><br><span class="line">  data = [...data];</span><br><span class="line">  data.<span class="title function_">unshift</span>(header);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = multiHeader.<span class="property">length</span> - <span class="number">1</span>; i &gt; -<span class="number">1</span>; i--) &#123;</span><br><span class="line">    data.<span class="title function_">unshift</span>(multiHeader[i]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> ws_name = <span class="string">&quot;SheetJS&quot;</span>;</span><br><span class="line">  <span class="keyword">var</span> wb = <span class="keyword">new</span> <span class="title class_">Workbook</span>(),</span><br><span class="line">    ws = <span class="title function_">sheet_from_array_of_arrays</span>(data);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (merges.<span class="property">length</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!ws[<span class="string">&quot;!merges&quot;</span>]) ws[<span class="string">&quot;!merges&quot;</span>] = [];</span><br><span class="line">    merges.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">      ws[<span class="string">&quot;!merges&quot;</span>].<span class="title function_">push</span>(<span class="variable constant_">XLSX</span>.<span class="property">utils</span>.<span class="title function_">decode_range</span>(item));</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (autoWidth) &#123;</span><br><span class="line">    <span class="comment">/*设置worksheet每列的最大宽度*/</span></span><br><span class="line">    <span class="keyword">const</span> colWidth = data.<span class="title function_">map</span>(<span class="function">(<span class="params">row</span>) =&gt;</span></span><br><span class="line">      row.<span class="title function_">map</span>(<span class="function">(<span class="params">val</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">/*先判断是否为null/undefined*/</span></span><br><span class="line">        <span class="keyword">if</span> (val == <span class="literal">null</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">wch</span>: <span class="number">10</span>,</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (val.<span class="title function_">toString</span>().<span class="title function_">charCodeAt</span>(<span class="number">0</span>) &gt; <span class="number">255</span>) &#123;</span><br><span class="line">          <span class="comment">/*再判断是否为中文*/</span></span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">wch</span>: val.<span class="title function_">toString</span>().<span class="property">length</span> * <span class="number">2</span>,</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">wch</span>: val.<span class="title function_">toString</span>().<span class="property">length</span>,</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">/*以第一行为初始值*/</span></span><br><span class="line">    <span class="keyword">let</span> result = colWidth[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; colWidth.<span class="property">length</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; colWidth[i].<span class="property">length</span>; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (result[j][<span class="string">&quot;wch&quot;</span>] &lt; colWidth[i][j][<span class="string">&quot;wch&quot;</span>]) &#123;</span><br><span class="line">          result[j][<span class="string">&quot;wch&quot;</span>] = colWidth[i][j][<span class="string">&quot;wch&quot;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ws[<span class="string">&quot;!cols&quot;</span>] = result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* add worksheet to workbook */</span></span><br><span class="line">  wb.<span class="property">SheetNames</span>.<span class="title function_">push</span>(ws_name);</span><br><span class="line">  wb.<span class="property">Sheets</span>[ws_name] = ws;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> wbout = <span class="variable constant_">XLSX</span>.<span class="title function_">write</span>(wb, &#123;</span><br><span class="line">    <span class="attr">bookType</span>: bookType,</span><br><span class="line">    <span class="attr">bookSST</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;binary&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="title function_">saveAs</span>(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Blob</span>([<span class="title function_">s2ab</span>(wbout)], &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;application/octet-stream&quot;</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="string">`<span class="subst">$&#123;filename&#125;</span>.<span class="subst">$&#123;bookType&#125;</span>`</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、导出功能"><a href="#三、导出功能" class="headerlink" title="三、导出功能"></a>三、导出功能</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;el-button type=&quot;primary&quot; @click=&quot;exportTable&quot;&gt;导出&lt;/el-button&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">// 导出功能</span><br><span class="line">// 用户菜单表头与数据字段对应关系</span><br><span class="line">const userMenuHeader = &#123;</span><br><span class="line">  流程模板: &quot;wf_type_name&quot;,</span><br><span class="line">  审批编号: &quot;apply_id&quot;,</span><br><span class="line">  发起人: &quot;staff_name&quot;,</span><br><span class="line">  审批流程标题: &quot;apply_title&quot;,</span><br><span class="line">  审批金额: &quot;apply_fee&quot;,</span><br><span class="line">  发起时间: &quot;create_date&quot;,</span><br><span class="line">  流程状态: &quot;proc_state_name&quot;,</span><br><span class="line">  当前环节: &quot;node_name&quot;,</span><br><span class="line">  处理人: &quot;username&quot;,</span><br><span class="line">&#125;;</span><br><span class="line">const exportTable = () =&gt; &#123;</span><br><span class="line">  //  做操作</span><br><span class="line">  const excelData = [];</span><br><span class="line">  // 这里后端返回的数据不能直接用作excel的data，不然浏览器会卡死，必须先将数据转化为表格需要的[[]]的形式</span><br><span class="line">  tableData.value.forEach((item) =&gt; &#123;</span><br><span class="line">    const arr = [];</span><br><span class="line">    for (const key in userMenuHeader) &#123;</span><br><span class="line">      arr.push(item[userMenuHeader[key]]);</span><br><span class="line">    &#125;</span><br><span class="line">    excelData.push(arr);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  // 懒加载</span><br><span class="line">  try &#123;</span><br><span class="line">    import(&quot;@/utils/Export2Excel&quot;).then(async (excel) =&gt; &#123;</span><br><span class="line">      excel.export_json_to_excel(&#123;</span><br><span class="line">        header: Object.keys(userMenuHeader),</span><br><span class="line">        data: excelData,</span><br><span class="line">        filename: &quot;费用冲调审批流程查询清单&quot;,</span><br><span class="line">        autoWidth: true,</span><br><span class="line">        bookType: &quot;xlsx&quot;,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125; catch &#123;</span><br><span class="line">    ElMessage.error(&quot;导出失败，请重试！&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、导入功能"><a href="#四、导入功能" class="headerlink" title="四、导入功能"></a>四、导入功能</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;el-upload</span><br><span class="line">    ref=&quot;uploadRef&quot;</span><br><span class="line">    class=&quot;upload-demo&quot;</span><br><span class="line">    v-model:file-list=&quot;accList&quot;</span><br><span class="line">    :on-remove=&quot;handleRemove&quot;</span><br><span class="line">    :on-change=&quot;handleChangeBusiness&quot;</span><br><span class="line">    :http-request=&quot;upload&quot;</span><br><span class="line">    action=&quot;#&quot;</span><br><span class="line">    :auto-upload=&quot;false&quot;</span><br><span class="line">    style=&quot;display: flex; margin-bottom: 10px&quot;</span><br><span class="line">  &gt;</span><br><span class="line">    &lt;template #trigger&gt;</span><br><span class="line">      &lt;el-button type=&quot;primary&quot; :icon=&quot;Document&quot; style=&quot;margin-right: 150px&quot;</span><br><span class="line">        &gt;选择文件&lt;/el-button</span><br><span class="line">      &gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">    &lt;template #tip v-if=&quot;!accList.length&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;el-upload__tip&quot; style=&quot;margin: 10px 0 0 -445px&quot;&gt;</span><br><span class="line">        未选择任何文件</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">    &lt;el-button</span><br><span class="line">      class=&quot;ml-3&quot;</span><br><span class="line">      :icon=&quot;Upload&quot;</span><br><span class="line">      type=&quot;success&quot;</span><br><span class="line">      @click=&quot;getServByAccNbrImport&quot;</span><br><span class="line">      style=&quot;margin-top: 2px&quot;</span><br><span class="line">    &gt;</span><br><span class="line">      批量导入费用争议数据</span><br><span class="line">    &lt;/el-button&gt;</span><br><span class="line">    &lt;el-button type=&quot;primary&quot; :icon=&quot;Download&quot;</span><br><span class="line">      &gt;&lt;el-link href=&quot;/approve/static/费用争议导入模板.xls&quot;</span><br><span class="line">        &gt;下载附件模板&lt;/el-link</span><br><span class="line">      &gt;&lt;/el-button</span><br><span class="line">    &gt;</span><br><span class="line">  &lt;/el-upload&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">// 批量上传</span><br><span class="line">// 上传的文件</span><br><span class="line">const accList = ref([]);</span><br><span class="line">const businessFileList = ref([]);</span><br><span class="line">const accountDetailList = ref([]); // 这是账期明细</span><br><span class="line">// 进出物品对应关系</span><br><span class="line">const businessRelation = &#123;</span><br><span class="line">  0: &quot;bz&quot;,</span><br><span class="line">  1: &quot;phone_number&quot;,</span><br><span class="line">  2: &quot;spje&quot;,</span><br><span class="line">  3: &quot;serv_id&quot;,</span><br><span class="line">  4: &quot;acct_id&quot;,</span><br><span class="line">  5: &quot;cust_name&quot;,</span><br><span class="line">  6: &quot;acct_name&quot;,</span><br><span class="line">  7: &quot;sqr&quot;,</span><br><span class="line">  8: &quot;sqrdh&quot;,</span><br><span class="line">  9: &quot;sqyy&quot;,</span><br><span class="line">  10: &quot;sqyy_name&quot;,</span><br><span class="line">  11: &quot;oper_type&quot;,</span><br><span class="line">  12: &quot;oper_type_name&quot;,</span><br><span class="line">  13: &quot;ctlx_id&quot;,</span><br><span class="line">  14: &quot;ctlx&quot;,</span><br><span class="line">  15: &quot;phone_local&quot;,</span><br><span class="line">&#125;;</span><br><span class="line">const accountDetailRelation = &#123;</span><br><span class="line">  0: &quot;phone_number&quot;,</span><br><span class="line">  1: &quot;fee_month&quot;,</span><br><span class="line">  2: &quot;charge&quot;,</span><br><span class="line">  3: &quot;fee_acct_type&quot;,</span><br><span class="line">  4: &quot;fee_acct_type_name&quot;,</span><br><span class="line">&#125;;</span><br><span class="line">const handleChangeBusiness = (file) =&gt; &#123;</span><br><span class="line">  const reader = new FileReader();</span><br><span class="line">  reader.onload = async (e) =&gt; &#123;</span><br><span class="line">    const data = e.target.result;</span><br><span class="line">    const workbook = XLSX.read(data, &#123; type: &quot;array&quot; &#125;);</span><br><span class="line">    const sheetName = workbook.SheetNames[0];</span><br><span class="line">    const worksheet = workbook.Sheets[sheetName];</span><br><span class="line">    const json = XLSX.utils.sheet_to_json(worksheet, &#123; header: 1 &#125;);</span><br><span class="line">    json.forEach((item) =&gt; &#123;</span><br><span class="line">      const obj = &#123;&#125;;</span><br><span class="line">      for (const key in businessRelation) &#123;</span><br><span class="line">        obj[businessRelation[key]] = item[key];</span><br><span class="line">      &#125;</span><br><span class="line">      businessFileList.value.push(obj);</span><br><span class="line">    &#125;);</span><br><span class="line">    // 对businessFileList去重</span><br><span class="line">    businessFileList.value = [...new Set(businessFileList.value)];</span><br><span class="line">    // 把这个数据传给后端，获取到后端返回的数据，渲染列表</span><br><span class="line">    // 因为表格中可能会有空白的数据，上传上来的数据就会有undefined，所以要过滤掉</span><br><span class="line">    businessFileList.value = businessFileList.value.filter((item) =&gt; item);</span><br><span class="line">    // 因为批量上传的没有acc_nbr，所以要把phone_number赋值给acc_nbr</span><br><span class="line">    businessFileList.value.forEach((item) =&gt; &#123;</span><br><span class="line">      item.acc_nbr = item.phone_number;</span><br><span class="line">    &#125;);</span><br><span class="line">    const sheetName1 = workbook.SheetNames[1];</span><br><span class="line">    const worksheet1 = workbook.Sheets[sheetName1];</span><br><span class="line">    const json1 = XLSX.utils.sheet_to_json(worksheet1, &#123; header: 1 &#125;);</span><br><span class="line">    json1.forEach((item) =&gt; &#123;</span><br><span class="line">      const obj = &#123;&#125;;</span><br><span class="line">      for (const key in accountDetailRelation) &#123;</span><br><span class="line">        obj[accountDetailRelation[key]] = item[key];</span><br><span class="line">      &#125;</span><br><span class="line">      accountDetailList.value.push(obj);</span><br><span class="line">    &#125;);</span><br><span class="line">    // 对accountDetailList去重</span><br><span class="line">    accountDetailList.value = [...new Set(accountDetailList.value)];</span><br><span class="line">    accountDetailList.value = accountDetailList.value.filter((item) =&gt; item);</span><br><span class="line">    // 将accountDetailList与businessFileList关联</span><br><span class="line">    businessFileList.value.forEach((item) =&gt; &#123;</span><br><span class="line">      item.fee_list_month = accountDetailList.value.filter((item2) =&gt; &#123;</span><br><span class="line">        return item.phone_number === item2.phone_number;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  reader.readAsArrayBuffer(file.raw);</span><br><span class="line">&#125;;</span><br><span class="line">const getServByAccNbrImport = async () =&gt; &#123;</span><br><span class="line">  if (businessFileList.value.length === 0) &#123;</span><br><span class="line">    ElMessage.error(&quot;请先选择文件&quot;);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  if (businessFileList.value.length &gt; 2000) &#123;</span><br><span class="line">    ElMessage.error(</span><br><span class="line">      &quot;上传的数据超过2000条，可能会导致查询时间过长，请分批次上传！&quot;</span><br><span class="line">    );</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  applyForm.feeListData = businessFileList.value;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最终的效果是这样的：可以看到，每一行数据下面关联了一个子表</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20240313093547041.png" alt="image-20240313093547041"></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-一个简单的后台管理类项目"
   class="article article-type-post"
   itemscope
@@ -2224,592 +2475,14 @@
 </article>
 
     
-    <article
-  id="post-AJAX"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/05/04/AJAX/"
-    >AJAX</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/05/04/AJAX/" class="article-date">
-  <time datetime="2022-05-04T10:14:49.000Z" itemprop="datePublished">2022-05-04</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="一、Ajax-基本介绍"><a href="#一、Ajax-基本介绍" class="headerlink" title="一、Ajax 基本介绍"></a>一、Ajax 基本介绍</h2><p>Ajax 的全称是 Asynchronous Javascript And XML（异步 JavaScript 和 XML）</p>
-<p>通过 AJAX 可以在浏览器中向服务器发送异步请求，进行数据交互</p>
-<p>最大的优势：无刷新获取数据</p>
-<p>AJAX 的优点</p>
-<ul>
-<li>可以无需刷新页面而与服务器端进行通信（实现局部刷新）</li>
-<li>允许根据用户事件来更新部分页面内容</li>
-</ul>
-<p>AJAX 的缺点</p>
-<ul>
-<li>没有浏览历史，不能回退</li>
-<li>存在跨域问题(同源)</li>
-<li>SEO 不友好</li>
-</ul>
-<p>Ajax 的典型应用场景</p>
-<p>用户名检测：注册用户时，通过 ajax 的形式，动态检测用户名是否被占用</p>
-<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504093210686.png" alt="image-20230504093210686"></p>
-<p>搜索提示：当输入搜索关键字时，通过 ajax 的形式，动态加载搜索提示列 表<img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504093251279.png" alt="image-20230504093251279"></p>
-<p>数据分页显示：当点击页码值的时候，通过 ajax 的形式，根据页码值动态 刷新表格的数据<img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504093331555.png" alt="image-20230504093331555"></p>
-<p>数据的增删改查：数据的添加、删除、修改、查询操作，都需要通过 ajax 的 形式，来实现数据的交互<img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504093356633.png" alt="image-20230504093356633"></p>
-<h3 id="1、XML"><a href="#1、XML" class="headerlink" title="1、XML"></a>1、XML</h3><p>XML 是一种可扩展标记语，被设计用来传输和存储数据。XML 和 HTML 类似，不同的是 HTML 中都是预定义标签，而 XML 中没有预定义标签， 全都是自定义标签，用来表示一些数据。</p>
-<p>XML 格式臃肿，和数据无关的代码多，体积大，传输效率低。在 Javascript 中解析 XML 比较麻烦。现已被 JSON 代替</p>
-<h3 id="2、JSON"><a href="#2、JSON" class="headerlink" title="2、JSON"></a>2、JSON</h3><p>JSON 的英文全称是 JavaScript Object Notation，即“JavaScript 对象。表示法”。简单来讲，JSON 就是 Javascript 对象和数组的字符串表示法，它使用文本表示一个 JS 对象或数组的信息，因此，JSON 的本质是字符</p>
-<p>作用：JSON 是一种轻量级的文本数据交换格式，在作用上类似于 XML，专 门用于存储和传输数据，但是 JSON 比 XML 更小、更快、更易解析 现状：JSON 是在 2001 年开始被推广和使用的数据格式，到现今为止，JSON 已经成为了主流的数据交换格式</p>
-<p>JSON 的两种结构</p>
-<p>JSON 就是用字符串来表示 Javascript 的对象和数组。所以，JSON 中包含 对象和数组两种结构，通过这两种结构的相互嵌套，可以表示各种复杂的数据结构</p>
-<p>对象结构：对象结构在 JSON 中表示为 { } 括起来的内容。数据结构为 { key: value, key: value, … } 的键值对结构。其中，key 必须是使用英文 的双引号包裹的字符串，value 的数据类型可以是数字、字符串、布尔值、null、 数组、对象 6 种类型</p>
-<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504092616262.png" alt="image-20230504092616262"></p>
-<p>数组结构：数组结构在 JSON 中表示为 [ ] 括起来的内容。数据结构为 [ “java”, “javascript”, 30, true … ] 。数组中数据的类型同样可以是数字、 字符串、布尔值、null、数组、对象 6 种类型</p>
-<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504092646601.png" alt="image-20230504092646601"></p>
-<p>JSON 语法注意事项</p>
-<ul>
-<li>属性名必须使用双引号包裹</li>
-<li>字符串类型的值必须使用双引号包裹</li>
-<li>JSON 中不允许使用单引号表示字符串</li>
-<li>JSON 中不能写注释</li>
-<li>JSON 的最外层必须是对象或数组格式</li>
-<li>不能使用 undefined 或函数作为 JSON 的值</li>
-</ul>
-<p>JSON 和 JS 对象的关系</p>
-<p>JSON 是 JS 对象的字符串表示法，它使用文本表示一个 JS 对象的信息， 本质是一个字符串</p>
-<p>JSON 和 JS 对象的互转</p>
-<p>可以使用 JSON.parse()和 JSON.stringify()方法</p>
-<h2 id="二、AJAX-的使用"><a href="#二、AJAX-的使用" class="headerlink" title="二、AJAX 的使用"></a>二、AJAX 的使用</h2><p>核心对象</p>
-<p>XMLHttpRequest，AJAX 的所有操作都是通过该对象进行的</p>
-<p>使用步骤</p>
-<ol>
-<li>创建 XMLHttpRequest 对象</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br></pre></td></tr></table></figure>
-
-<p>2.设置请求信息</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="title function_">open</span>(method, url);</span><br><span class="line"><span class="comment">//可以设置请求头，一般不设置</span></span><br><span class="line">xhr.<span class="title function_">setRequestHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>发送请求</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="title function_">send</span>(body); <span class="comment">//get 请求不传 body 参数，只有 post 请求</span></span><br></pre></td></tr></table></figure>
-
-<p>4.接收响应</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//xhr.responseXML 接收 xml 格式的响应数据</span></span><br><span class="line"><span class="comment">//xhr.responseText 接收文本格式的响应数据</span></span><br><span class="line">xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (xhr.<span class="property">readyState</span> == <span class="number">4</span> &amp;&amp; xhr.<span class="property">status</span> == <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> text = xhr.<span class="property">responseText</span>;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(text);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>xhr.readyState 可以用来查看请求当前的状态</p>
-<p>0: 表示 XMLHttpRequest 实例已经生成，但是 open()方法还没有被调用。</p>
-<p>1: 表示 send()方法还没有被调用，仍然可以使用 setRequestHeader()，设定 HTTP 请求的头信息</p>
-<p>2: 表示 send()方法已经执行，并且头信息和状态码已经收到。</p>
-<p>3: 表示正在接收服务器传来的 body</p>
-<p>4: 表示服务器数据已经完全接收，或者本次接收已经失败了</p>
-<p>使用 xhr 对象发起带参数的 GET 请求时，只需在调用 xhr.open 期间，为 URL 地址指定参数即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.open(&#x27;GET&#x27;,&#x27;http://congtf.top/tags?id=1&amp;title=技术&#x27;)</span><br></pre></td></tr></table></figure>
-
-<p>这种在 URL 地址后面拼接的参数，叫做查询字符串</p>
-<p>GET 请求携带参数的本质</p>
-<p>无论使用 $.ajax()，还是使用 $.get()，又或者直接使用 xhr 对象发起 GET 请求，当需要携带参数的时候，本质上，都是直接将参数以查询字符串的形 式，追加到 URL 地址的后面，发送到服务器的</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="title function_">get</span>(url, &#123; <span class="attr">name</span>: <span class="string">&quot;zs&quot;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;, <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;);</span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line">$.<span class="title function_">get</span>(url + <span class="string">&quot;?name=zs&amp;age=20&quot;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;);</span><br></pre></td></tr></table></figure>
-
-<h2 id="三、XMLHttpRequest-Level2-的新特性"><a href="#三、XMLHttpRequest-Level2-的新特性" class="headerlink" title="三、XMLHttpRequest Level2 的新特性"></a>三、XMLHttpRequest Level2 的新特性</h2><p>旧版 XMLHttpRequest 的缺点：</p>
-<ul>
-<li>只支持文本数据的传输，无法用来读取和上传文件</li>
-<li>传送和接收数据时，没有进度信息，只能提示有没有完成</li>
-</ul>
-<p>XMLHttpRequest Level2 的新功能</p>
-<ul>
-<li>可以设置 HTTP 请求的时限</li>
-<li>可以使用 FormData</li>
-<li>可以上传文件</li>
-<li>可以获得数据传输的进度信息</li>
-</ul>
-<h3 id="1、设置-HTTP-请求时限"><a href="#1、设置-HTTP-请求时限" class="headerlink" title="1、设置 HTTP 请求时限"></a>1、设置 HTTP 请求时限</h3><p>有时，Ajax 操作很耗时，而且无法预知要花多少时间。如果网速很慢，用户可能要等很久。新版本的 XMLHttpRequest 对象，增加了 timeout 属性，可 以设置 HTTP 请求的时限：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="property">timeout</span> = <span class="number">3000</span>;</span><br></pre></td></tr></table></figure>
-
-<p>上面的语句，将最长等待时间设为 3000 毫秒。过了这个时限，就自动停止 HTTP 请求。与之配套的还有一个 timeout 事件，用来指定回调函数：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="property">ontimeout</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">alert</span>(<span class="string">&quot;请求超时&quot;</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2、FormData-对象管理表单数据"><a href="#2、FormData-对象管理表单数据" class="headerlink" title="2、FormData 对象管理表单数据"></a>2、FormData 对象管理表单数据</h3><p>Ajax 操作往往用来提交表单数据。为了方便表单处理，HTML5 新增了一个 FormData 对象，可以模拟表单操作：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.新建FormData对象</span></span><br><span class="line"><span class="keyword">const</span> fd = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span><br><span class="line"><span class="comment">// 2.为FormData添加表单项</span></span><br><span class="line">fd.<span class="title function_">append</span>(<span class="string">&quot;uname&quot;</span>, <span class="string">&quot;zs&quot;</span>);</span><br><span class="line">fd.<span class="title function_">append</span>(<span class="string">&quot;upwd&quot;</span>, <span class="string">&quot;123456&quot;</span>);</span><br><span class="line"><span class="comment">// 3.创建XHR对象</span></span><br><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line"><span class="comment">// 4.发请求</span></span><br><span class="line">xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;http://congtf.top&quot;</span>);</span><br><span class="line"><span class="comment">// 5.直接提交FormData对象，这与提交网页表单效果完全一样</span></span><br><span class="line">xhr.<span class="title function_">send</span>(fd);</span><br></pre></td></tr></table></figure>
-
-<p>FormData 对象也可以用来获取网页表单的值，示例代码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取表单元素</span></span><br><span class="line"><span class="keyword">const</span> form = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#form1&quot;</span>);</span><br><span class="line"><span class="comment">// 监听表单元素的submit事件</span></span><br><span class="line">form.<span class="title function_">addEventListener</span>(<span class="string">&quot;submit&quot;</span>, <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">  e.<span class="title function_">preventDefault</span>();</span><br><span class="line">  <span class="comment">// 根据form表单创建FormData对象，会自动将表单数据填充到FormData对象中</span></span><br><span class="line">  <span class="keyword">const</span> fd = <span class="keyword">new</span> <span class="title class_">FormData</span>(form);</span><br><span class="line">  <span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">  xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;http://congtf.top&quot;</span>);</span><br><span class="line">  xhr.<span class="title function_">send</span>(fd);</span><br><span class="line">  xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、上传文件"><a href="#3、上传文件" class="headerlink" title="3、上传文件"></a>3、上传文件</h3><p>新版 XMLHttpRequest 对象，不仅可以发送文本信息，还可以上传文件</p>
-<p>实现步骤</p>
-<ol>
-<li><p>定义 UI 结构</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 文件选择框 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">id</span>=<span class="string">&quot;file1&quot;</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 上传按钮 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btnUpload&quot;</span>&gt;</span>上传文件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 显示上传到服务器上的图片 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">id</span>=<span class="string">&quot;img&quot;</span> <span class="attr">width</span>=<span class="string">&quot;800&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>验证是否选择了文件</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> btnUpload = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#btnUpload&quot;</span>);</span><br><span class="line">btn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> files = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#file1&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> (files.<span class="property">length</span> &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">alert</span>(<span class="string">&quot;请选择要上传的文件！&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 创建FormData对象</span></span><br><span class="line">  <span class="keyword">const</span> fd = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span><br><span class="line">  <span class="comment">// 追加文件</span></span><br><span class="line">  fd.<span class="title function_">append</span>(<span class="string">&quot;avatar&quot;</span>, files[<span class="number">0</span>]);</span><br><span class="line">  <span class="comment">// 创建xhr对象</span></span><br><span class="line">  <span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">  <span class="comment">// 发请求</span></span><br><span class="line">  xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;http://congtf.top&quot;</span>);</span><br><span class="line">  xhr.<span class="title function_">send</span>(fd);</span><br><span class="line">  xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (xhr.<span class="property">state</span> === <span class="number">4</span> &amp;&amp; xhr.<span class="property">status</span> === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> data = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(xhr.<span class="property">responseText</span>);</span><br><span class="line">      <span class="keyword">if</span> (data.<span class="property">status</span> === <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="comment">// 将服务器返回的图片地址设置为img标签的src属性</span></span><br><span class="line">        <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#img&quot;</span>).<span class="property">src</span> = <span class="string">&quot;http://congtf.top&quot;</span> + data.<span class="property">url</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 文件上传失败</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;data.message&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>向 FormData 中追加文件</p>
-</li>
-<li><p>使用 xhr 发起上传文件的请求</p>
-</li>
-<li><p>监听 onreadystatechange 事件</p>
-</li>
-</ol>
-<h3 id="4、显示文件上传进度"><a href="#4、显示文件上传进度" class="headerlink" title="4、显示文件上传进度"></a>4、显示文件上传进度</h3><p>新版本的 XMLHttpRequest 对象中，可以通过监听 xhr.upload.onprogress 事件，来获取到文件的上传进度。语法格式如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line"><span class="comment">// 监听xhr.upload的onprogress事件</span></span><br><span class="line">xhr.<span class="property">upload</span>.<span class="property">onprogress</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="comment">// e.lengthComputable是一个布尔值，表示当前上传的资源是否具有可计算的长度</span></span><br><span class="line">  <span class="keyword">if</span> (e.<span class="property">lengthComputable</span>) &#123;</span><br><span class="line">    <span class="comment">// e.loaded 表示已传输的字节</span></span><br><span class="line">    <span class="comment">// e.total 表示需要传输的总字节</span></span><br><span class="line">    <span class="keyword">const</span> percentComplete = <span class="title class_">Math</span>.<span class="title function_">ceil</span>((e.<span class="property">loaded</span> / e.<span class="property">total</span>) * <span class="number">100</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="四、axios"><a href="#四、axios" class="headerlink" title="四、axios"></a>四、axios</h2><p>axios 是专注于网络数据请求的库</p>
-<p>相比于原生的 XMLHttpRequest 对象，axios 简单易用</p>
-<p>相比于 jQuery，axios 更加轻量化，只专注于网络数据请求</p>
-<p>axios 发起 GET 请求</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">axios</span><br><span class="line">  .<span class="title function_">get</span>(url, &#123;</span><br><span class="line">    <span class="attr">params</span>: &#123;</span><br><span class="line">      <span class="comment">/*参数*/</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(callback);</span><br></pre></td></tr></table></figure>
-
-<p>示例如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> paramsObj = &#123; <span class="attr">name</span>: <span class="string">&quot;zs&quot;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;;</span><br><span class="line">axios.<span class="title function_">get</span>(<span class="string">&quot;http:congtf.top&quot;</span>, &#123; <span class="attr">params</span>: paramsObj &#125;).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">res</span>) &#123;</span><br><span class="line">  <span class="comment">// axios默认包了一层data，res.data才是服务器返回的数据</span></span><br><span class="line">  <span class="keyword">const</span> result = res.<span class="property">data</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>axios 发起 POST 请求示例如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dataObj = &#123; <span class="attr">name</span>: <span class="string">&quot;zs&quot;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;;</span><br><span class="line">axios.<span class="title function_">post</span>(<span class="string">&quot;http:congtf.top&quot;</span>, dataObj).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">res</span>) &#123;</span><br><span class="line">  <span class="comment">// axios默认包了一层data，res.data才是服务器返回的数据</span></span><br><span class="line">  <span class="keyword">const</span> result = res.<span class="property">data</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>直接使用 axios 发起请求:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">axios</span>(&#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&quot;请求类型&quot;</span>,</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&quot;请求的url地址&quot;</span>,</span><br><span class="line">  <span class="attr">data</span>: &#123;</span><br><span class="line">    <span class="comment">/*POST数据*/</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">params</span>: &#123;</span><br><span class="line">    <span class="comment">/*GET参数*/</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;).<span class="title function_">then</span>(callback);</span><br></pre></td></tr></table></figure>
-
-<h2 id="五、同源与跨域、防抖与节流"><a href="#五、同源与跨域、防抖与节流" class="headerlink" title="五、同源与跨域、防抖与节流"></a>五、同源与跨域、防抖与节流</h2><h3 id="1、同源策略"><a href="#1、同源策略" class="headerlink" title="1、同源策略"></a>1、同源策略</h3><p>如果两个页面的协议，域名和端口都相同，则两个页面具有相同的源</p>
-<p>例如，下表给出了相对于 <a target="_blank" rel="noopener" href="http://www.test.com/index.html">http://www.test.com/index.html</a> （没写端口号默认 是 80）页面的同源检测</p>
-<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504104555104.png" alt="image-20230504104555104"></p>
-<p>同源策略（英文全称 Same origin policy）是浏览器提供的一个安全功能 MDN 官方给定的概念：同源策略限制了从同一个源加载的文档或脚本如何与来自 另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制</p>
-<p>通俗的理解：浏览器规定，A 网站的 JavaScript 不允许和非同源的网站 C 之间进行资源的交互，例如：</p>
-<ol>
-<li>无法读取非同源网页的 Cookie、LocalStorage 和 IndexedDB</li>
-<li>无法接触非同源网页的 DOM</li>
-<li>无法向非同源地址发送 Ajax 请求</li>
-</ol>
-<p>同源指的是两个 URL 的协议、域名、端口一致，反之，则是跨域</p>
-<p>出现跨域的根本原因：浏览器的同源策略不允许非同源的 URL 之间进行资源的交互</p>
-<p>浏览器对跨域请求的拦截</p>
-<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504105321422.png" alt="image-20230504105321422"></p>
-<p>注意：浏览器允许发起跨域请求，但是，跨域请求回来的数据，会被浏览器 拦截，无法被页面获取到！</p>
-<p>如何实现跨域数据请求</p>
-<h3 id="2、JSONP"><a href="#2、JSONP" class="headerlink" title="2、JSONP"></a>2、JSONP</h3><p>出现的早，兼容性好（兼容低版本 IE）。是前端程序员为了解决跨域问题， 被迫想出来的一种临时解决方案。缺点是只支持 GET 请求，不支持 POST 请求。</p>
-<p>JSONP (JSON with Padding) 是 JSON 的一种“使用模式”，可用于解决主流浏览器的跨域数据访问的问题。</p>
-<p>JSONP 的实现原理</p>
-<p>由于浏览器同源策略的限制，网页中无法通过 Ajax 请求非同源的接口数据。 但是在网页中有一些标签天生具有跨域能力，比如：img link iframe script。因此，JSONP 的实现原理，就是通过 script 标签的 src 属性，请求跨<br>域的数据接口，并通过函数调用的形式，接收跨域接口响应回来的数据。</p>
-<p>JSONP 的使用</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 动态的创建一个script标签</span></span><br><span class="line"><span class="keyword">const</span> script <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;script&#x27;</span>)</span><br><span class="line"><span class="comment">// 设置script的src，设置回调函数</span></span><br><span class="line">script.<span class="property">src</span>=<span class="string">&#x27;http://loacalhost:3000/testAJAX?callback=abc&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">abc</span>(<span class="params">data</span>) &#123;</span><br><span class="line">  <span class="title function_">alert</span>(data.<span class="property">name</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将script添加到body中</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(script)</span><br><span class="line"><span class="comment">// 服务器中路由的处理</span></span><br><span class="line">router.<span class="title function_">get</span>(<span class="string">&#x27;/testAJAX&#x27;</span>,<span class="keyword">function</span>(<span class="params">req,res</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到请求&#x27;</span>)</span><br><span class="line">  <span class="keyword">const</span> callback = req.<span class="property">query</span>.<span class="property">callback</span></span><br><span class="line">  <span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>:<span class="string">&#x27;zs&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>:<span class="number">20</span></span><br><span class="line">  &#125;</span><br><span class="line">  res.<span class="title function_">send</span>(callback+<span class="string">&quot;(&quot;</span>+<span class="title class_">JSON</span>.<span class="title function_">stringfy</span>(obj)+<span class="string">&quot;)&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、CORS"><a href="#3、CORS" class="headerlink" title="3、CORS"></a>3、CORS</h3><p>CORS（Cross-Origin Resource Sharing），跨域资源共享。CORS 是官方的跨域解决方 案，它的特点是不需要在客户端做任何特殊的操作，完全在服务器中进行处理，支持 get 和 post 请求。跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些 源站通过浏览器有权限访问哪些资源</p>
-<p>CORS 怎么工作的？</p>
-<p>CORS 是通过设置一个响应头来告诉浏览器，该请求允许跨域，浏览器收到该响应 以后就会对响应放行</p>
-<p>CORS 的使用</p>
-<p>主要是服务器端的设置：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">router.<span class="title function_">get</span>(<span class="string">&quot;/testAJAX&quot;</span>, <span class="keyword">function</span> (<span class="params">req, res</span>) &#123;</span><br><span class="line">  <span class="comment">// res.set(&quot;Access-Control-Allow-Origin&quot;,&quot;http://127.0.0.1:3000&quot;)</span></span><br><span class="line">  res.<span class="title function_">set</span>(<span class="string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="string">&quot;*&quot;</span>);</span><br><span class="line">  res.<span class="title function_">send</span>(<span class="string">&quot;返回的相应&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="4、防抖"><a href="#4、防抖" class="headerlink" title="4、防抖"></a>4、防抖</h3><p>防抖策略（debounce）是当事件被触发后，延迟 n 秒后再执行回调，如果 在这 n 秒内事件又被触发，则重新计时</p>
-<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504111044196.png" alt="image-20230504111044196"></p>
-<p>防抖的应用场景</p>
-<p>用户在输入框中连续输入一串字符时，可以通过防抖策略，只在输入完后， 才执行查询的请求，这样可以有效减少请求次数，节约请求资源</p>
-<p>防抖的基本原理是在一定时间内，将多次触发的函数调用合并为一次调用执行。当用户连续触发事件时，防抖函数会清空之前设定的定时器，并重新设定一个新的定时器来延迟函数的执行。只有当用户停止操作后，在设定的时间内没有再次触发事件，则函数才会被真正地执行一次</p>
-<p>实现一个基本的防抖函数步骤如下：</p>
-<ol>
-<li>在函数外部设置一个计时器变量（例如 timeoutId）和函数执行的延迟时间（例如 delay）</li>
-<li>当函数被触发时，清除之前设定的计时器</li>
-<li>重新设定一个计时器，并用它来延迟函数的执行</li>
-<li>如果在设定的延迟时间内再次触发了函数，则回到步骤 2</li>
-<li>如果在设定的延迟时间内没有再次触发函数，计时器会触发执行原始函数</li>
-</ol>
-<p>以下是一个基本的防抖函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">debounce</span>(<span class="params">func, delay</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> timeoutId;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> context = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">const</span> args = <span class="variable language_">arguments</span>;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timeoutId);</span><br><span class="line">    timeoutId = <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      func.<span class="title function_">apply</span>(context, args);</span><br><span class="line">    &#125;, delay);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>该函数接受两个参数：要执行的函数以及防抖延迟时间。它返回一个新函数，该函数会在防抖延迟时间内被多次调用时只执行一次原始函数</p>
-<h3 id="5、节流"><a href="#5、节流" class="headerlink" title="5、节流"></a>5、节流</h3><p>节流策略（throttle），顾名思义，可以减少一段时间内事件的触发频率。</p>
-<p>节流的应用场景</p>
-<ol>
-<li>鼠标连续不断地触发某事件（如点击），只在单位时间内只触发一次</li>
-<li>懒加载时要监听计算滚动条的位置，但不必每次滑动都触发，可以降低计算 的频率，而不必去浪费 CPU 资源</li>
-</ol>
-<p>节流阀的概念</p>
-<p>高铁卫生间是否被占用，由红绿灯控制，红灯表示被占用，绿灯表示可使用</p>
-<p>假设每个人上卫生间都需要花费 5 分钟，则五分钟之内，被占用的卫生间无法被 其他人使用</p>
-<p>上一个人使用完毕后，需要将红灯重置为绿灯，表示下一个人可以使用卫生 间</p>
-<p>下一个人在上卫生间之前，需要先判断控制灯是否为绿色，来知晓能否上卫 生间</p>
-<p>类似的</p>
-<p>节流阀为空，表示可以执行下次操作；不为空，表示不能执行下次操作</p>
-<p>当前操作执行完，必须将节流阀重置为空，表示可以执行下次操作了</p>
-<p>每次执行操作前，必须先判断节流阀是否为空</p>
-<p>一个基本的节流函数示例如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">throttle</span>(<span class="params">func, delay</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> last = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">...args</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> now = +<span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">    <span class="keyword">if</span> (now - last &lt; delay) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    last = now;</span><br><span class="line">    func.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>总结防抖和节流的区别</p>
-<p>防抖：如果事件被频繁触发，防抖能保证只有最有一次触发生效！前面 N 多 次的触发都会被忽略！当事件被触发时，函数在固定时间间隔内不被执行，只有事件停止触发后，函数才会执行一次。适用于处理一些不需要连续响应的事件（如输入框输入、按钮点击等），可以避免函数被频繁调用，提高性能和稳定性。</p>
-<p>节流：如果事件被频繁触发，节流能够减少事件触发的频率，因此，节流是 有选择性地执行一部分事件！当事件被触发时，函数在固定时间间隔内最多只执行一次。适用于高频率事件（如滚动、窗口调整等），可以防止函数被频繁调用，减少不必要的计算，提高性能和响应速度</p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-前端学习路线"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/03/27/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"
-    >前端学习路线</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/03/27/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="article-date">
-  <time datetime="2022-03-27T11:07:19.000Z" itemprop="datePublished">2022-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>本篇文章列出我的前端学习路线，当然后面有很多其实我还没有掌握。前面的知识当入门后面的知识当进阶吧。我也计划将此路线当做一个题纲，后期会将每一块知识展开后形成单独文章。</p>
-<h2 id="一、前端入门"><a href="#一、前端入门" class="headerlink" title="一、前端入门"></a>一、前端入门</h2><h3 id="1、HTML"><a href="#1、HTML" class="headerlink" title="1、HTML"></a>1、HTML</h3><p>描述：用于定义一个网页结构的基本技术</p>
-<p>各种标签：</p>
-<ul>
-<li><p>h 系列标签</p>
-</li>
-<li><p>p 标签</p>
-</li>
-<li><p>换行标签<br></p>
-</li>
-<li><p>水平分割线标签<hr></p>
-</li>
-<li><p>文本格式化标签（加粗标签 b 和 strong、下划线标签 u 和 ins、倾斜标签 i 和 em、删除线 s 和 del）</p>
-</li>
-<li><p>图片标签 img</p>
-</li>
-<li><p>音频标签 audio</p>
-</li>
-<li><p>视频标签 video</p>
-</li>
-<li><p>a 链接标签</p>
-</li>
-<li><p>无序列表标签 ul 搭配 li</p>
-</li>
-<li><p>有序列表标签 ol 搭配 li</p>
-</li>
-<li><p>自定义列表标签 dl 搭配 dt 和 dd</p>
-</li>
-<li><p>表格标签 table 搭配 tr、th、td 等</p>
-</li>
-<li><p>表单标签 input 系列、button、select、textarea、label 等</p>
-</li>
-</ul>
-<p>标签语义化</p>
-<p>HTML5 特性：</p>
-<ul>
-<li>语义化标签</li>
-<li>浏览器支持</li>
-<li>多媒体标签</li>
-<li>Canvas 画布</li>
-<li>本地存储<ul>
-<li>localStorage</li>
-<li>sessionStorage</li>
-</ul>
-</li>
-<li>Web Workers</li>
-<li>应用缓存（Cache Manifest）</li>
-<li>无障碍</li>
-</ul>
-<h3 id="2、CSS"><a href="#2、CSS" class="headerlink" title="2、CSS"></a>2、CSS</h3><p>描述：层叠样式表，用于设计风格和布局</p>
-<p>引入方式：内嵌式、外联式、行内式</p>
-<p>基础选择器：</p>
-<ul>
-<li>标签选择器</li>
-<li>类选择器</li>
-<li>id 选择器</li>
-<li>通配符选择器</li>
-</ul>
-<p>复合选择器：</p>
-<ul>
-<li><p>后代选择器</p>
-</li>
-<li><p>子代选择器</p>
-</li>
-<li><p>并集选择器</p>
-</li>
-<li><p>交集选择器</p>
-</li>
-<li><p>伪类选择器</p>
-</li>
-</ul>
-<p>字体和文本样式：</p>
-<ul>
-<li>font-size</li>
-<li>font-weight</li>
-<li>font-style</li>
-<li>font-family</li>
-<li>text-indent</li>
-<li>text-align</li>
-<li>text-decoration</li>
-<li>line-height</li>
-</ul>
-<p>背景相关样式</p>
-<ul>
-<li><p>background-color</p>
-</li>
-<li><p>background-image</p>
-</li>
-<li><p>background-repeat</p>
-</li>
-<li><p>background-position</p>
-</li>
-<li><p>background-size</p>
-</li>
-</ul>
-<p>元素显示模式：块级元素、行内元素、行内块元素</p>
-<p>CSS 特性：继承性、层叠性、优先级</p>
-<p>文档流</p>
-<ul>
-<li>标准流</li>
-<li>浮动流</li>
-<li>定位流</li>
-</ul>
-<p>伪元素</p>
-<p>浮动：浮动和清除浮动、BFC 机制</p>
-<p>定位：静态定位、相对定位、绝对定位、子绝父相、固定定位</p>
-<p>其他：对齐方式问题 vertical-align、光标类型 cursor、边框圆角 border-radius、溢出部分显示效果、元素隐藏、元素透明度、边框合并、精灵图、字体图标、文字阴影 text-shadow、盒子阴影 box-shadow、过渡、图片模糊处理 filter:blur()、SEO 优化、网站 icon 图标、CSS 书写规范</p>
-<p>平面转换（2D）：位移、旋转、缩放</p>
-<p>渐变</p>
-<p>空间转换（3D）：位移、透视、旋转、立体呈现、缩放</p>
-<p>动画</p>
-<p>移动端适配：屏幕尺寸和分辨率、百分比布局（流式布局）、Flex 布局（弹性布局）、媒体查询</p>
-<h3 id="3、JavaScript"><a href="#3、JavaScript" class="headerlink" title="3、JavaScript"></a>3、JavaScript</h3><p>描述：具有函数优先的轻量级，解释型或即时编译型的编程语言。</p>
-<p>JavaScript 组成：</p>
-<ul>
-<li><p>ECMAScript：规定了 js 基础语法</p>
-</li>
-<li><p>Web APIs：JavaScript 暴露的一些接口，用于操作文档和浏览器</p>
-</li>
-</ul>
-<p>数据类型</p>
-<ul>
-<li>值类型<ul>
-<li>字符串 String</li>
-<li>数组 Number</li>
-<li>布尔 Boolean</li>
-<li>空值 Null</li>
-<li>未定义 Undefined</li>
-<li>Symbol</li>
-</ul>
-</li>
-<li>引用类型<ul>
-<li>对象 Object</li>
-<li>数组 Array</li>
-<li>函数 Function</li>
-</ul>
-</li>
-</ul>
-<p>数据类型转换：显式转换、隐式转换</p>
-<p>运算符：算术运算符、赋值运算符、一元运算符、比较运算符、逻辑运算符</p>
-<p>流程控制语句：</p>
-<ul>
-<li><p>分支语句：if 分支语句、三元运算符、switch 语句</p>
-</li>
-<li><p>循环语句：while 循环、for 循环</p>
-</li>
-</ul>
-<p>函数：匿名函数（函数表达式）、函数调用、函数传参</p>
-<p>对象：内置对象</p>
-<p>DOM 操作：DOM 树、DOM 对象、设置修改 DOM 元素内容、属性、样式、定时器-间歇函数、事件、回调函数、高阶函数、环境对象 this、事件对象 e、节点操作（查找、增加、删除）、事件委托、重绘回流、滚动事件、加载事件</p>
-<p>BOM 操作：window 对象、定时器-延时函数、location 对象、navigator 对象、histroy 对象、本地存储、正则表达式</p>
-<p>ES6：不再说了，阮一峰老师都讲到了。ES6 入门教程 <a target="_blank" rel="noopener" href="https://es6.ruanyifeng.com/">https://es6.ruanyifeng.com/</a></p>
-<h2 id="二、AJAX"><a href="#二、AJAX" class="headerlink" title="二、AJAX"></a>二、AJAX</h2><p>XMLHttpRequest、axios</p>
-<p>http 基础知识：浏览器的同源策略、跨域及如何解决跨域、URL、防抖、节流、http 协议</p>
-<h2 id="三、git-和-github"><a href="#三、git-和-github" class="headerlink" title="三、git 和 github"></a>三、git 和 github</h2><p>使用版本控制软件，将代码托管到远程仓库</p>
-<h2 id="四、Node-js"><a href="#四、Node-js" class="headerlink" title="四、Node.js"></a>四、Node.js</h2><p>这个我还没有系统的学过，也列出来以后学习</p>
-<h2 id="五、框架前置"><a href="#五、框架前置" class="headerlink" title="五、框架前置"></a>五、框架前置</h2><p>ES6 的模块化：导入导出</p>
-<p>Promise：回调地狱、.then、.catch、async&#x2F;await</p>
-<p>事件循环 EventLoop</p>
-<h2 id="六、前端工程化"><a href="#六、前端工程化" class="headerlink" title="六、前端工程化"></a>六、前端工程化</h2><p>Vue2 框架</p>
-<p>Vue 的几大板块：声明式渲染、组件系统、客户端路由、大规模状态管理、构建工具</p>
-<p>Vue 基础语法：</p>
-<ul>
-<li>插值表达式</li>
-<li>MVVM 设计模式</li>
-<li>v-bind</li>
-<li>v-on</li>
-<li>v-model</li>
-<li>v-text 和 v-html</li>
-<li>v-show 和 v-if</li>
-<li>v-for</li>
-<li>虚拟 dom 和 diff 算法</li>
-<li>动态 class 和动态 style</li>
-<li>过滤器</li>
-<li>计算属性</li>
-<li>侦听器 watch</li>
-</ul>
-<p>Vue 组件：</p>
-<ul>
-<li>组件通信</li>
-<li>Vue 生命周期与钩子函数</li>
-<li>$refs和$nextTick</li>
-<li>动态组件与组件缓存 keep-alive</li>
-<li>组件插槽（默认插槽、具名插槽、作用域插槽）</li>
-</ul>
-<p>Vue 路由系统：</p>
-<ul>
-<li>声明式导航</li>
-<li>编程式导航</li>
-<li>重定向与路由模式</li>
-<li>路由嵌套和路由守卫</li>
-</ul>
-<p>Vuex：</p>
-<ul>
-<li>state</li>
-<li>mutations</li>
-<li>actions</li>
-<li>getters</li>
-<li>vuex 模块化</li>
-</ul>
-<p>CSS 预编译：</p>
-<ul>
-<li>LESS</li>
-<li>SASS</li>
-</ul>
-<p>开发框架：</p>
-<ul>
-<li>Express</li>
-<li>Koa</li>
-<li>Egg</li>
-</ul>
-<p>组件库</p>
-<ul>
-<li>ElementUI（Vue）</li>
-<li>VantUI（Vue）</li>
-</ul>
-<p>数据可视化</p>
-<ul>
-<li>Apache ECharts（echarts）</li>
-<li>HighCharts</li>
-</ul>
-<p>数据 Mock</p>
-<ul>
-<li>描述：通过随机数据，模拟各种场景，增加单元测试的真实性。</li>
-<li>Mock.js</li>
-</ul>
-<p>代码检查：</p>
-<ul>
-<li>ESLint</li>
-<li>StyleLint</li>
-</ul>
-<p>代码风格：</p>
-<ul>
-<li>Prettier</li>
-</ul>
-<p>包管理工具：</p>
-<ul>
-<li>npm</li>
-<li>yarn</li>
-</ul>
-<p>打包工具：</p>
-<ul>
-<li>Webpack</li>
-<li>Vite</li>
-</ul>
-<p>部署</p>
-<p>Web 服务器</p>
-<p>Nginx</p>
-<ul>
-<li>描述：高性能的 HTTP 和反向代理 web 服务器。</li>
-<li>资源：腾讯云动手实验室 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/labs/gallery">https://cloud.tencent.com/developer/labs/gallery</a></li>
-<li>反向代理</li>
-<li>解决跨域</li>
-<li>改写请求</li>
-</ul>
-<p>Apache</p>
-<p>容器</p>
-<p><strong>Docker</strong></p>
-<ul>
-<li>描述：容器是一个标准化的软件单元，它将代码及其所有依赖关系打包，以便应用程序从一个计算环境可靠快速地运行到另一个计算环境。Docker 容器镜像是一个轻量的独立的可执行的软件包。包含程序运行的时候所需的一切：代码，运行时间，系统工具，系统库和设置。</li>
-<li>资源：Docker 从入门到实践 <a target="_blank" rel="noopener" href="https://vuepress.mirror.docker-practice.com/">https://vuepress.mirror.docker-practice.com/</a></li>
-<li>Dockerfile</li>
-</ul>
-<h2 id="七、性能优化"><a href="#七、性能优化" class="headerlink" title="七、性能优化"></a>七、性能优化</h2><ul>
-<li>路由懒加载</li>
-<li>组件懒加载</li>
-<li>JS 异步加载</li>
-<li>Tree shaking</li>
-<li>骨架屏</li>
-<li>分页加载</li>
-<li>长列表虚拟滚动</li>
-<li>Web Worker 优化长任务</li>
-<li>图片优化（动态裁剪、懒加载、图片压缩、使用字体图标、图片转 base64 格式）</li>
-<li>CDN 分发</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
   </article>
   
 
+  
+  <nav class="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+  </nav>
   
 </section>
 </div>

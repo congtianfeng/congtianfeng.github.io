@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+       
+      <meta name="keywords" content="前端、程序员、编程、代码" />
+       
+      <meta name="description" content="记录前端知识学习，经验积累，记录生活" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <meta name="baidu-site-verification" content="codeva-GuqF1B4xr5" />
+      <title>文件导入导出功能 |  hasCat</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link rel="alternate" href="/atom.xml" title="hasCat" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-文件导入导出功能"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  文件导入导出功能
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2024/03/13/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%8A%9F%E8%83%BD/" class="article-date">
+  <time datetime="2024-03-13T08:26:04.000Z" itemprop="datePublished">2024-03-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">10 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install file-saver --save</span><br><span class="line">npm install xlsx --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、创建工具函数"><a href="#二、创建工具函数" class="headerlink" title="二、创建工具函数"></a>二、创建工具函数</h2><p>为了使用方便，可以在 src&#x2F;utils 下封装一个工具文件 Export2Excel.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* eslint-disable */</span></span><br><span class="line"><span class="keyword">import</span> &#123; saveAs &#125; <span class="keyword">from</span> <span class="string">&quot;file-saver&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> <span class="variable constant_">XLSX</span> <span class="keyword">from</span> <span class="string">&quot;xlsx&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">generateArray</span>(<span class="params">table</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> out = [];</span><br><span class="line">  <span class="keyword">var</span> rows = table.<span class="title function_">querySelectorAll</span>(<span class="string">&quot;tr&quot;</span>);</span><br><span class="line">  <span class="keyword">var</span> ranges = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> R = <span class="number">0</span>; R &lt; rows.<span class="property">length</span>; ++R) &#123;</span><br><span class="line">    <span class="keyword">var</span> outRow = [];</span><br><span class="line">    <span class="keyword">var</span> row = rows[R];</span><br><span class="line">    <span class="keyword">var</span> columns = row.<span class="title function_">querySelectorAll</span>(<span class="string">&quot;td&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> C = <span class="number">0</span>; C &lt; columns.<span class="property">length</span>; ++C) &#123;</span><br><span class="line">      <span class="keyword">var</span> cell = columns[C];</span><br><span class="line">      <span class="keyword">var</span> colspan = cell.<span class="title function_">getAttribute</span>(<span class="string">&quot;colspan&quot;</span>);</span><br><span class="line">      <span class="keyword">var</span> rowspan = cell.<span class="title function_">getAttribute</span>(<span class="string">&quot;rowspan&quot;</span>);</span><br><span class="line">      <span class="keyword">var</span> cellValue = cell.<span class="property">innerText</span>;</span><br><span class="line">      <span class="keyword">if</span> (cellValue !== <span class="string">&quot;&quot;</span> &amp;&amp; cellValue == +cellValue) cellValue = +cellValue;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Skip ranges</span></span><br><span class="line">      ranges.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">range</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (</span><br><span class="line">          R &gt;= range.<span class="property">s</span>.<span class="property">r</span> &amp;&amp;</span><br><span class="line">          R &lt;= range.<span class="property">e</span>.<span class="property">r</span> &amp;&amp;</span><br><span class="line">          outRow.<span class="property">length</span> &gt;= range.<span class="property">s</span>.<span class="property">c</span> &amp;&amp;</span><br><span class="line">          outRow.<span class="property">length</span> &lt;= range.<span class="property">e</span>.<span class="property">c</span></span><br><span class="line">        ) &#123;</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt;= range.<span class="property">e</span>.<span class="property">c</span> - range.<span class="property">s</span>.<span class="property">c</span>; ++i) outRow.<span class="title function_">push</span>(<span class="literal">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Handle Row Span</span></span><br><span class="line">      <span class="keyword">if</span> (rowspan || colspan) &#123;</span><br><span class="line">        rowspan = rowspan || <span class="number">1</span>;</span><br><span class="line">        colspan = colspan || <span class="number">1</span>;</span><br><span class="line">        ranges.<span class="title function_">push</span>(&#123;</span><br><span class="line">          <span class="attr">s</span>: &#123;</span><br><span class="line">            <span class="attr">r</span>: R,</span><br><span class="line">            <span class="attr">c</span>: outRow.<span class="property">length</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="attr">e</span>: &#123;</span><br><span class="line">            <span class="attr">r</span>: R + rowspan - <span class="number">1</span>,</span><br><span class="line">            <span class="attr">c</span>: outRow.<span class="property">length</span> + colspan - <span class="number">1</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Handle Value</span></span><br><span class="line">      outRow.<span class="title function_">push</span>(cellValue !== <span class="string">&quot;&quot;</span> ? cellValue : <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Handle Colspan</span></span><br><span class="line">      <span class="keyword">if</span> (colspan) <span class="keyword">for</span> (<span class="keyword">var</span> k = <span class="number">0</span>; k &lt; colspan - <span class="number">1</span>; ++k) outRow.<span class="title function_">push</span>(<span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    out.<span class="title function_">push</span>(outRow);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> [out, ranges];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">datenum</span>(<span class="params">v, date1904</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (date1904) v += <span class="number">1462</span>;</span><br><span class="line">  <span class="keyword">var</span> epoch = <span class="title class_">Date</span>.<span class="title function_">parse</span>(v);</span><br><span class="line">  <span class="keyword">return</span> (epoch - <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="title class_">Date</span>.<span class="title function_">UTC</span>(<span class="number">1899</span>, <span class="number">11</span>, <span class="number">30</span>))) / (<span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sheet_from_array_of_arrays</span>(<span class="params">data, opts</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> ws = &#123;&#125;;</span><br><span class="line">  <span class="keyword">var</span> range = &#123;</span><br><span class="line">    <span class="attr">s</span>: &#123;</span><br><span class="line">      <span class="attr">c</span>: <span class="number">10000000</span>,</span><br><span class="line">      <span class="attr">r</span>: <span class="number">10000000</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">e</span>: &#123;</span><br><span class="line">      <span class="attr">c</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="attr">r</span>: <span class="number">0</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> R = <span class="number">0</span>; R != data.<span class="property">length</span>; ++R) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> C = <span class="number">0</span>; C != data[R].<span class="property">length</span>; ++C) &#123;</span><br><span class="line">      <span class="keyword">if</span> (range.<span class="property">s</span>.<span class="property">r</span> &gt; R) range.<span class="property">s</span>.<span class="property">r</span> = R;</span><br><span class="line">      <span class="keyword">if</span> (range.<span class="property">s</span>.<span class="property">c</span> &gt; C) range.<span class="property">s</span>.<span class="property">c</span> = C;</span><br><span class="line">      <span class="keyword">if</span> (range.<span class="property">e</span>.<span class="property">r</span> &lt; R) range.<span class="property">e</span>.<span class="property">r</span> = R;</span><br><span class="line">      <span class="keyword">if</span> (range.<span class="property">e</span>.<span class="property">c</span> &lt; C) range.<span class="property">e</span>.<span class="property">c</span> = C;</span><br><span class="line">      <span class="keyword">var</span> cell = &#123;</span><br><span class="line">        <span class="attr">v</span>: data[R][C],</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">if</span> (cell.<span class="property">v</span> == <span class="literal">null</span>) <span class="keyword">continue</span>;</span><br><span class="line">      <span class="keyword">var</span> cell_ref = <span class="variable constant_">XLSX</span>.<span class="property">utils</span>.<span class="title function_">encode_cell</span>(&#123;</span><br><span class="line">        <span class="attr">c</span>: C,</span><br><span class="line">        <span class="attr">r</span>: R,</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> cell.<span class="property">v</span> === <span class="string">&quot;number&quot;</span>) cell.<span class="property">t</span> = <span class="string">&quot;n&quot;</span>;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> cell.<span class="property">v</span> === <span class="string">&quot;boolean&quot;</span>) cell.<span class="property">t</span> = <span class="string">&quot;b&quot;</span>;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (cell.<span class="property">v</span> <span class="keyword">instanceof</span> <span class="title class_">Date</span>) &#123;</span><br><span class="line">        cell.<span class="property">t</span> = <span class="string">&quot;n&quot;</span>;</span><br><span class="line">        cell.<span class="property">z</span> = <span class="variable constant_">XLSX</span>.<span class="property">SSF</span>.<span class="property">_table</span>[<span class="number">14</span>];</span><br><span class="line">        cell.<span class="property">v</span> = <span class="title function_">datenum</span>(cell.<span class="property">v</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> cell.<span class="property">t</span> = <span class="string">&quot;s&quot;</span>;</span><br><span class="line"></span><br><span class="line">      ws[cell_ref] = cell;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (range.<span class="property">s</span>.<span class="property">c</span> &lt; <span class="number">10000000</span>) ws[<span class="string">&quot;!ref&quot;</span>] = <span class="variable constant_">XLSX</span>.<span class="property">utils</span>.<span class="title function_">encode_range</span>(range);</span><br><span class="line">  <span class="keyword">return</span> ws;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Workbook</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!(<span class="variable language_">this</span> <span class="keyword">instanceof</span> <span class="title class_">Workbook</span>)) <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Workbook</span>();</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">SheetNames</span> = [];</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">Sheets</span> = &#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">s2ab</span>(<span class="params">s</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> buf = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(s.<span class="property">length</span>);</span><br><span class="line">  <span class="keyword">var</span> view = <span class="keyword">new</span> <span class="title class_">Uint8Array</span>(buf);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i != s.<span class="property">length</span>; ++i) view[i] = s.<span class="title function_">charCodeAt</span>(i) &amp; <span class="number">0xff</span>;</span><br><span class="line">  <span class="keyword">return</span> buf;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">export_table_to_excel</span>(<span class="params">id</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> theTable = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(id);</span><br><span class="line">  <span class="keyword">var</span> oo = <span class="title function_">generateArray</span>(theTable);</span><br><span class="line">  <span class="keyword">var</span> ranges = oo[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* original data */</span></span><br><span class="line">  <span class="keyword">var</span> data = oo[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">var</span> ws_name = <span class="string">&quot;SheetJS&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> wb = <span class="keyword">new</span> <span class="title class_">Workbook</span>(),</span><br><span class="line">    ws = <span class="title function_">sheet_from_array_of_arrays</span>(data);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* add ranges to worksheet */</span></span><br><span class="line">  <span class="comment">// ws[&#x27;!cols&#x27;] = [&#x27;apple&#x27;, &#x27;banan&#x27;];</span></span><br><span class="line">  ws[<span class="string">&quot;!merges&quot;</span>] = ranges;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* add worksheet to workbook */</span></span><br><span class="line">  wb.<span class="property">SheetNames</span>.<span class="title function_">push</span>(ws_name);</span><br><span class="line">  wb.<span class="property">Sheets</span>[ws_name] = ws;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> wbout = <span class="variable constant_">XLSX</span>.<span class="title function_">write</span>(wb, &#123;</span><br><span class="line">    <span class="attr">bookType</span>: <span class="string">&quot;xlsx&quot;</span>,</span><br><span class="line">    <span class="attr">bookSST</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;binary&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">saveAs</span>(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Blob</span>([<span class="title function_">s2ab</span>(wbout)], &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;application/octet-stream&quot;</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="string">&quot;test.xlsx&quot;</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">export_json_to_excel</span>(<span class="params">&#123;</span></span><br><span class="line"><span class="params">  multiHeader = [],</span></span><br><span class="line"><span class="params">  header,</span></span><br><span class="line"><span class="params">  data,</span></span><br><span class="line"><span class="params">  filename,</span></span><br><span class="line"><span class="params">  merges = [],</span></span><br><span class="line"><span class="params">  autoWidth = <span class="literal">true</span>,</span></span><br><span class="line"><span class="params">  bookType = <span class="string">&quot;xlsx&quot;</span>,</span></span><br><span class="line"><span class="params">&#125; = &#123;&#125;</span>) &#123;</span><br><span class="line">  <span class="comment">/* original data */</span></span><br><span class="line">  filename = filename || <span class="string">&quot;excel-list&quot;</span>;</span><br><span class="line">  data = [...data];</span><br><span class="line">  data.<span class="title function_">unshift</span>(header);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = multiHeader.<span class="property">length</span> - <span class="number">1</span>; i &gt; -<span class="number">1</span>; i--) &#123;</span><br><span class="line">    data.<span class="title function_">unshift</span>(multiHeader[i]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> ws_name = <span class="string">&quot;SheetJS&quot;</span>;</span><br><span class="line">  <span class="keyword">var</span> wb = <span class="keyword">new</span> <span class="title class_">Workbook</span>(),</span><br><span class="line">    ws = <span class="title function_">sheet_from_array_of_arrays</span>(data);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (merges.<span class="property">length</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!ws[<span class="string">&quot;!merges&quot;</span>]) ws[<span class="string">&quot;!merges&quot;</span>] = [];</span><br><span class="line">    merges.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">      ws[<span class="string">&quot;!merges&quot;</span>].<span class="title function_">push</span>(<span class="variable constant_">XLSX</span>.<span class="property">utils</span>.<span class="title function_">decode_range</span>(item));</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (autoWidth) &#123;</span><br><span class="line">    <span class="comment">/*设置worksheet每列的最大宽度*/</span></span><br><span class="line">    <span class="keyword">const</span> colWidth = data.<span class="title function_">map</span>(<span class="function">(<span class="params">row</span>) =&gt;</span></span><br><span class="line">      row.<span class="title function_">map</span>(<span class="function">(<span class="params">val</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">/*先判断是否为null/undefined*/</span></span><br><span class="line">        <span class="keyword">if</span> (val == <span class="literal">null</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">wch</span>: <span class="number">10</span>,</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (val.<span class="title function_">toString</span>().<span class="title function_">charCodeAt</span>(<span class="number">0</span>) &gt; <span class="number">255</span>) &#123;</span><br><span class="line">          <span class="comment">/*再判断是否为中文*/</span></span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">wch</span>: val.<span class="title function_">toString</span>().<span class="property">length</span> * <span class="number">2</span>,</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">wch</span>: val.<span class="title function_">toString</span>().<span class="property">length</span>,</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">/*以第一行为初始值*/</span></span><br><span class="line">    <span class="keyword">let</span> result = colWidth[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; colWidth.<span class="property">length</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; colWidth[i].<span class="property">length</span>; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (result[j][<span class="string">&quot;wch&quot;</span>] &lt; colWidth[i][j][<span class="string">&quot;wch&quot;</span>]) &#123;</span><br><span class="line">          result[j][<span class="string">&quot;wch&quot;</span>] = colWidth[i][j][<span class="string">&quot;wch&quot;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ws[<span class="string">&quot;!cols&quot;</span>] = result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* add worksheet to workbook */</span></span><br><span class="line">  wb.<span class="property">SheetNames</span>.<span class="title function_">push</span>(ws_name);</span><br><span class="line">  wb.<span class="property">Sheets</span>[ws_name] = ws;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> wbout = <span class="variable constant_">XLSX</span>.<span class="title function_">write</span>(wb, &#123;</span><br><span class="line">    <span class="attr">bookType</span>: bookType,</span><br><span class="line">    <span class="attr">bookSST</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;binary&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="title function_">saveAs</span>(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Blob</span>([<span class="title function_">s2ab</span>(wbout)], &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;application/octet-stream&quot;</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="string">`<span class="subst">$&#123;filename&#125;</span>.<span class="subst">$&#123;bookType&#125;</span>`</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、导出功能"><a href="#三、导出功能" class="headerlink" title="三、导出功能"></a>三、导出功能</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;el-button type=&quot;primary&quot; @click=&quot;exportTable&quot;&gt;导出&lt;/el-button&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">// 导出功能</span><br><span class="line">// 用户菜单表头与数据字段对应关系</span><br><span class="line">const userMenuHeader = &#123;</span><br><span class="line">  流程模板: &quot;wf_type_name&quot;,</span><br><span class="line">  审批编号: &quot;apply_id&quot;,</span><br><span class="line">  发起人: &quot;staff_name&quot;,</span><br><span class="line">  审批流程标题: &quot;apply_title&quot;,</span><br><span class="line">  审批金额: &quot;apply_fee&quot;,</span><br><span class="line">  发起时间: &quot;create_date&quot;,</span><br><span class="line">  流程状态: &quot;proc_state_name&quot;,</span><br><span class="line">  当前环节: &quot;node_name&quot;,</span><br><span class="line">  处理人: &quot;username&quot;,</span><br><span class="line">&#125;;</span><br><span class="line">const exportTable = () =&gt; &#123;</span><br><span class="line">  //  做操作</span><br><span class="line">  const excelData = [];</span><br><span class="line">  // 这里后端返回的数据不能直接用作excel的data，不然浏览器会卡死，必须先将数据转化为表格需要的[[]]的形式</span><br><span class="line">  tableData.value.forEach((item) =&gt; &#123;</span><br><span class="line">    const arr = [];</span><br><span class="line">    for (const key in userMenuHeader) &#123;</span><br><span class="line">      arr.push(item[userMenuHeader[key]]);</span><br><span class="line">    &#125;</span><br><span class="line">    excelData.push(arr);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  // 懒加载</span><br><span class="line">  try &#123;</span><br><span class="line">    import(&quot;@/utils/Export2Excel&quot;).then(async (excel) =&gt; &#123;</span><br><span class="line">      excel.export_json_to_excel(&#123;</span><br><span class="line">        header: Object.keys(userMenuHeader),</span><br><span class="line">        data: excelData,</span><br><span class="line">        filename: &quot;费用冲调审批流程查询清单&quot;,</span><br><span class="line">        autoWidth: true,</span><br><span class="line">        bookType: &quot;xlsx&quot;,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125; catch &#123;</span><br><span class="line">    ElMessage.error(&quot;导出失败，请重试！&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、导入功能"><a href="#四、导入功能" class="headerlink" title="四、导入功能"></a>四、导入功能</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;el-upload</span><br><span class="line">    ref=&quot;uploadRef&quot;</span><br><span class="line">    class=&quot;upload-demo&quot;</span><br><span class="line">    v-model:file-list=&quot;accList&quot;</span><br><span class="line">    :on-remove=&quot;handleRemove&quot;</span><br><span class="line">    :on-change=&quot;handleChangeBusiness&quot;</span><br><span class="line">    :http-request=&quot;upload&quot;</span><br><span class="line">    action=&quot;#&quot;</span><br><span class="line">    :auto-upload=&quot;false&quot;</span><br><span class="line">    style=&quot;display: flex; margin-bottom: 10px&quot;</span><br><span class="line">  &gt;</span><br><span class="line">    &lt;template #trigger&gt;</span><br><span class="line">      &lt;el-button type=&quot;primary&quot; :icon=&quot;Document&quot; style=&quot;margin-right: 150px&quot;</span><br><span class="line">        &gt;选择文件&lt;/el-button</span><br><span class="line">      &gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">    &lt;template #tip v-if=&quot;!accList.length&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;el-upload__tip&quot; style=&quot;margin: 10px 0 0 -445px&quot;&gt;</span><br><span class="line">        未选择任何文件</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">    &lt;el-button</span><br><span class="line">      class=&quot;ml-3&quot;</span><br><span class="line">      :icon=&quot;Upload&quot;</span><br><span class="line">      type=&quot;success&quot;</span><br><span class="line">      @click=&quot;getServByAccNbrImport&quot;</span><br><span class="line">      style=&quot;margin-top: 2px&quot;</span><br><span class="line">    &gt;</span><br><span class="line">      批量导入费用争议数据</span><br><span class="line">    &lt;/el-button&gt;</span><br><span class="line">    &lt;el-button type=&quot;primary&quot; :icon=&quot;Download&quot;</span><br><span class="line">      &gt;&lt;el-link href=&quot;/approve/static/费用争议导入模板.xls&quot;</span><br><span class="line">        &gt;下载附件模板&lt;/el-link</span><br><span class="line">      &gt;&lt;/el-button</span><br><span class="line">    &gt;</span><br><span class="line">  &lt;/el-upload&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">// 批量上传</span><br><span class="line">// 上传的文件</span><br><span class="line">const accList = ref([]);</span><br><span class="line">const businessFileList = ref([]);</span><br><span class="line">const accountDetailList = ref([]); // 这是账期明细</span><br><span class="line">// 进出物品对应关系</span><br><span class="line">const businessRelation = &#123;</span><br><span class="line">  0: &quot;bz&quot;,</span><br><span class="line">  1: &quot;phone_number&quot;,</span><br><span class="line">  2: &quot;spje&quot;,</span><br><span class="line">  3: &quot;serv_id&quot;,</span><br><span class="line">  4: &quot;acct_id&quot;,</span><br><span class="line">  5: &quot;cust_name&quot;,</span><br><span class="line">  6: &quot;acct_name&quot;,</span><br><span class="line">  7: &quot;sqr&quot;,</span><br><span class="line">  8: &quot;sqrdh&quot;,</span><br><span class="line">  9: &quot;sqyy&quot;,</span><br><span class="line">  10: &quot;sqyy_name&quot;,</span><br><span class="line">  11: &quot;oper_type&quot;,</span><br><span class="line">  12: &quot;oper_type_name&quot;,</span><br><span class="line">  13: &quot;ctlx_id&quot;,</span><br><span class="line">  14: &quot;ctlx&quot;,</span><br><span class="line">  15: &quot;phone_local&quot;,</span><br><span class="line">&#125;;</span><br><span class="line">const accountDetailRelation = &#123;</span><br><span class="line">  0: &quot;phone_number&quot;,</span><br><span class="line">  1: &quot;fee_month&quot;,</span><br><span class="line">  2: &quot;charge&quot;,</span><br><span class="line">  3: &quot;fee_acct_type&quot;,</span><br><span class="line">  4: &quot;fee_acct_type_name&quot;,</span><br><span class="line">&#125;;</span><br><span class="line">const handleChangeBusiness = (file) =&gt; &#123;</span><br><span class="line">  const reader = new FileReader();</span><br><span class="line">  reader.onload = async (e) =&gt; &#123;</span><br><span class="line">    const data = e.target.result;</span><br><span class="line">    const workbook = XLSX.read(data, &#123; type: &quot;array&quot; &#125;);</span><br><span class="line">    const sheetName = workbook.SheetNames[0];</span><br><span class="line">    const worksheet = workbook.Sheets[sheetName];</span><br><span class="line">    const json = XLSX.utils.sheet_to_json(worksheet, &#123; header: 1 &#125;);</span><br><span class="line">    json.forEach((item) =&gt; &#123;</span><br><span class="line">      const obj = &#123;&#125;;</span><br><span class="line">      for (const key in businessRelation) &#123;</span><br><span class="line">        obj[businessRelation[key]] = item[key];</span><br><span class="line">      &#125;</span><br><span class="line">      businessFileList.value.push(obj);</span><br><span class="line">    &#125;);</span><br><span class="line">    // 对businessFileList去重</span><br><span class="line">    businessFileList.value = [...new Set(businessFileList.value)];</span><br><span class="line">    // 把这个数据传给后端，获取到后端返回的数据，渲染列表</span><br><span class="line">    // 因为表格中可能会有空白的数据，上传上来的数据就会有undefined，所以要过滤掉</span><br><span class="line">    businessFileList.value = businessFileList.value.filter((item) =&gt; item);</span><br><span class="line">    // 因为批量上传的没有acc_nbr，所以要把phone_number赋值给acc_nbr</span><br><span class="line">    businessFileList.value.forEach((item) =&gt; &#123;</span><br><span class="line">      item.acc_nbr = item.phone_number;</span><br><span class="line">    &#125;);</span><br><span class="line">    const sheetName1 = workbook.SheetNames[1];</span><br><span class="line">    const worksheet1 = workbook.Sheets[sheetName1];</span><br><span class="line">    const json1 = XLSX.utils.sheet_to_json(worksheet1, &#123; header: 1 &#125;);</span><br><span class="line">    json1.forEach((item) =&gt; &#123;</span><br><span class="line">      const obj = &#123;&#125;;</span><br><span class="line">      for (const key in accountDetailRelation) &#123;</span><br><span class="line">        obj[accountDetailRelation[key]] = item[key];</span><br><span class="line">      &#125;</span><br><span class="line">      accountDetailList.value.push(obj);</span><br><span class="line">    &#125;);</span><br><span class="line">    // 对accountDetailList去重</span><br><span class="line">    accountDetailList.value = [...new Set(accountDetailList.value)];</span><br><span class="line">    accountDetailList.value = accountDetailList.value.filter((item) =&gt; item);</span><br><span class="line">    // 将accountDetailList与businessFileList关联</span><br><span class="line">    businessFileList.value.forEach((item) =&gt; &#123;</span><br><span class="line">      item.fee_list_month = accountDetailList.value.filter((item2) =&gt; &#123;</span><br><span class="line">        return item.phone_number === item2.phone_number;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  reader.readAsArrayBuffer(file.raw);</span><br><span class="line">&#125;;</span><br><span class="line">const getServByAccNbrImport = async () =&gt; &#123;</span><br><span class="line">  if (businessFileList.value.length === 0) &#123;</span><br><span class="line">    ElMessage.error(&quot;请先选择文件&quot;);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  if (businessFileList.value.length &gt; 2000) &#123;</span><br><span class="line">    ElMessage.error(</span><br><span class="line">      &quot;上传的数据超过2000条，可能会导致查询时间过长，请分批次上传！&quot;</span><br><span class="line">    );</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  applyForm.feeListData = businessFileList.value;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最终的效果是这样的：可以看到，每一行数据下面关联了一个子表</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20240313093547041.png" alt="image-20240313093547041"></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2024/03/13/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%8A%9F%E8%83%BD/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2024/03/13/%E8%B7%AF%E7%94%B1%E5%A4%8D%E7%94%A8%E6%97%B6%E9%A1%B5%E9%9D%A2%E4%B8%8D%E5%88%B7%E6%96%B0%E6%98%BE%E7%A4%BA%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            路由复用时页面不刷新显示的解决办法
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2023/09/12/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B1%BB%E9%A1%B9%E7%9B%AE/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">一个简单的后台管理类项目</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.staticfile.org/valine/1.4.16/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0bopYVx4sO64oTLDQAKpdWL-gzGzoHsz",
+    app_key: "ZIGRaMZuxeA2bIKoFHcvLagh",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2023-2024
+        <i class="ri-heart-fill heart_icon"></i> congtianfeng
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="hasCat" style="border-radius: 50%;"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%8A%80%E6%9C%AF">技术</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=541326593&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>
