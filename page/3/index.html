@@ -16,7 +16,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
       <meta name="baidu-site-verification" content="codeva-GuqF1B4xr5" />
-      <title>AJAX |  hasCat</title>
+      <title> hasCat</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -57,8 +57,123 @@
     
       
     <main class="content on">
-      <section class="outer">
-  <article
+      
+<section class="cover">
+    
+      
+      <a class="forkMe" href="https://github.com/congtianfeng"
+        target="_blank"><img width="149" height="149" src="/images/forkme.png"
+          class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+    
+  <div class="cover-frame">
+    <!-- <div class="bg-box">
+      <img src="[object Object]" alt="image frame" />
+    </div> -->
+    <!-- 随机图片 -->
+    <div class="bg-box">
+      <img src="" alt="" id="cover-pic" />
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function(){
+    	var i=Math.floor((Math.random()*6));
+    	imgs=[ "/images/cover1.jpg", "/images/cover2.jpg", "/images/cover3.png", "/images/cover4.jpg", "/images/cover5.jpg", "/images/cover6.jpg",]
+    	pic=document.getElementById("cover-pic");
+    	pic.src=imgs[i];
+    })
+    </script>
+
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">hasCat</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+  </div>
+</section>
+
+
+
+<script src="https://cdn.staticfile.org/typed.js/2.0.12/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 100,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
   id="post-AJAX"
   class="article article-type-post"
   itemscope
@@ -69,9 +184,10 @@
     
     <header class="article-header">
        
-<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  AJAX
-</h1>
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/05/04/AJAX/"
+    >AJAX</a> 
+</h2>
  
 
       
@@ -84,34 +200,9 @@
   <div class="article-category">
     <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
-  
-<div class="word_count">
-    <span class="post-time">
-        <span class="post-meta-item-icon">
-            <i class="ri-quill-pen-line"></i>
-            <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.4k</span>
-        </span>
-    </span>
-
-    <span class="post-time">
-        &nbsp; | &nbsp;
-        <span class="post-meta-item-icon">
-            <i class="ri-book-open-line"></i>
-            <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">17 分钟</span>
-        </span>
-    </span>
-</div>
- 
+   
     </div>
       
-    <div class="tocbot"></div>
-
-
-
-
-  
     <div class="article-entry" itemprop="articleBody">
        
   <h2 id="一、Ajax-基本介绍"><a href="#一、Ajax-基本介绍" class="headerlink" title="一、Ajax 基本介绍"></a>一、Ajax 基本介绍</h2><p>Ajax 的全称是 Asynchronous Javascript And XML（异步 JavaScript 和 XML）</p>
@@ -324,146 +415,480 @@
 
     <!-- copyright -->
     
-    <div class="declare">
-      <ul class="post-copyright">
-        <li>
-          <i class="ri-copyright-line"></i>
-          <strong>版权声明： </strong>
-          
-          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
-          
-        </li>
-      </ul>
-    </div>
-    
     <footer class="article-footer">
        
-<div class="share-btn">
-      <span class="share-sns share-outer">
-        <i class="ri-share-forward-line"></i>
-        分享
-      </span>
-      <div class="share-wrap">
-        <i class="arrow"></i>
-        <div class="share-icons">
-          
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="ri-weibo-fill"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="ri-wechat-fill"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="ri-qq-fill"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="ri-douban-line"></i>
-          </a>
-          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a> -->
-          
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="ri-facebook-circle-fill"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="ri-twitter-fill"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="ri-google-fill"></i>
-          </a>
-        </div>
-      </div>
-</div>
-
-<div class="wx-share-modal">
-    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2022/05/04/AJAX/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div id="share-mask"></div>  
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
 
     </footer>
   </div>
 
-   
-  <nav class="article-nav">
     
-      <a href="/2022/06/11/%E7%BB%84%E4%BB%B6%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%B3%A8%E5%86%8C/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            组件、自定义指令和自定义过滤器的注册
-          
-        </div>
-      </a>
-    
-    
-      <a href="/2022/04/03/%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E8%A7%A3%E5%86%B3%E5%9B%BE%E7%89%87%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5/" class="article-nav-link">
-        <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">使用自定义指令解决图片异常情况</div>
-      </a>
-    
-  </nav>
-
-   
-<!-- valine评论 -->
-<div id="vcomments-box">
-  <div id="vcomments"></div>
-</div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src="https://cdn.staticfile.org/valine/1.4.16/Valine.min.js"></script>
-<script>
-  new Valine({
-    el: "#vcomments",
-    app_id: "U0bopYVx4sO64oTLDQAKpdWL-gzGzoHsz",
-    app_key: "ZIGRaMZuxeA2bIKoFHcvLagh",
-    path: window.location.pathname,
-    avatar: "monsterid",
-    placeholder: "给我的文章加点评论吧~",
-    recordIP: true,
-  });
-  const infoEle = document.querySelector("#vcomments .info");
-  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
-    infoEle.childNodes.forEach(function (item) {
-      item.parentNode.removeChild(item);
-    });
-  }
-</script>
-<style>
-  #vcomments-box {
-    padding: 5px 30px;
-  }
-
-  @media screen and (max-width: 800px) {
-    #vcomments-box {
-      padding: 5px 0px;
-    }
-  }
-
-  #vcomments-box #vcomments {
-    background-color: #fff;
-  }
-
-  .v .vlist .vcard .vh {
-    padding-right: 20px;
-  }
-
-  .v .vlist .vcard {
-    padding-left: 10px;
-  }
-</style>
-
  
-   
-     
+    
 </article>
 
+    
+    <article
+  id="post-使用自定义指令解决图片异常情况"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/04/03/%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E8%A7%A3%E5%86%B3%E5%9B%BE%E7%89%87%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5/"
+    >使用自定义指令解决图片异常情况</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/04/03/%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E8%A7%A3%E5%86%B3%E5%9B%BE%E7%89%87%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5/" class="article-date">
+  <time datetime="2022-04-03T11:21:22.000Z" itemprop="datePublished">2022-04-03</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>项目中有时图片显示异常，我们可以使用自定义指令来指定默认图片</p>
+<p>自定义指令可以采用统一的文件来管理 <strong><code>src/directives/index.js</code></strong>,这个文件负责管理所有的自定义指令</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 负责管理所有的自定义指令</span></span><br><span class="line"><span class="comment">// 只负责导出指令对象</span></span><br><span class="line"><span class="comment">// 变量名称就是指令名称</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> imageerror = &#123;</span><br><span class="line">  <span class="comment">// 指令内容</span></span><br><span class="line">  <span class="comment">// 指令作用在 图片上的 dom是图片对象</span></span><br><span class="line">  <span class="comment">// inserted 在Vue3中也改名 =&gt; mounted</span></span><br><span class="line">  <span class="title function_">inserted</span>(<span class="params">dom, options</span>) &#123;</span><br><span class="line">    <span class="comment">// inserted执行的之后 此时 并没有对 src赋值</span></span><br><span class="line">    <span class="comment">// 图片有地址 但是地址加载图片失败的时候 会执行一个函数  onerror</span></span><br><span class="line">    dom.<span class="property">src</span> = dom.<span class="property">src</span> || options.<span class="property">value</span>;</span><br><span class="line">    dom.<span class="property">onerror</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">// 监听onerror事件</span></span><br><span class="line">      <span class="comment">// options.value就是指令传过来的值</span></span><br><span class="line">      dom.<span class="property">src</span> = options.<span class="property">value</span>; <span class="comment">// 当图片异常的时候 接收指令传过来的值 让这个值作为头像的备选</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 只有src有值 并且加载失败才会触发onerror</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 此钩子会在给image赋值之后执行</span></span><br><span class="line">  <span class="comment">// 这个钩子函数在Vue3中改名了 =&gt; updated</span></span><br><span class="line">  <span class="title function_">componentUpdated</span>(<span class="params">dom, options</span>) &#123;</span><br><span class="line">    dom.<span class="property">src</span> = dom.<span class="property">src</span> || options.<span class="property">value</span>;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在 main.js 完成自定义指令全局注册</p>
+<p>如果自定义的指令较多，可以采用批量注册的方式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> directives <span class="keyword">from</span> <span class="string">&quot;@/directives&quot;</span>;</span><br><span class="line"><span class="comment">// 注册自定义指令</span></span><br><span class="line"><span class="comment">// 遍历所有的导出的指令对象 完成自定义全局注册</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">keys</span>(directives).<span class="title function_">forEach</span>(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 注册自定义指令</span></span><br><span class="line">  <span class="title class_">Vue</span>.<span class="title function_">directive</span>(key, directives[key]);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>指令注册成功后，可以在组件中直接使用了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;img v-imageerror=&quot;defaultImg&quot; :src=&quot;staffPhoto&quot; class=&quot;user-avatar&quot; /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      defaultImg: require(&quot;@/assets/common/head.jpg&quot;),</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-前端学习路线"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/27/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"
+    >前端学习路线</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/03/27/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="article-date">
+  <time datetime="2022-03-27T11:07:19.000Z" itemprop="datePublished">2022-03-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>本篇文章列出我的前端学习路线，当然后面有很多其实我还没有掌握。前面的知识当入门后面的知识当进阶吧。我也计划将此路线当做一个题纲，后期会将每一块知识展开后形成单独文章。</p>
+<h2 id="一、前端入门"><a href="#一、前端入门" class="headerlink" title="一、前端入门"></a>一、前端入门</h2><h3 id="1、HTML"><a href="#1、HTML" class="headerlink" title="1、HTML"></a>1、HTML</h3><p>描述：用于定义一个网页结构的基本技术</p>
+<p>各种标签：</p>
+<ul>
+<li><p>h 系列标签</p>
+</li>
+<li><p>p 标签</p>
+</li>
+<li><p>换行标签<br></p>
+</li>
+<li><p>水平分割线标签<hr></p>
+</li>
+<li><p>文本格式化标签（加粗标签 b 和 strong、下划线标签 u 和 ins、倾斜标签 i 和 em、删除线 s 和 del）</p>
+</li>
+<li><p>图片标签 img</p>
+</li>
+<li><p>音频标签 audio</p>
+</li>
+<li><p>视频标签 video</p>
+</li>
+<li><p>a 链接标签</p>
+</li>
+<li><p>无序列表标签 ul 搭配 li</p>
+</li>
+<li><p>有序列表标签 ol 搭配 li</p>
+</li>
+<li><p>自定义列表标签 dl 搭配 dt 和 dd</p>
+</li>
+<li><p>表格标签 table 搭配 tr、th、td 等</p>
+</li>
+<li><p>表单标签 input 系列、button、select、textarea、label 等</p>
+</li>
+</ul>
+<p>标签语义化</p>
+<p>HTML5 特性：</p>
+<ul>
+<li>语义化标签</li>
+<li>浏览器支持</li>
+<li>多媒体标签</li>
+<li>Canvas 画布</li>
+<li>本地存储<ul>
+<li>localStorage</li>
+<li>sessionStorage</li>
+</ul>
+</li>
+<li>Web Workers</li>
+<li>应用缓存（Cache Manifest）</li>
+<li>无障碍</li>
+</ul>
+<h3 id="2、CSS"><a href="#2、CSS" class="headerlink" title="2、CSS"></a>2、CSS</h3><p>描述：层叠样式表，用于设计风格和布局</p>
+<p>引入方式：内嵌式、外联式、行内式</p>
+<p>基础选择器：</p>
+<ul>
+<li>标签选择器</li>
+<li>类选择器</li>
+<li>id 选择器</li>
+<li>通配符选择器</li>
+</ul>
+<p>复合选择器：</p>
+<ul>
+<li><p>后代选择器</p>
+</li>
+<li><p>子代选择器</p>
+</li>
+<li><p>并集选择器</p>
+</li>
+<li><p>交集选择器</p>
+</li>
+<li><p>伪类选择器</p>
+</li>
+</ul>
+<p>字体和文本样式：</p>
+<ul>
+<li>font-size</li>
+<li>font-weight</li>
+<li>font-style</li>
+<li>font-family</li>
+<li>text-indent</li>
+<li>text-align</li>
+<li>text-decoration</li>
+<li>line-height</li>
+</ul>
+<p>背景相关样式</p>
+<ul>
+<li><p>background-color</p>
+</li>
+<li><p>background-image</p>
+</li>
+<li><p>background-repeat</p>
+</li>
+<li><p>background-position</p>
+</li>
+<li><p>background-size</p>
+</li>
+</ul>
+<p>元素显示模式：块级元素、行内元素、行内块元素</p>
+<p>CSS 特性：继承性、层叠性、优先级</p>
+<p>文档流</p>
+<ul>
+<li>标准流</li>
+<li>浮动流</li>
+<li>定位流</li>
+</ul>
+<p>伪元素</p>
+<p>浮动：浮动和清除浮动、BFC 机制</p>
+<p>定位：静态定位、相对定位、绝对定位、子绝父相、固定定位</p>
+<p>其他：对齐方式问题 vertical-align、光标类型 cursor、边框圆角 border-radius、溢出部分显示效果、元素隐藏、元素透明度、边框合并、精灵图、字体图标、文字阴影 text-shadow、盒子阴影 box-shadow、过渡、图片模糊处理 filter:blur()、SEO 优化、网站 icon 图标、CSS 书写规范</p>
+<p>平面转换（2D）：位移、旋转、缩放</p>
+<p>渐变</p>
+<p>空间转换（3D）：位移、透视、旋转、立体呈现、缩放</p>
+<p>动画</p>
+<p>移动端适配：屏幕尺寸和分辨率、百分比布局（流式布局）、Flex 布局（弹性布局）、媒体查询</p>
+<h3 id="3、JavaScript"><a href="#3、JavaScript" class="headerlink" title="3、JavaScript"></a>3、JavaScript</h3><p>描述：具有函数优先的轻量级，解释型或即时编译型的编程语言。</p>
+<p>JavaScript 组成：</p>
+<ul>
+<li><p>ECMAScript：规定了 js 基础语法</p>
+</li>
+<li><p>Web APIs：JavaScript 暴露的一些接口，用于操作文档和浏览器</p>
+</li>
+</ul>
+<p>数据类型</p>
+<ul>
+<li>值类型<ul>
+<li>字符串 String</li>
+<li>数组 Number</li>
+<li>布尔 Boolean</li>
+<li>空值 Null</li>
+<li>未定义 Undefined</li>
+<li>Symbol</li>
+</ul>
+</li>
+<li>引用类型<ul>
+<li>对象 Object</li>
+<li>数组 Array</li>
+<li>函数 Function</li>
+</ul>
+</li>
+</ul>
+<p>数据类型转换：显式转换、隐式转换</p>
+<p>运算符：算术运算符、赋值运算符、一元运算符、比较运算符、逻辑运算符</p>
+<p>流程控制语句：</p>
+<ul>
+<li><p>分支语句：if 分支语句、三元运算符、switch 语句</p>
+</li>
+<li><p>循环语句：while 循环、for 循环</p>
+</li>
+</ul>
+<p>函数：匿名函数（函数表达式）、函数调用、函数传参</p>
+<p>对象：内置对象</p>
+<p>DOM 操作：DOM 树、DOM 对象、设置修改 DOM 元素内容、属性、样式、定时器-间歇函数、事件、回调函数、高阶函数、环境对象 this、事件对象 e、节点操作（查找、增加、删除）、事件委托、重绘回流、滚动事件、加载事件</p>
+<p>BOM 操作：window 对象、定时器-延时函数、location 对象、navigator 对象、histroy 对象、本地存储、正则表达式</p>
+<p>ES6：不再说了，阮一峰老师都讲到了。ES6 入门教程 <a target="_blank" rel="noopener" href="https://es6.ruanyifeng.com/">https://es6.ruanyifeng.com/</a></p>
+<h2 id="二、AJAX"><a href="#二、AJAX" class="headerlink" title="二、AJAX"></a>二、AJAX</h2><p>XMLHttpRequest、axios</p>
+<p>http 基础知识：浏览器的同源策略、跨域及如何解决跨域、URL、防抖、节流、http 协议</p>
+<h2 id="三、git-和-github"><a href="#三、git-和-github" class="headerlink" title="三、git 和 github"></a>三、git 和 github</h2><p>使用版本控制软件，将代码托管到远程仓库</p>
+<h2 id="四、Node-js"><a href="#四、Node-js" class="headerlink" title="四、Node.js"></a>四、Node.js</h2><p>这个我还没有系统的学过，也列出来以后学习</p>
+<h2 id="五、框架前置"><a href="#五、框架前置" class="headerlink" title="五、框架前置"></a>五、框架前置</h2><p>ES6 的模块化：导入导出</p>
+<p>Promise：回调地狱、.then、.catch、async&#x2F;await</p>
+<p>事件循环 EventLoop</p>
+<h2 id="六、前端工程化"><a href="#六、前端工程化" class="headerlink" title="六、前端工程化"></a>六、前端工程化</h2><p>Vue2 框架</p>
+<p>Vue 的几大板块：声明式渲染、组件系统、客户端路由、大规模状态管理、构建工具</p>
+<p>Vue 基础语法：</p>
+<ul>
+<li>插值表达式</li>
+<li>MVVM 设计模式</li>
+<li>v-bind</li>
+<li>v-on</li>
+<li>v-model</li>
+<li>v-text 和 v-html</li>
+<li>v-show 和 v-if</li>
+<li>v-for</li>
+<li>虚拟 dom 和 diff 算法</li>
+<li>动态 class 和动态 style</li>
+<li>过滤器</li>
+<li>计算属性</li>
+<li>侦听器 watch</li>
+</ul>
+<p>Vue 组件：</p>
+<ul>
+<li>组件通信</li>
+<li>Vue 生命周期与钩子函数</li>
+<li>$refs和$nextTick</li>
+<li>动态组件与组件缓存 keep-alive</li>
+<li>组件插槽（默认插槽、具名插槽、作用域插槽）</li>
+</ul>
+<p>Vue 路由系统：</p>
+<ul>
+<li>声明式导航</li>
+<li>编程式导航</li>
+<li>重定向与路由模式</li>
+<li>路由嵌套和路由守卫</li>
+</ul>
+<p>Vuex：</p>
+<ul>
+<li>state</li>
+<li>mutations</li>
+<li>actions</li>
+<li>getters</li>
+<li>vuex 模块化</li>
+</ul>
+<p>CSS 预编译：</p>
+<ul>
+<li>LESS</li>
+<li>SASS</li>
+</ul>
+<p>开发框架：</p>
+<ul>
+<li>Express</li>
+<li>Koa</li>
+<li>Egg</li>
+</ul>
+<p>组件库</p>
+<ul>
+<li>ElementUI（Vue）</li>
+<li>VantUI（Vue）</li>
+</ul>
+<p>数据可视化</p>
+<ul>
+<li>Apache ECharts（echarts）</li>
+<li>HighCharts</li>
+</ul>
+<p>数据 Mock</p>
+<ul>
+<li>描述：通过随机数据，模拟各种场景，增加单元测试的真实性。</li>
+<li>Mock.js</li>
+</ul>
+<p>代码检查：</p>
+<ul>
+<li>ESLint</li>
+<li>StyleLint</li>
+</ul>
+<p>代码风格：</p>
+<ul>
+<li>Prettier</li>
+</ul>
+<p>包管理工具：</p>
+<ul>
+<li>npm</li>
+<li>yarn</li>
+</ul>
+<p>打包工具：</p>
+<ul>
+<li>Webpack</li>
+<li>Vite</li>
+</ul>
+<p>部署</p>
+<p>Web 服务器</p>
+<p>Nginx</p>
+<ul>
+<li>描述：高性能的 HTTP 和反向代理 web 服务器。</li>
+<li>资源：腾讯云动手实验室 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/labs/gallery">https://cloud.tencent.com/developer/labs/gallery</a></li>
+<li>反向代理</li>
+<li>解决跨域</li>
+<li>改写请求</li>
+</ul>
+<p>Apache</p>
+<p>容器</p>
+<p><strong>Docker</strong></p>
+<ul>
+<li>描述：容器是一个标准化的软件单元，它将代码及其所有依赖关系打包，以便应用程序从一个计算环境可靠快速地运行到另一个计算环境。Docker 容器镜像是一个轻量的独立的可执行的软件包。包含程序运行的时候所需的一切：代码，运行时间，系统工具，系统库和设置。</li>
+<li>资源：Docker 从入门到实践 <a target="_blank" rel="noopener" href="https://vuepress.mirror.docker-practice.com/">https://vuepress.mirror.docker-practice.com/</a></li>
+<li>Dockerfile</li>
+</ul>
+<h2 id="七、性能优化"><a href="#七、性能优化" class="headerlink" title="七、性能优化"></a>七、性能优化</h2><ul>
+<li>路由懒加载</li>
+<li>组件懒加载</li>
+<li>JS 异步加载</li>
+<li>Tree shaking</li>
+<li>骨架屏</li>
+<li>分页加载</li>
+<li>长列表虚拟滚动</li>
+<li>Web Worker 优化长任务</li>
+<li>图片优化（动态裁剪、懒加载、图片压缩、使用字体图标、图片转 base64 格式）</li>
+<li>CDN 分发</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-普通数据转化为树形结构"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/01/%E6%99%AE%E9%80%9A%E6%95%B0%E6%8D%AE%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84/"
+    >普通数据转化为树形结构</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/03/01/%E6%99%AE%E9%80%9A%E6%95%B0%E6%8D%AE%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84/" class="article-date">
+  <time datetime="2022-03-01T08:41:11.000Z" itemprop="datePublished">2022-03-01</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>有时候我们需要用到树形结构的数据便于我们展示像组织架构、地区这种有层级结构的信息。那么我们就需要将普通平铺的数据转化为树形结构的数据。主要是使用递归算法。</p>
+<p>观察这种数据不难发现，每条数据一般至少包含 id 和 pid 两个属性，id 是每条数据独一无二的身份标识，pid 则表示与其他数据的从属关系。如果当前数据的 pid 等于另外一条数据的 id，那当前数据就是另外一条数据的子数据。</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20200721010931214.png" alt="image-20200721010931214"></p>
+<p>封装一个工具方法，**<code>src/utils/index.js</code>**</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** *</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  将列表型的数据转化成树形数据 =&gt; 递归算法 =&gt; 自身调用自身 =&gt; 递归的关键在于要有一个入口和一个出口，入口  	*  表示递归开始，出口则标识递归的结束。没有出口会造成死循环</span></span><br><span class="line"><span class="comment"> *  遍历树形 有一个重点 要先找一个头儿</span></span><br><span class="line"><span class="comment"> * ***/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">tranListToTreeData</span>(<span class="params">list, rootValue</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> arr = [];</span><br><span class="line">  list.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (item.<span class="property">pid</span> === rootValue) &#123;</span><br><span class="line">      <span class="comment">// 找到之后 就要去找 item 下面有没有子节点</span></span><br><span class="line">      <span class="keyword">const</span> children = <span class="title function_">tranListToTreeData</span>(list, item.<span class="property">id</span>);</span><br><span class="line">      <span class="keyword">if</span> (children.<span class="property">length</span>) &#123;</span><br><span class="line">        <span class="comment">// 如果children的长度大于0 说明找到了子节点</span></span><br><span class="line">        item.<span class="property">children</span> = children;</span><br><span class="line">      &#125;</span><br><span class="line">      arr.<span class="title function_">push</span>(item); <span class="comment">// 将内容加入到数组中</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+  
 </section>
+</div>
+
       <footer class="footer">
   <div class="outer">
     <ul>
@@ -602,22 +1027,6 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
- 
-<script src="/js/tocbot.min.js"></script>
-
-<script>
-  tocbot.init({
-    tocSelector: ".tocbot",
-    contentSelector: ".article-entry",
-    headingSelector: "h1, h2, h3, h4, h5, h6",
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    scrollContainer: "main",
-    positionFixedSelector: ".tocbot",
-    positionFixedClass: "is-position-fixed",
-    fixedSidebarOffset: "auto",
-  });
-</script>
 
 <script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
 <link

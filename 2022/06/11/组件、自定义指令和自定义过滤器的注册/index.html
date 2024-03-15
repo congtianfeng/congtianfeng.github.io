@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+       
+      <meta name="keywords" content="前端、程序员、编程、代码" />
+       
+      <meta name="description" content="记录前端知识学习，经验积累，记录生活" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <meta name="baidu-site-verification" content="codeva-GuqF1B4xr5" />
+      <title>组件、自定义指令和自定义过滤器的注册 |  hasCat</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link rel="alternate" href="/atom.xml" title="hasCat" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-组件、自定义指令和自定义过滤器的注册"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  组件、自定义指令和自定义过滤器的注册
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/06/11/%E7%BB%84%E4%BB%B6%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%B3%A8%E5%86%8C/" class="article-date">
+  <time datetime="2022-06-11T11:31:05.000Z" itemprop="datePublished">2022-06-11</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">8 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="一、组件的注册"><a href="#一、组件的注册" class="headerlink" title="一、组件的注册"></a>一、组件的注册</h2><h3 id="1、全局注册"><a href="#1、全局注册" class="headerlink" title="1、全局注册"></a>1、全局注册</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">DemoComponent</span> <span class="keyword">from</span> <span class="string">&quot;@/components/Democomponent&quot;</span>;</span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;my-component-name&quot;</span>, <span class="title class_">DemoComponent</span>);</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数是组件名，第二个参数是导入的组件对象实例</p>
+<p>定义组件名有两种方式</p>
+<p>第一种使用短横线分隔命名。字母全小写，就像上面的例子一样。但是使用这种方式命名，在引用这个自定义元素时也必须使用使用短横线分隔命名，字母全小写的方式，就像这样 <code>&lt;my-component-name&gt;</code>。</p>
+<p>第二种使用大驼峰命名 (首字母大写命名) 。这种方式，在引用这个自定义元素时两种命名法都可以使用。也就是说 <code>&lt;my-component-name&gt;</code> 和 <code>&lt;MyComponentName&gt;</code> 都是可接受的。注意，尽管如此，直接在 DOM (即非字符串的模板) 中使用时只有第一种方式是有效的。</p>
+<p><strong><em>给予组件的名字可能依赖于打算拿它来做什么。当直接在 DOM 中使用一个组件 (而不是在字符串模板或<a target="_blank" rel="noopener" href="https://v2.cn.vuejs.org/v2/guide/single-file-components.html">单文件组件</a>) 的时候，vue 官方强烈推荐遵循 <a target="_blank" rel="noopener" href="https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name">W3C 规范</a>中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。</em></strong></p>
+<h3 id="2、局部注册"><a href="#2、局部注册" class="headerlink" title="2、局部注册"></a>2、局部注册</h3><p>局部注册只需在组件中配置一个 components 配置项即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import DemoComponent from &#x27;./Democomponent&#x27; export default &#123; components: &#123;</span><br><span class="line">DemoComponent &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、批量全局注册"><a href="#3、批量全局注册" class="headerlink" title="3、批量全局注册"></a>3、批量全局注册</h3><p>如果有大量的通用组件需要全局注册，那么我们的 main.js 文件很可能会变成这样</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">DemoComponentA</span> <span class="keyword">from</span> <span class="string">&quot;@/components/DemocomponentA&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DemoComponentB</span> <span class="keyword">from</span> <span class="string">&quot;@/components/DemocomponentB&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DemoComponentC</span> <span class="keyword">from</span> <span class="string">&quot;@/components/DemocomponentC&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DemoComponentD</span> <span class="keyword">from</span> <span class="string">&quot;@/components/DemocomponentD&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DemoComponentE</span> <span class="keyword">from</span> <span class="string">&quot;@/components/DemocomponentE&quot;</span>;</span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;my-component-nameA&quot;</span>, <span class="title class_">DemoComponentA</span>);</span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;my-component-nameB&quot;</span>, <span class="title class_">DemoComponentB</span>);</span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;my-component-nameC&quot;</span>, <span class="title class_">DemoComponentC</span>);</span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;my-component-nameD&quot;</span>, <span class="title class_">DemoComponentD</span>);</span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;my-component-nameE&quot;</span>, <span class="title class_">DemoComponentE</span>);</span><br></pre></td></tr></table></figure>
+
+<p>为了保持 main.js 文件的简洁，我们可以将需要全局注册的通用组件统统放在一个单独的文件夹中，&#x2F;src&#x2F;components，在其中的 index.js 文件中将这些组件统一导入注册，再暴露出去交给 main.js 给 Vue 使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">PageTools</span> <span class="keyword">from</span> <span class="string">&quot;./PageTools&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">UploadExcel</span> <span class="keyword">from</span> <span class="string">&quot;./UploadExcel&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ImageUpload</span> <span class="keyword">from</span> <span class="string">&quot;./ImageUpload&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ScreenFull</span> <span class="keyword">from</span> <span class="string">&quot;./ScreenFull&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ThemePicker</span> <span class="keyword">from</span> <span class="string">&quot;./ThemePicker&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Lang</span> <span class="keyword">from</span> <span class="string">&quot;./Lang&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">TagsView</span> <span class="keyword">from</span> <span class="string">&quot;./TagsView&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="title function_">install</span>(<span class="params">Vue</span>) &#123;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;PageTools&quot;</span>, <span class="title class_">PageTools</span>);</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;UploadExcel&quot;</span>, <span class="title class_">UploadExcel</span>);</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;ImageUpload&quot;</span>, <span class="title class_">ImageUpload</span>);</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;ScreenFull&quot;</span>, <span class="title class_">ScreenFull</span>);</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;ThemePicker&quot;</span>, <span class="title class_">ThemePicker</span>);</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;Lang&quot;</span>, <span class="title class_">Lang</span>);</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;TagsView&quot;</span>, <span class="title class_">TagsView</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Components</span> <span class="keyword">from</span> <span class="string">&quot;@/components&quot;</span>;</span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Components</span>); <span class="comment">// 注册自己的自定义组件</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二、自定义指令"><a href="#二、自定义指令" class="headerlink" title="二、自定义指令"></a>二、自定义指令</h2><h3 id="1、全局注册-1"><a href="#1、全局注册-1" class="headerlink" title="1、全局注册"></a>1、全局注册</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 注册一个全局自定义指令 `v-focus`</span><br><span class="line">Vue.directive(&#x27;focus&#x27;, &#123;</span><br><span class="line">  // 当被绑定的元素插入到 DOM 中时……</span><br><span class="line">  inserted: function (el) &#123;</span><br><span class="line">    // 聚焦元素</span><br><span class="line">    el.focus()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数是指令名，注意这里不需要带 v-</p>
+<p>第二个参数是一个配置项。可以提供如下几个钩子函数 (均为可选)：</p>
+<ul>
+<li><code>bind</code>：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。</li>
+<li><code>inserted</code>：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。</li>
+<li><code>update</code>：所在组件的 VNode 更新时调用，<strong>但是可能发生在其子 VNode 更新之前</strong>。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新 (详细的钩子函数参数见下)。</li>
+<li><code>componentUpdated</code>：指令所在组件的 VNode <strong>及其子 VNode</strong> 全部更新后调用。</li>
+<li><code>unbind</code>：只调用一次，指令与元素解绑时调用。</li>
+</ul>
+<p>指令钩子函数会被传入以下参数：</p>
+<ul>
+<li><code>el</code>：指令所绑定的元素，可以用来直接操作 DOM。</li>
+<li><code>binding</code>：一个对象，包含以下 property：<ul>
+<li><code>name</code>：指令名，不包括 <code>v-</code> 前缀。</li>
+<li><code>value</code>：指令的绑定值，例如：<code>v-my-directive=&quot;1 + 1&quot;</code> 中，绑定值为 <code>2</code>。</li>
+<li><code>oldValue</code>：指令绑定的前一个值，仅在 <code>update</code> 和 <code>componentUpdated</code> 钩子中可用。无论值是否改变都可用。</li>
+<li><code>expression</code>：字符串形式的指令表达式。例如 <code>v-my-directive=&quot;1 + 1&quot;</code> 中，表达式为 <code>&quot;1 + 1&quot;</code>。</li>
+<li><code>arg</code>：传给指令的参数，可选。例如 <code>v-my-directive:foo</code> 中，参数为 <code>&quot;foo&quot;</code>。</li>
+<li><code>modifiers</code>：一个包含修饰符的对象。例如：<code>v-my-directive.foo.bar</code> 中，修饰符对象为 <code>&#123; foo: true, bar: true &#125;</code>。</li>
+</ul>
+</li>
+<li><code>vnode</code>：Vue 编译生成的虚拟节点。</li>
+<li><code>oldVnode</code>：上一个虚拟节点，仅在 <code>update</code> 和 <code>componentUpdated</code> 钩子中可用。</li>
+</ul>
+<p>注意，除了 <code>el</code> 之外，其它参数都应该是只读的，切勿进行修改。如果需要在钩子之间共享数据，建议通过元素的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/dataset"><code>dataset</code></a> 来进行。</p>
+<h3 id="2、局部注册-1"><a href="#2、局部注册-1" class="headerlink" title="2、局部注册"></a>2、局部注册</h3><p>同样局部注册，只需配置组件中的一个 directives 配置项即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export default &#123; directives: &#123; focus: &#123; // 指令的定义 inserted: function (el) &#123;</span><br><span class="line">el.focus() &#125; &#125; &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、批量全局注册-1"><a href="#3、批量全局注册-1" class="headerlink" title="3、批量全局注册"></a>3、批量全局注册</h3><p>同样如果有很多自定义指令需要全局注册，我们可以从 main.js 中分离出来单独处理。新建 src&#x2F;directives&#x2F;index.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 负责管理所有的自定义指令</span></span><br><span class="line"><span class="comment">// 只负责导出指令对象</span></span><br><span class="line"><span class="comment">// 变量名称就是指令名称</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> imageerror = &#123;</span><br><span class="line">  <span class="comment">// 指令内容</span></span><br><span class="line">  <span class="comment">// 指令作用在 图片上的 dom是图片对象</span></span><br><span class="line">  <span class="comment">// inserted 在Vue3中也改名 =&gt; mounted</span></span><br><span class="line">  <span class="title function_">inserted</span>(<span class="params">dom, options</span>) &#123;</span><br><span class="line">    <span class="comment">// inserted执行的之后 此时 并没有对 src赋值</span></span><br><span class="line">    <span class="comment">// 图片有地址 但是地址加载图片失败的时候 会执行一个函数  onerror</span></span><br><span class="line">    dom.<span class="property">src</span> = dom.<span class="property">src</span> || options.<span class="property">value</span>;</span><br><span class="line">    dom.<span class="property">onerror</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">// 监听onerror事件</span></span><br><span class="line">      <span class="comment">// options.value就是指令传过来的值</span></span><br><span class="line">      dom.<span class="property">src</span> = options.<span class="property">value</span>; <span class="comment">// 当图片异常的时候 接收指令传过来的值 让这个值作为头像的备选</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 只有src有值 并且加载失败才会触发onerror</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 此钩子会在给image赋值之后执行</span></span><br><span class="line">  <span class="comment">// 这个钩子函数在Vue3中改名了 =&gt; updated</span></span><br><span class="line">  <span class="title function_">componentUpdated</span>(<span class="params">dom, options</span>) &#123;</span><br><span class="line">    dom.<span class="property">src</span> = dom.<span class="property">src</span> || options.<span class="property">value</span>;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>再在 main.js 中批量注册即可</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> directives <span class="keyword">from</span> <span class="string">&quot;@/directives&quot;</span>;</span><br><span class="line"><span class="comment">// directives是所有指令的一个集合</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">keys</span>(directives).<span class="title function_">forEach</span>(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// key就是指令名称</span></span><br><span class="line">  <span class="title class_">Vue</span>.<span class="title function_">directive</span>(key, directives[key]);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、过滤器"><a href="#三、过滤器" class="headerlink" title="三、过滤器"></a>三、过滤器</h2><h3 id="1、全局注册-2"><a href="#1、全局注册-2" class="headerlink" title="1、全局注册"></a>1、全局注册</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">filter</span>(<span class="string">&quot;capitalize&quot;</span>, <span class="keyword">function</span> (<span class="params">value</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!value) <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  value = value.<span class="title function_">toString</span>();</span><br><span class="line">  <span class="keyword">return</span> value.<span class="title function_">charAt</span>(<span class="number">0</span>).<span class="title function_">toUpperCase</span>() + value.<span class="title function_">slice</span>(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数是过滤器的名称，第二个参数是一个函数，通常是一些处理文本格式化的操作。</p>
+<h3 id="2、局部注册-2"><a href="#2、局部注册-2" class="headerlink" title="2、局部注册"></a>2、局部注册</h3><p>同样局部注册，只需配置组件中的一个 filters 配置项即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export default &#123; filters: &#123; capitalize: function (value) &#123; if (!value) return &#x27;&#x27;</span><br><span class="line">value = value.toString() return value.charAt(0).toUpperCase() + value.slice(1) &#125;</span><br><span class="line">&#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用时放在 JavaScript 表达式的尾部，由“管道”符号指示即可</p>
+<h3 id="3、全局批量注册"><a href="#3、全局批量注册" class="headerlink" title="3、全局批量注册"></a>3、全局批量注册</h3><p>同样如果有很多过滤器需要全局注册，我们可以从 main.js 中分离出来单独处理。新建 src&#x2F;filters&#x2F;index.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">pluralize</span>(<span class="params">time, label</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (time === <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> time + label;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> time + label + <span class="string">&quot;s&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">timeAgo</span>(<span class="params">time</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> between = <span class="title class_">Date</span>.<span class="title function_">now</span>() / <span class="number">1000</span> - <span class="title class_">Number</span>(time);</span><br><span class="line">  <span class="keyword">if</span> (between &lt; <span class="number">3600</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">pluralize</span>(~~(between / <span class="number">60</span>), <span class="string">&quot; minute&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (between &lt; <span class="number">86400</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">pluralize</span>(~~(between / <span class="number">3600</span>), <span class="string">&quot; hour&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">pluralize</span>(~~(between / <span class="number">86400</span>), <span class="string">&quot; day&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">numberFormatter</span>(<span class="params">num, digits</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> si = [</span><br><span class="line">    &#123; <span class="attr">value</span>: <span class="number">1e18</span>, <span class="attr">symbol</span>: <span class="string">&quot;E&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">value</span>: <span class="number">1e15</span>, <span class="attr">symbol</span>: <span class="string">&quot;P&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">value</span>: <span class="number">1e12</span>, <span class="attr">symbol</span>: <span class="string">&quot;T&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">value</span>: <span class="number">1e9</span>, <span class="attr">symbol</span>: <span class="string">&quot;G&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">value</span>: <span class="number">1e6</span>, <span class="attr">symbol</span>: <span class="string">&quot;M&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">value</span>: <span class="number">1e3</span>, <span class="attr">symbol</span>: <span class="string">&quot;k&quot;</span> &#125;,</span><br><span class="line">  ];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; si.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (num &gt;= si[i].<span class="property">value</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> (</span><br><span class="line">        (num / si[i].<span class="property">value</span>)</span><br><span class="line">          .<span class="title function_">toFixed</span>(digits)</span><br><span class="line">          .<span class="title function_">replace</span>(<span class="regexp">/\.0+$|(\.[0-9]*[1-9])0+$/</span>, <span class="string">&quot;$1&quot;</span>) + si[i].<span class="property">symbol</span></span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> num.<span class="title function_">toString</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 main.js 中批量注册</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> filters <span class="keyword">from</span> <span class="string">&quot;@/filters&quot;</span>;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">keys</span>(filters).<span class="title function_">forEach</span>(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="title class_">Vue</span>.<span class="title function_">filter</span>(key, filters[key]);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2022/06/11/%E7%BB%84%E4%BB%B6%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%B3%A8%E5%86%8C/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2022/07/28/axios%E4%BA%8C%E6%AC%A1%E5%B0%81%E8%A3%85/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            axios二次封装
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/05/04/AJAX/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">AJAX</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.staticfile.org/valine/1.4.16/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0bopYVx4sO64oTLDQAKpdWL-gzGzoHsz",
+    app_key: "ZIGRaMZuxeA2bIKoFHcvLagh",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2023-2024
+        <i class="ri-heart-fill heart_icon"></i> congtianfeng
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="hasCat" style="border-radius: 50%;"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%8A%80%E6%9C%AF">技术</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=541326593&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>
