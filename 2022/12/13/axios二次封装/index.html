@@ -16,7 +16,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
       <meta name="baidu-site-verification" content="codeva-GuqF1B4xr5" />
-      <title>普通数据转化为树形结构 |  hasCat</title>
+      <title>axios二次封装 |  hasCat</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -59,7 +59,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-普通数据转化为树形结构"
+  id="post-axios二次封装"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -70,7 +70,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  普通数据转化为树形结构
+  axios二次封装
 </h1>
  
 
@@ -78,8 +78,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2022/03/01/%E6%99%AE%E9%80%9A%E6%95%B0%E6%8D%AE%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84/" class="article-date">
-  <time datetime="2022-03-01T08:41:11.000Z" itemprop="datePublished">2022-03-01</time>
+      <a href="/2022/12/13/axios%E4%BA%8C%E6%AC%A1%E5%B0%81%E8%A3%85/" class="article-date">
+  <time datetime="2022-12-13T06:11:23.000Z" itemprop="datePublished">2022-12-13</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
@@ -90,7 +90,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">348</span>
+            <span class="post-count">510</span>
         </span>
     </span>
 
@@ -99,7 +99,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -112,11 +112,9 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>有时候我们需要用到树形结构的数据便于我们展示像组织架构、地区这种有层级结构的信息。那么我们就需要将普通平铺的数据转化为树形结构的数据。主要是使用递归算法。</p>
-<p>观察这种数据不难发现，每条数据一般至少包含 id 和 pid 两个属性，id 是每条数据独一无二的身份标识，pid 则表示与其他数据的从属关系。如果当前数据的 pid 等于另外一条数据的 id，那当前数据就是另外一条数据的子数据。</p>
-<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20200721010931214.png" alt="image-20200721010931214"></p>
-<p>封装一个工具方法，**<code>src/utils/index.js</code>**</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** *</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  将列表型的数据转化成树形数据 =&gt; 递归算法 =&gt; 自身调用自身 =&gt; 递归的关键在于要有一个入口和一个出口，入口  	*  表示递归开始，出口则标识递归的结束。没有出口会造成死循环</span></span><br><span class="line"><span class="comment"> *  遍历树形 有一个重点 要先找一个头儿</span></span><br><span class="line"><span class="comment"> * ***/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">tranListToTreeData</span>(<span class="params">list, rootValue</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> arr = [];</span><br><span class="line">  list.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (item.<span class="property">pid</span> === rootValue) &#123;</span><br><span class="line">      <span class="comment">// 找到之后 就要去找 item 下面有没有子节点</span></span><br><span class="line">      <span class="keyword">const</span> children = <span class="title function_">tranListToTreeData</span>(list, item.<span class="property">id</span>);</span><br><span class="line">      <span class="keyword">if</span> (children.<span class="property">length</span>) &#123;</span><br><span class="line">        <span class="comment">// 如果children的长度大于0 说明找到了子节点</span></span><br><span class="line">        item.<span class="property">children</span> = children;</span><br><span class="line">      &#125;</span><br><span class="line">      arr.<span class="title function_">push</span>(item); <span class="comment">// 将内容加入到数组中</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <p>axios 作为网络请求的第三方工具, 可以进行请求和响应的拦截</p>
+<p>一般我们可以在请求拦截器中处理 token 的统一注入问题、token 超时拦截问题。响应拦截器则主要处理数据结构和数据异常</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Message</span> &#125; <span class="keyword">from</span> <span class="string">&quot;element-ui&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; getTimeStamp &#125; <span class="keyword">from</span> <span class="string">&quot;@/utils/auth&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&quot;@/store&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;@/router&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimeOut</span> = <span class="number">5400</span>; <span class="comment">// 定义超时时间</span></span><br><span class="line"><span class="keyword">const</span> service = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">  <span class="comment">//    设置基础地址</span></span><br><span class="line">  <span class="comment">// 环境变量 npm run dev  /api   /生产环境 npm run build  /prod-api</span></span><br><span class="line">  <span class="attr">baseURL</span>: process.<span class="property">env</span>.<span class="property">VUE_APP_BASE_API</span>,</span><br><span class="line">  <span class="attr">timeout</span>: <span class="number">5000</span>, <span class="comment">// 认为只要超过5秒钟不响应 就超时</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 请求拦截器</span></span><br><span class="line">service.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(</span><br><span class="line">  <span class="keyword">async</span> (config) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 请求接口  config是请求配置</span></span><br><span class="line">    <span class="comment">// 取token</span></span><br><span class="line">    <span class="keyword">if</span> (store.<span class="property">getters</span>.<span class="property">token</span>) &#123;</span><br><span class="line">      <span class="comment">// 只要有token 就要检查token时效性</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="title class_">CheckIsTimeOut</span>()) &#123;</span><br><span class="line">        <span class="comment">//  继续？</span></span><br><span class="line">        <span class="keyword">await</span> store.<span class="title function_">dispatch</span>(<span class="string">&quot;user/lgout&quot;</span>);</span><br><span class="line">        router.<span class="title function_">push</span>(<span class="string">&quot;/login&quot;</span>); <span class="comment">// 跳到登录</span></span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;您的token已经失效&quot;</span>));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 如果存在token</span></span><br><span class="line">      config.<span class="property">headers</span>.<span class="property">Authorization</span> = <span class="string">`Bearer <span class="subst">$&#123;store.getters.token&#125;</span>`</span>;</span><br><span class="line">      <span class="comment">// return config</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这里一定要注意</span></span><br><span class="line">    <span class="comment">// 一定要return config</span></span><br><span class="line">    <span class="keyword">return</span> config;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br><span class="line"><span class="comment">// 响应拦截器</span></span><br><span class="line">service.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span><br><span class="line">  <span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 成功执行</span></span><br><span class="line">    <span class="comment">// axios默认加了一层data的包裹</span></span><br><span class="line">    <span class="keyword">const</span> &#123; success, message, data &#125; = response.<span class="property">data</span>;</span><br><span class="line">    <span class="keyword">if</span> (success) &#123;</span><br><span class="line">      <span class="comment">// 此时认为业务执行成功了</span></span><br><span class="line">      <span class="keyword">return</span> data; <span class="comment">// 返回用户所需要的数据</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 当业务失败的时候</span></span><br><span class="line">      <span class="title class_">Message</span>.<span class="title function_">error</span>(message); <span class="comment">// 提示消息</span></span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(message));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="keyword">async</span> (error) =&gt; &#123;</span><br><span class="line">    <span class="comment">// error 有response对象 config</span></span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">      error.<span class="property">response</span> &amp;&amp;</span><br><span class="line">      error.<span class="property">response</span>.<span class="property">data</span> &amp;&amp;</span><br><span class="line">      error.<span class="property">response</span>.<span class="property">data</span>.<span class="property">code</span> === <span class="number">10002</span></span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="comment">// 后端告诉前端token超时了</span></span><br><span class="line">      <span class="keyword">await</span> store.<span class="title function_">dispatch</span>(<span class="string">&quot;user/lgout&quot;</span>); <span class="comment">// 调用登出action</span></span><br><span class="line">      router.<span class="title function_">push</span>(<span class="string">&quot;/login&quot;</span>); <span class="comment">// 跳到登录页</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 失败</span></span><br><span class="line">    <span class="comment">// Message等同于 this.$message</span></span><br><span class="line">    <span class="title class_">Message</span>.<span class="title function_">error</span>(error.<span class="property">message</span>); <span class="comment">// 提示错误</span></span><br><span class="line">    <span class="comment">// reject</span></span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error); <span class="comment">// 传入一个错误的对象  就认为promise执行链 进入了catch</span></span><br><span class="line">  &#125;</span><br><span class="line">);</span><br><span class="line"><span class="comment">// 检查token是否过期</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">CheckIsTimeOut</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 当前时间  - 存储的时间戳 &gt; 时效性  false   tr</span></span><br><span class="line">  <span class="keyword">return</span> (<span class="title class_">Date</span>.<span class="title function_">now</span>() - <span class="title function_">getTimeStamp</span>()) / <span class="number">1000</span> &gt; <span class="title class_">TimeOut</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> service;</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
@@ -181,7 +179,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2022/03/01/%E6%99%AE%E9%80%9A%E6%95%B0%E6%8D%AE%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2022/12/13/axios%E4%BA%8C%E6%AC%A1%E5%B0%81%E8%A3%85/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -194,15 +192,20 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/03/27/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="article-nav-link">
+      <a href="/2022/12/13/%E5%9F%BA%E4%BA%8ERBAC%E7%9A%84%E8%8F%9C%E5%8D%95%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            前端学习路线
+            基于RBAC的菜单权限控制
           
         </div>
       </a>
     
+    
+      <a href="/2022/12/11/%E7%BB%84%E4%BB%B6%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%B3%A8%E5%86%8C/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">组件、自定义指令和自定义过滤器的注册</div>
+      </a>
     
   </nav>
 

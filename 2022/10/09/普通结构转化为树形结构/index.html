@@ -16,7 +16,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
       <meta name="baidu-site-verification" content="codeva-GuqF1B4xr5" />
-      <title>归档: 2023/1 |  hasCat</title>
+      <title>普通数据转化为树形结构 |  hasCat</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -58,52 +58,212 @@
       
     <main class="content on">
       <section class="outer">
-  
-  
-  <article class="articles">
+  <article
+  id="post-普通结构转化为树形结构"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
     
-    
-    <h1 class="page-type-title">2023/1</h1>
-    
-    
-  
-  
-  
-  
-  
-  
-  <div class="archives-wrap">
-    <div class="archive-year-wrap">
-      <a href="/archives/2023" class="archive-year">2023</a>
-    </div>
-    <div class="archives">
-      
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/01/13/token%E5%A4%B1%E6%95%88%E7%9A%84%E5%A4%84%E7%90%86/" class="archive-article-date">
-  <time datetime="2023-01-13T12:51:01.000Z" itemprop="datePublished">01/13</time>
-</a>
+    <header class="article-header">
        
-<h2 itemprop="name">
-  <a class="archive-article-title" href="/2023/01/13/token%E5%A4%B1%E6%95%88%E7%9A%84%E5%A4%84%E7%90%86/"
-    >token失效的处理</a> 
-</h2>
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  普通数据转化为树形结构
+</h1>
  
 
+      
     </header>
-    
-    
+     
+    <div class="article-meta">
+      <a href="/2022/10/09/%E6%99%AE%E9%80%9A%E7%BB%93%E6%9E%84%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84/" class="article-date">
+  <time datetime="2022-10-09T13:01:23.000Z" itemprop="datePublished">2022-10-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
-</article>
-      
-      
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">348</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">1 分钟</span>
+        </span>
+    </span>
+</div>
+ 
     </div>
-  </div>
-  
-  
+      
+
+
 
   
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>有时候我们需要用到树形结构的数据便于我们展示像组织架构、地区这种有层级结构的信息。那么我们就需要将普通平铺的数据转化为树形结构的数据。主要是使用递归算法。</p>
+<p>观察这种数据不难发现，每条数据一般至少包含 id 和 pid 两个属性，id 是每条数据独一无二的身份标识，pid 则表示与其他数据的从属关系。如果当前数据的 pid 等于另外一条数据的 id，那当前数据就是另外一条数据的子数据。</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20200721010931214.png" alt="image-20200721010931214"></p>
+<p>封装一个工具方法，**<code>src/utils/index.js</code>**</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** *</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  将列表型的数据转化成树形数据 =&gt; 递归算法 =&gt; 自身调用自身 =&gt; 递归的关键在于要有一个入口和一个出口，入口  	*  表示递归开始，出口则标识递归的结束。没有出口会造成死循环</span></span><br><span class="line"><span class="comment"> *  遍历树形 有一个重点 要先找一个头儿</span></span><br><span class="line"><span class="comment"> * ***/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">tranListToTreeData</span>(<span class="params">list, rootValue</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> arr = [];</span><br><span class="line">  list.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (item.<span class="property">pid</span> === rootValue) &#123;</span><br><span class="line">      <span class="comment">// 找到之后 就要去找 item 下面有没有子节点</span></span><br><span class="line">      <span class="keyword">const</span> children = <span class="title function_">tranListToTreeData</span>(list, item.<span class="property">id</span>);</span><br><span class="line">      <span class="keyword">if</span> (children.<span class="property">length</span>) &#123;</span><br><span class="line">        <span class="comment">// 如果children的长度大于0 说明找到了子节点</span></span><br><span class="line">        item.<span class="property">children</span> = children;</span><br><span class="line">      &#125;</span><br><span class="line">      arr.<span class="title function_">push</span>(item); <span class="comment">// 将内容加入到数组中</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2022/10/09/%E6%99%AE%E9%80%9A%E7%BB%93%E6%9E%84%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2022/11/22/%E9%85%8D%E5%90%88%E8%85%BE%E8%AE%AF%E4%BA%91Cos%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E7%BB%84%E4%BB%B6/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            配合腾讯云Cos封装一个上传图片组件
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/09/14/%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E8%A7%A3%E5%86%B3%E5%9B%BE%E7%89%87%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">使用自定义指令解决图片异常情况</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.staticfile.org/valine/1.4.16/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0bopYVx4sO64oTLDQAKpdWL-gzGzoHsz",
+    app_key: "ZIGRaMZuxeA2bIKoFHcvLagh",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
 </section>
       <footer class="footer">
   <div class="outer">
@@ -243,6 +403,22 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
 
 <script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
 <link
