@@ -16,7 +16,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
       <meta name="baidu-site-verification" content="codeva-GuqF1B4xr5" />
-      <title>打印功能 |  hasCat</title>
+      <title>第三方图片资源403问题的一种解决方案 |  hasCat</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -59,7 +59,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-打印功能"
+  id="post-第三方图片资源403问题的一种解决方案"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -70,7 +70,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  打印功能
+  第三方图片资源403问题的一种解决方案
 </h1>
  
 
@@ -78,8 +78,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2024/03/13/%E6%89%93%E5%8D%B0%E5%8A%9F%E8%83%BD/" class="article-date">
-  <time datetime="2024-03-13T08:27:23.000Z" itemprop="datePublished">2024-03-13</time>
+      <a href="/2023/05/10/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90403%E9%97%AE%E9%A2%98%E7%9A%84%E4%B8%80%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
+  <time datetime="2023-05-10T08:30:32.000Z" itemprop="datePublished">2023-05-10</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
@@ -90,7 +90,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">460</span>
+            <span class="post-count">388</span>
         </span>
     </span>
 
@@ -99,7 +99,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">1 分钟</span>
         </span>
     </span>
 </div>
@@ -114,14 +114,30 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-print-nb --save-dev</span><br></pre></td></tr></table></figure>
+  <p>有时候如果我们项目的接口数据是后端通过爬虫抓取的第三方平台内容，而第三方平台对图片资源做了防盗链保护处理。那么好多图片就会资源请求失败返回 403。</p>
+<p>第三方平台怎么处理图片资源保护的？</p>
+<p>服务端一般使用 Referer 请求头识别访问来源，然后处理资源访问。</p>
+<img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20200405134347749.png" alt="image-20200405134347749"  />
 
-<h2 id="二、注册"><a href="#二、注册" class="headerlink" title="二、注册"></a>二、注册</h2><p>在 main.js 中引入并注册</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> print <span class="keyword">from</span> <span class="string">&quot;vue3-print-nb&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>);</span><br><span class="line">app.<span class="title function_">use</span>(print).<span class="title function_">mount</span>(<span class="string">&quot;#app&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>Referer 是什么东西？</p>
+<blockquote>
+<p>扩展参考：<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2019/06/http-referer.html">http://www.ruanyifeng.com/blog/2019/06/http-referer.html</a></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer 是 HTTP 请求头的一部分，当浏览器向 Web 服务器发送请求的时候，一般会带上 Referer，它包含了当前请求资源的来源页面的地址。服务端一般使用 Referer 请求头识别访问来源，可能会以此进行统计分析、日志记录以及缓存优化等。</span><br></pre></td></tr></table></figure>
 
-<h2 id="三、组件中使用"><a href="#三、组件中使用" class="headerlink" title="三、组件中使用"></a>三、组件中使用</h2><p>定义一个 printObj 对象，注意局部打印必须在 printObj 对象上配置 id 属性，并将其绑定在需要打印的容器上。打印按钮通过 v-print&#x3D;”printObj”实现打印效果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;myPrint&quot;&gt;</span><br><span class="line">    &lt;!-- 流程信息详情 --&gt;</span><br><span class="line">    &lt;el-table :data=&quot;wfData&quot; style=&quot;margin-top: 70px&quot;&gt;</span><br><span class="line">      &lt;el-table-column type=&quot;index&quot; width=&quot;auto&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;node_name&quot; label=&quot;环节名称&quot; width=&quot;auto&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;proc_type&quot; label=&quot;环节类型&quot; width=&quot;auto&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;deal_state&quot; label=&quot;环节状态&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;username&quot; label=&quot;办理人&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;dept&quot; label=&quot;办理人部门&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;action_value&quot; label=&quot;办理意见&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;create_date&quot; label=&quot;创建时间&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;complete_date&quot; label=&quot;完成时间&quot; /&gt;</span><br><span class="line">      &lt;el-table-column prop=&quot;deal_content&quot; label=&quot;审批意见&quot; /&gt;</span><br><span class="line">    &lt;/el-table&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;el-row type=&quot;flex&quot; justify=&quot;center&quot; style=&quot;margin-top: 10px&quot;&gt;</span><br><span class="line">    &lt;el-button v-print=&quot;printObj&quot; type=&quot;primary&quot;&gt;打印&lt;/el-button&gt;</span><br><span class="line">    &lt;el-button @click=&quot;$router.back()&quot;&gt;返回&lt;/el-button&gt;</span><br><span class="line">  &lt;/el-row&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; ref, onMounted, defineComponent &#125; from &quot;vue&quot;;</span><br><span class="line">import &#123; useRoute &#125; from &quot;vue-router&quot;;</span><br><span class="line"></span><br><span class="line">export default defineComponent(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const route = useRoute();</span><br><span class="line">    const wfData = ref(null);</span><br><span class="line">    const printObj = ref(&#123;</span><br><span class="line">      id: &quot;myPrint&quot;,</span><br><span class="line">    &#125;);</span><br><span class="line">    onMounted(() =&gt; &#123;</span><br><span class="line">      wfData.value = JSON.parse(route.params.wfData);</span><br><span class="line">    &#125;);</span><br><span class="line">    return &#123; detailPage, applyIdValue, rowData, printObj, wfData &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style scoped lang=&quot;less&quot;&gt;&lt;/style&gt;</span><br></pre></td></tr></table></figure>
- 
+<blockquote>
+<p>需要注意的是 referer 实际上是 “referrer” 误拼写。参见 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTTP_referer">HTTP referer on Wikipedia</a> （HTTP referer 在维基百科上的条目）来获取更详细的信息。</p>
+</blockquote>
+<p>怎么解决？</p>
+<p>不要发送 referrer ，对方服务端就不知道你从哪来的了，姑且认为是你是自己人吧。</p>
+<p>如何设置不发送 referrer？</p>
+<p>用 <code>&lt;a&gt;</code>、<code>&lt;area&gt;</code>、<code>&lt;img&gt;</code>、<code>&lt;iframe&gt;</code>、<code>&lt;script&gt;</code> 或者 <code>&lt;link&gt;</code> 元素上的 <code>referrerpolicy</code> 属性为其设置独立的请求策略，例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://……&quot;</span> <span class="attr">referrerpolicy</span>=<span class="string">&quot;no-referrer&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者直接在 HTMl 页面头中通过 meta 属性全局配置：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;referrer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;no-referrer&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3> 
       <!-- reward -->
       
     </div>
@@ -185,7 +201,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2024/03/13/%E6%89%93%E5%8D%B0%E5%8A%9F%E8%83%BD/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2023/05/10/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90403%E9%97%AE%E9%A2%98%E7%9A%84%E4%B8%80%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -198,19 +214,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2024/03/13/%E6%96%87%E4%BB%B6%E9%A2%84%E8%A7%88%E5%8A%9F%E8%83%BD/" class="article-nav-link">
+      <a href="/2023/09/12/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B1%BB%E9%A1%B9%E7%9B%AE/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            文件预览功能
+            一个简单的后台管理类项目
           
         </div>
       </a>
     
     
-      <a href="/2024/03/13/%E8%B7%AF%E7%94%B1%E5%A4%8D%E7%94%A8%E6%97%B6%E9%A1%B5%E9%9D%A2%E4%B8%8D%E5%88%B7%E6%96%B0%E6%98%BE%E7%A4%BA%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" class="article-nav-link">
+      <a href="/2023/04/20/Node.js/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">路由复用时页面不刷新显示的解决办法</div>
+        <div class="article-nav-title">Node.js</div>
       </a>
     
   </nav>
