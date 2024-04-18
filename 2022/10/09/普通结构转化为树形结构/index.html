@@ -16,7 +16,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
       <meta name="baidu-site-verification" content="codeva-GuqF1B4xr5" />
-      <title>普通数据转化为树形结构 |  hasCat</title>
+      <title>两种方式将平铺数据转化为树形结构 |  hasCat</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -70,7 +70,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  普通数据转化为树形结构
+  两种方式将平铺数据转化为树形结构
 </h1>
  
 
@@ -90,7 +90,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">348</span>
+            <span class="post-count">614</span>
         </span>
     </span>
 
@@ -99,7 +99,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -116,7 +116,11 @@
 <p>观察这种数据不难发现，每条数据一般至少包含 id 和 pid 两个属性，id 是每条数据独一无二的身份标识，pid 则表示与其他数据的从属关系。如果当前数据的 pid 等于另外一条数据的 id，那当前数据就是另外一条数据的子数据。</p>
 <p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20200721010931214.png" alt="image-20200721010931214"></p>
 <p>封装一个工具方法，**<code>src/utils/index.js</code>**</p>
+<p>第一种：使用递归算法遍历需要处理的数据。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** *</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  将列表型的数据转化成树形数据 =&gt; 递归算法 =&gt; 自身调用自身 =&gt; 递归的关键在于要有一个入口和一个出口，入口  	*  表示递归开始，出口则标识递归的结束。没有出口会造成死循环</span></span><br><span class="line"><span class="comment"> *  遍历树形 有一个重点 要先找一个头儿</span></span><br><span class="line"><span class="comment"> * ***/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">tranListToTreeData</span>(<span class="params">list, rootValue</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> arr = [];</span><br><span class="line">  list.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (item.<span class="property">pid</span> === rootValue) &#123;</span><br><span class="line">      <span class="comment">// 找到之后 就要去找 item 下面有没有子节点</span></span><br><span class="line">      <span class="keyword">const</span> children = <span class="title function_">tranListToTreeData</span>(list, item.<span class="property">id</span>);</span><br><span class="line">      <span class="keyword">if</span> (children.<span class="property">length</span>) &#123;</span><br><span class="line">        <span class="comment">// 如果children的长度大于0 说明找到了子节点</span></span><br><span class="line">        item.<span class="property">children</span> = children;</span><br><span class="line">      &#125;</span><br><span class="line">      arr.<span class="title function_">push</span>(item); <span class="comment">// 将内容加入到数组中</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种：上面的递归方式，每一次都需要遍历整个list，对于量特别大的数据来说，性能非常差，很大可能会造成卡死的情况。因此对于数据量比较大的情况（成千上万条数据），比如大型国企的人员组织架构，可以使用哈希表的方式实现树形数据的转化</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数据量大时使用递归转化数据会有性能问题，可以使用哈希表优化</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">listToTree</span>(<span class="params">list, rootValue</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> map = &#123;&#125;,</span><br><span class="line">    node,</span><br><span class="line">    roots = [],</span><br><span class="line">    i</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; list.<span class="property">length</span>; i += <span class="number">1</span>) &#123;</span><br><span class="line">    map[list[i].<span class="property">org_id</span>] = i <span class="comment">// 初始化哈希表</span></span><br><span class="line">    list[i].<span class="property">children</span> = [] <span class="comment">// 初始化 children</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; list.<span class="property">length</span>; i += <span class="number">1</span>) &#123;</span><br><span class="line">    node = list[i]</span><br><span class="line">    <span class="keyword">if</span> (node.<span class="property">parent_org_id</span> !== rootValue) &#123;</span><br><span class="line">      <span class="comment">// 如果存在父级</span></span><br><span class="line">      <span class="keyword">if</span> (map[node.<span class="property">parent_org_id</span>] !== <span class="literal">undefined</span>) &#123;</span><br><span class="line">        list[map[node.<span class="property">parent_org_id</span>]].<span class="property">children</span>.<span class="title function_">push</span>(node)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// else &#123;</span></span><br><span class="line">      <span class="comment">//   console.error(</span></span><br><span class="line">      <span class="comment">//     `Parent ID $&#123;node.parent_org_id&#125; not found for node ID $&#123;node.org_id&#125;`</span></span><br><span class="line">      <span class="comment">//   )</span></span><br><span class="line">      <span class="comment">// &#125;</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 如果是顶级节点</span></span><br><span class="line">      roots.<span class="title function_">push</span>(node)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> roots</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
