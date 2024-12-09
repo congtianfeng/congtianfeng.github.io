@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+       
+      <meta name="keywords" content="前端、程序员、编程、代码" />
+       
+      <meta name="description" content="记录前端知识学习，经验积累，记录生活" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>Vue2混入和Vue3中hook函数的应用 |  hasCat</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link rel="alternate" href="/atom.xml" title="hasCat" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Vue2混入和Vue3中hook函数的应用"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Vue2混入和Vue3中hook函数的应用
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2024/12/09/Vue2%E6%B7%B7%E5%85%A5%E5%92%8CVue3%E4%B8%ADhook%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8/" class="article-date">
+  <time datetime="2024-12-09T08:24:42.000Z" itemprop="datePublished">2024-12-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.3k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">10 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="一、Vue2-的混入（Mixin）"><a href="#一、Vue2-的混入（Mixin）" class="headerlink" title="一、Vue2 的混入（Mixin）"></a>一、Vue2 的混入（Mixin）</h2><p>在开发过程中，我们经常会发现一些可重复利用的代码块，于是我们将其封装成函数以供调用。这类函数包括工具函数，但又不止工具函数，因为我们可能也会封装一些重复的业务逻辑。但在以往，在前端原生开发中，我们所封装的函数，大多数是”无状态”的，不能够建立数据与视图之间的联系。那何为”有状态”的函数呢？<strong>这里的”有状态”，实际上是指是否含有响应式变量</strong>：它的变化能够引起视图的变化。这也是混入和普通函数的最大区别！</p>
+<p>混入 (Mixin) 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能。一个混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被“混合”进入该组件本身的选项。</p>
+<p>需要注意的是：</p>
+<p>当组件和混入对象含有同名选项时，这些选项将以恰当的方式进行“合并”。比如，数据对象在内部会进行递归合并，并在<strong>发生冲突时以组件数据</strong>优先。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var mixin = &#123; data: function () &#123; return &#123; message: &#x27;hello&#x27;, foo: &#x27;abc&#x27; &#125; &#125; &#125;</span><br><span class="line">new Vue(&#123; mixins: [mixin], data: function () &#123; return &#123; message: &#x27;goodbye&#x27;, bar:</span><br><span class="line">&#x27;def&#x27; &#125; &#125;, created: function () &#123; console.log(this.$data) // =&gt; &#123; message:</span><br><span class="line">&quot;goodbye&quot;, foo: &quot;abc&quot;, bar: &quot;def&quot; &#125; &#125; &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>同名钩子函数将合并为一个数组，因此都将被调用。另外，混入对象的钩子将在组件自身钩子<strong>之前</strong>调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var mixin = &#123; created: function () &#123; console.log(&#x27;混入对象的钩子被调用&#x27;) &#125; &#125; new</span><br><span class="line">Vue(&#123; mixins: [mixin], created: function () &#123; console.log(&#x27;组件钩子被调用&#x27;) &#125; &#125;)</span><br><span class="line">// =&gt; &quot;混入对象的钩子被调用&quot; // =&gt; &quot;组件钩子被调用&quot;</span><br></pre></td></tr></table></figure>
+
+<p>值为对象的选项，例如 <code>methods</code>、<code>components</code> 和 <code>directives</code>，将被合并为同一个对象。两个对象键名冲突时，取组件对象的键值对。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var mixin = &#123; methods: &#123; foo: function () &#123; console.log(&#x27;foo&#x27;) &#125;, conflicting:</span><br><span class="line">function () &#123; console.log(&#x27;from mixin&#x27;) &#125; &#125; &#125; var vm = new Vue(&#123; mixins:</span><br><span class="line">[mixin], methods: &#123; bar: function () &#123; console.log(&#x27;bar&#x27;) &#125;, conflicting:</span><br><span class="line">function () &#123; console.log(&#x27;from self&#x27;) &#125; &#125; &#125;) vm.foo() // =&gt; &quot;foo&quot; vm.bar() //</span><br><span class="line">=&gt; &quot;bar&quot; vm.conflicting() // =&gt; &quot;from self&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、使用混入实现功能权限的管控"><a href="#二、使用混入实现功能权限的管控" class="headerlink" title="二、使用混入实现功能权限的管控"></a>二、使用混入实现功能权限的管控</h2><p>在页面上，我们经常要检查用户是否拥有某个功能点的权限。这种带状态的功能，很适合使用混入实现</p>
+<p>通常一个功能点，对应一个权限标识符</p>
+<p><img src="C:\Users\从天风\AppData\Roaming\Typora\typora-user-images\image-20241209144118987.png" alt="image-20241209144118987"></p>
+<p>一般我们已将用户信息（包括用户所拥有的权限信息）放在了状态管理工具中。我们要做的就是看看用户，是否拥有<strong>point-user-delete</strong>这个 point，有就可以让删除能用，没有就隐藏或者禁用</p>
+<p><strong><code>src/mixin/checkPermission.js</code></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&#x27;@/store&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="title function_">checkPermission</span>(<span class="params">key</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; userInfo &#125; = store.<span class="property">state</span>.<span class="property">user</span></span><br><span class="line">      <span class="keyword">if</span> (userInfo.<span class="property">roles</span>.<span class="property">points</span> &amp;&amp; userInfo.<span class="property">roles</span>.<span class="property">points</span>.<span class="property">length</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> userInfo.<span class="property">roles</span>.<span class="property">points</span>.<span class="title function_">some</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item === key)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注册之后在员工组件中检查权限点</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-button</span><br><span class="line">  :disabled=&quot;!checkPermission(&#x27;POINT-USER-UPDATE&#x27;)&quot;</span><br><span class="line">  type=&quot;text&quot;</span><br><span class="line">  size=&quot;small&quot;</span><br><span class="line">  @click=&quot;$router.push(`/employees/detail/$&#123;obj.row.id&#125;`)&quot;</span><br><span class="line">&gt;查看&lt;/el-button&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、Mixin-的不足"><a href="#三、Mixin-的不足" class="headerlink" title="三、Mixin 的不足"></a>三、Mixin 的不足</h2><p>在 Vue 2 中，Mixin 是将部分组件逻辑抽象成可重用块的主要工具。但是，他们有几个问题：<br>1、Mixin 很容易发生冲突：因为每个 mixin 的 property 都被合并到同一个组件中，所以为了避免 property 名冲突，你仍然需要了解其他每个特性。也就是说 Mixin 难以追溯的方法与属性，我们根本无法获知属性来自于哪个 Mixin 文件，给后期维护带来困难<br>2、可重用性是有限的：我们不能向 mixin 传递任何参数来改变它的逻辑，这降低了它们在抽象逻辑方面的灵活性。</p>
+<h2 id="四、Vue3-的-Hooks"><a href="#四、Vue3-的-Hooks" class="headerlink" title="四、Vue3 的 Hooks"></a>四、Vue3 的 Hooks</h2><p>得益于 Vue3 的组合式 API，在 Vue3 中使用 Hooks 可以弥补混入的不足。也正因为如此，Vue3 中推荐使用 Hooks 代替 Mixin</p>
+<h2 id="五、动态计算表格高度"><a href="#五、动态计算表格高度" class="headerlink" title="五、动态计算表格高度"></a>五、动态计算表格高度</h2><p>我们经常使用到的一种场景是，头部是一些查询条件，中间是查询结果表格，底部是分页组件（或者没有）。因为查询条件数量是不确定的，因此这一块的高度也是不确定的。此时，表格的高度（或者最大高度）需要动态计算</p>
+<p><strong><code>src/hooks/useTable.js</code></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; onMounted, ref, watch, onActivated, onDeactivated &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useWindowSize &#125; <span class="keyword">from</span> <span class="string">&#x27;@vueuse/core&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">useTable</span>(<span class="params">tableRef, bottom</span>) &#123;</span><br><span class="line">  <span class="comment">// // console.log(&#x27;tableRef&#x27;,tableRef)</span></span><br><span class="line">  <span class="comment">// // console.log(tableRef.$el);</span></span><br><span class="line">  <span class="keyword">const</span> bottomOptions = &#123;</span><br><span class="line">    <span class="attr">noPagination</span>: <span class="number">32</span>,</span><br><span class="line">    <span class="attr">withPagination</span>: <span class="number">32</span> + <span class="number">52</span>,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> lock = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> tableHeight = <span class="title function_">ref</span>()</span><br><span class="line">  <span class="keyword">const</span> &#123; height &#125; = <span class="title function_">useWindowSize</span>()</span><br><span class="line"></span><br><span class="line">  <span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">calcTableHeight</span>()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="title function_">onActivated</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// // console.log(&quot;onActivated&quot;);</span></span><br><span class="line">    lock = <span class="literal">false</span></span><br><span class="line">    <span class="title function_">calcTableHeight</span>()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="title function_">onDeactivated</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// // console.log(&quot;onDeactivated&quot;);</span></span><br><span class="line">    lock = <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="title function_">watch</span>(height, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">calcTableHeight</span>()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">calcTableHeight</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (lock) <span class="keyword">return</span></span><br><span class="line">    <span class="comment">// // console.log(&quot;hshshsh&quot;);</span></span><br><span class="line">    <span class="keyword">const</span> &#123; top &#125; = tableRef.<span class="property">value</span>.<span class="property">$el</span>.<span class="title function_">getBoundingClientRect</span>()</span><br><span class="line">    <span class="keyword">let</span> currentBottom = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> bottom === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">      currentBottom = bottomOptions[bottom] || <span class="number">0</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      currentBottom = bottom</span><br><span class="line">    &#125;</span><br><span class="line">    tableHeight.<span class="property">value</span> = height.<span class="property">value</span> - top - currentBottom</span><br><span class="line">    <span class="comment">// // console.log(tableHeight)</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    tableHeight,</span><br><span class="line">    calcTableHeight,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在组件中使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;el-table v-loading=&quot;loading&quot; :data=&quot;tableList&quot; :height=&quot;tableHeight&quot;&gt;</span><br><span class="line">    &lt;el-table-column type=&quot;index&quot; width=&quot;55&quot; align=&quot;center&quot; label=&quot;序号&quot; /&gt;</span><br><span class="line">    &lt;el-table-column</span><br><span class="line">      prop=&quot;deviceTypeName&quot;</span><br><span class="line">      min-width=&quot;150&quot;</span><br><span class="line">      label=&quot;设备类型&quot;</span><br><span class="line">      align=&quot;center&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;el-table-column</span><br><span class="line">      prop=&quot;deviceName&quot;</span><br><span class="line">      min-width=&quot;150&quot;</span><br><span class="line">      label=&quot;设备名称&quot;</span><br><span class="line">      align=&quot;center&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;el-table-column</span><br><span class="line">      prop=&quot;depict&quot;</span><br><span class="line">      min-width=&quot;240&quot;</span><br><span class="line">      label=&quot;设备描述&quot;</span><br><span class="line">      align=&quot;center&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;el-table-column</span><br><span class="line">      prop=&quot;deviceNum&quot;</span><br><span class="line">      min-width=&quot;90&quot;</span><br><span class="line">      label=&quot;设备数量&quot;</span><br><span class="line">      align=&quot;center&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">  &lt;/el-table&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">import useTable from &#x27;@/hooks/useTable&#x27; const &#123; tableHeight &#125; =</span><br><span class="line">useTable(tableRef, &#x27;withPagination&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>除此之外，我们还可以将查询字典功能（例如，一些状态、类型、原因等等的名称和 id 的对照）做成 Hooks 函数。这里只提供一下思路，不做具体实现了。在 Hooks 函数中，接收两个参数，第一个是字典的类型，第二个是字典的值（名称和 id 均可）。在字典数据中（这个可以通过 http 每次去请求，也可以一次请求回来所有数据，并将其放在状态管理工具中），根据传入的参数，筛选出对应的那条字典值，并将其交出去</p>
+<h2 id="六、实现付款倒计时逻辑"><a href="#六、实现付款倒计时逻辑" class="headerlink" title="六、实现付款倒计时逻辑"></a>六、实现付款倒计时逻辑</h2><p><strong><code>src/hooks/useCountDown.js</code></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 封装倒计时逻辑函数</span></span><br><span class="line"><span class="keyword">import</span> &#123; computed, onUnmounted, ref &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> dayjs <span class="keyword">from</span> <span class="string">&#x27;dayjs&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">useCountDown</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 1. 响应式的数据</span></span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">const</span> time = <span class="title function_">ref</span>(<span class="number">0</span>)</span><br><span class="line">  <span class="comment">// 格式化时间 为 xx分xx秒</span></span><br><span class="line">  <span class="keyword">const</span> formatTime = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> dayjs.<span class="title function_">unix</span>(time.<span class="property">value</span>).<span class="title function_">format</span>(<span class="string">&#x27;mm分ss秒&#x27;</span>))</span><br><span class="line">  <span class="comment">// 2. 开启倒计时的函数</span></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">start</span> = (<span class="params">currentTime</span>) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 开始倒计时的逻辑</span></span><br><span class="line">    <span class="comment">// 核心逻辑的编写：每隔1s就减一</span></span><br><span class="line">    time.<span class="property">value</span> = currentTime</span><br><span class="line">    timer = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      time.<span class="property">value</span>--</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 组件销毁时清除定时器</span></span><br><span class="line">  <span class="title function_">onUnmounted</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    timer &amp;&amp; <span class="built_in">clearInterval</span>(timer)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    formatTime,</span><br><span class="line">    start,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在页面中使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line">import &#123; getOrderAPI &#125; from &#x27;@/apis/pay&#x27;</span><br><span class="line">import &#123; onMounted, ref &#125; from &#x27;vue&#x27;</span><br><span class="line">import &#123; useRoute &#125; from &#x27;vue-router&#x27;</span><br><span class="line">import &#123; useCountDown &#125; from &#x27;@/composables/useCountDown&#x27;</span><br><span class="line">const &#123; formatTime, start &#125; = useCountDown()</span><br><span class="line">// 获取订单数据</span><br><span class="line">const route = useRoute()</span><br><span class="line">const payInfo = ref(&#123;&#125;)</span><br><span class="line">const getPayInfo = async () =&gt; &#123;</span><br><span class="line">  const res = await getOrderAPI(route.query.id)</span><br><span class="line">  payInfo.value = res.result</span><br><span class="line">  // 初始化倒计时秒数</span><br><span class="line">  start(res.result.countdown)</span><br><span class="line">&#125;</span><br><span class="line">onMounted(() =&gt; getPayInfo())</span><br><span class="line"></span><br><span class="line">// 跳转支付</span><br><span class="line">// 携带订单id以及回调地址跳转到支付地址（get）</span><br><span class="line">// 支付地址</span><br><span class="line">const baseURL = &#x27;http://pcapi-xiaotuxian-front-devtest.itheima.net/&#x27;</span><br><span class="line">const backURL = &#x27;http://127.0.0.1:5173/paycallback&#x27;</span><br><span class="line">const redirectUrl = encodeURIComponent(backURL)</span><br><span class="line">const payUrl = `$&#123;baseURL&#125;pay/aliPay?orderId=$&#123;route.query.id&#125;&amp;redirect=$&#123;redirectUrl&#125;`</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;xtx-pay-page&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">      &lt;!-- 付款信息 --&gt;</span><br><span class="line">      &lt;div class=&quot;pay-info&quot;&gt;</span><br><span class="line">        &lt;span class=&quot;icon iconfont icon-queren2&quot;&gt;&lt;/span&gt;</span><br><span class="line">        &lt;div class=&quot;tip&quot;&gt;</span><br><span class="line">          &lt;p&gt;订单提交成功！请尽快完成支付。&lt;/p&gt;</span><br><span class="line">          &lt;p&gt;</span><br><span class="line">            支付还剩 &lt;span&gt;&#123;&#123; formatTime &#125;&#125;&lt;/span</span><br><span class="line">            &gt;, 超时后将取消订单</span><br><span class="line">          &lt;/p&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">        &lt;div class=&quot;amount&quot;&gt;</span><br><span class="line">          &lt;span&gt;应付总额：&lt;/span&gt;</span><br><span class="line">          &lt;span&gt;¥&#123;&#123; payInfo.payMoney?.toFixed(2) &#125;&#125;&lt;/span&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;!-- 付款方式 --&gt;</span><br><span class="line">      &lt;div class=&quot;pay-type&quot;&gt;</span><br><span class="line">        &lt;p class=&quot;head&quot;&gt;选择以下支付方式付款&lt;/p&gt;</span><br><span class="line">        &lt;div class=&quot;item&quot;&gt;</span><br><span class="line">          &lt;p&gt;支付平台&lt;/p&gt;</span><br><span class="line">          &lt;a class=&quot;btn wx&quot; href=&quot;javascript:;&quot;&gt;&lt;/a&gt;</span><br><span class="line">          &lt;a class=&quot;btn alipay&quot; :href=&quot;payUrl&quot;&gt;&lt;/a&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">        &lt;div class=&quot;item&quot;&gt;</span><br><span class="line">          &lt;p&gt;支付方式&lt;/p&gt;</span><br><span class="line">          &lt;a class=&quot;btn&quot; href=&quot;javascript:;&quot;&gt;招商银行&lt;/a&gt;</span><br><span class="line">          &lt;a class=&quot;btn&quot; href=&quot;javascript:;&quot;&gt;工商银行&lt;/a&gt;</span><br><span class="line">          &lt;a class=&quot;btn&quot; href=&quot;javascript:;&quot;&gt;建设银行&lt;/a&gt;</span><br><span class="line">          &lt;a class=&quot;btn&quot; href=&quot;javascript:;&quot;&gt;农业银行&lt;/a&gt;</span><br><span class="line">          &lt;a class=&quot;btn&quot; href=&quot;javascript:;&quot;&gt;交通银行&lt;/a&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://congtf.top/2024/12/09/Vue2%E6%B7%B7%E5%85%A5%E5%92%8CVue3%E4%B8%ADhook%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2024/12/09/%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E5%AE%9E%E7%8E%B0%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%BB%98%E8%AE%A4%E5%9B%BE%E7%89%87/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            使用自定义指令实现图片懒加载和默认图片
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2024/12/09/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82%E5%89%8D%E7%AB%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%AD%E7%9A%84File%E3%80%81FormData%E3%80%81Blob%E3%80%81Base64%E3%80%81ArrayBuffer/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">一文搞懂前端文件上传中的File、FormData、Blob、Base64、ArrayBuffer</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.staticfile.org/valine/1.4.16/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0bopYVx4sO64oTLDQAKpdWL-gzGzoHsz",
+    app_key: "ZIGRaMZuxeA2bIKoFHcvLagh",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2023-2024
+        <i class="ri-heart-fill heart_icon"></i> congtianfeng
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="hasCat"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%8A%80%E6%9C%AF">技术</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=541326593&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>
