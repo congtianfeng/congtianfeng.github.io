@@ -159,6 +159,261 @@
     
     
     <article
+  id="post-AJAX"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/05/04/AJAX/"
+    >AJAX</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/05/04/AJAX/" class="article-date">
+  <time datetime="2022-05-04T10:14:49.000Z" itemprop="datePublished">2022-05-04</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="一、Ajax-基本介绍"><a href="#一、Ajax-基本介绍" class="headerlink" title="一、Ajax 基本介绍"></a>一、Ajax 基本介绍</h2><p>Ajax 的全称是 Asynchronous Javascript And XML（异步 JavaScript 和 XML）</p>
+<p>通过 AJAX 可以在浏览器中向服务器发送异步请求，进行数据交互</p>
+<p>最大的优势：无刷新获取数据</p>
+<p>AJAX 的优点</p>
+<ul>
+<li>可以无需刷新页面而与服务器端进行通信（实现局部刷新）</li>
+<li>允许根据用户事件来更新部分页面内容</li>
+</ul>
+<p>AJAX 的缺点</p>
+<ul>
+<li>没有浏览历史，不能回退</li>
+<li>存在跨域问题(同源)</li>
+<li>SEO 不友好</li>
+</ul>
+<p>Ajax 的典型应用场景</p>
+<p>用户名检测：注册用户时，通过 ajax 的形式，动态检测用户名是否被占用</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504093210686.png" alt="image-20230504093210686"></p>
+<p>搜索提示：当输入搜索关键字时，通过 ajax 的形式，动态加载搜索提示列 表<img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504093251279.png" alt="image-20230504093251279"></p>
+<p>数据分页显示：当点击页码值的时候，通过 ajax 的形式，根据页码值动态 刷新表格的数据<img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504093331555.png" alt="image-20230504093331555"></p>
+<p>数据的增删改查：数据的添加、删除、修改、查询操作，都需要通过 ajax 的 形式，来实现数据的交互<img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504093356633.png" alt="image-20230504093356633"></p>
+<h3 id="1、XML"><a href="#1、XML" class="headerlink" title="1、XML"></a>1、XML</h3><p>XML 是一种可扩展标记语，被设计用来传输和存储数据。XML 和 HTML 类似，不同的是 HTML 中都是预定义标签，而 XML 中没有预定义标签， 全都是自定义标签，用来表示一些数据。</p>
+<p>XML 格式臃肿，和数据无关的代码多，体积大，传输效率低。在 Javascript 中解析 XML 比较麻烦。现已被 JSON 代替</p>
+<h3 id="2、JSON"><a href="#2、JSON" class="headerlink" title="2、JSON"></a>2、JSON</h3><p>JSON 的英文全称是 JavaScript Object Notation，即“JavaScript 对象。表示法”。简单来讲，JSON 就是 Javascript 对象和数组的字符串表示法，它使用文本表示一个 JS 对象或数组的信息，因此，JSON 的本质是字符</p>
+<p>作用：JSON 是一种轻量级的文本数据交换格式，在作用上类似于 XML，专 门用于存储和传输数据，但是 JSON 比 XML 更小、更快、更易解析 现状：JSON 是在 2001 年开始被推广和使用的数据格式，到现今为止，JSON 已经成为了主流的数据交换格式</p>
+<p>JSON 的两种结构</p>
+<p>JSON 就是用字符串来表示 Javascript 的对象和数组。所以，JSON 中包含 对象和数组两种结构，通过这两种结构的相互嵌套，可以表示各种复杂的数据结构</p>
+<p>对象结构：对象结构在 JSON 中表示为 { } 括起来的内容。数据结构为 { key: value, key: value, … } 的键值对结构。其中，key 必须是使用英文 的双引号包裹的字符串，value 的数据类型可以是数字、字符串、布尔值、null、 数组、对象 6 种类型</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504092616262.png" alt="image-20230504092616262"></p>
+<p>数组结构：数组结构在 JSON 中表示为 [ ] 括起来的内容。数据结构为 [ “java”, “javascript”, 30, true … ] 。数组中数据的类型同样可以是数字、 字符串、布尔值、null、数组、对象 6 种类型</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504092646601.png" alt="image-20230504092646601"></p>
+<p>JSON 语法注意事项</p>
+<ul>
+<li>属性名必须使用双引号包裹</li>
+<li>字符串类型的值必须使用双引号包裹</li>
+<li>JSON 中不允许使用单引号表示字符串</li>
+<li>JSON 中不能写注释</li>
+<li>JSON 的最外层必须是对象或数组格式</li>
+<li>不能使用 undefined 或函数作为 JSON 的值</li>
+</ul>
+<p>JSON 和 JS 对象的关系</p>
+<p>JSON 是 JS 对象的字符串表示法，它使用文本表示一个 JS 对象的信息， 本质是一个字符串</p>
+<p>JSON 和 JS 对象的互转</p>
+<p>可以使用 JSON.parse()和 JSON.stringify()方法</p>
+<h2 id="二、AJAX-的使用"><a href="#二、AJAX-的使用" class="headerlink" title="二、AJAX 的使用"></a>二、AJAX 的使用</h2><p>核心对象</p>
+<p>XMLHttpRequest，AJAX 的所有操作都是通过该对象进行的</p>
+<p>使用步骤</p>
+<ol>
+<li>创建 XMLHttpRequest 对象</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br></pre></td></tr></table></figure>
+
+<p>2.设置请求信息</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="title function_">open</span>(method, url);</span><br><span class="line"><span class="comment">//可以设置请求头，一般不设置</span></span><br><span class="line">xhr.<span class="title function_">setRequestHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>发送请求</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="title function_">send</span>(body); <span class="comment">//get 请求不传 body 参数，只有 post 请求</span></span><br></pre></td></tr></table></figure>
+
+<p>4.接收响应</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//xhr.responseXML 接收 xml 格式的响应数据</span></span><br><span class="line"><span class="comment">//xhr.responseText 接收文本格式的响应数据</span></span><br><span class="line">xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (xhr.<span class="property">readyState</span> == <span class="number">4</span> &amp;&amp; xhr.<span class="property">status</span> == <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> text = xhr.<span class="property">responseText</span>;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(text);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>xhr.readyState 可以用来查看请求当前的状态</p>
+<p>0: 表示 XMLHttpRequest 实例已经生成，但是 open()方法还没有被调用。</p>
+<p>1: 表示 send()方法还没有被调用，仍然可以使用 setRequestHeader()，设定 HTTP 请求的头信息</p>
+<p>2: 表示 send()方法已经执行，并且头信息和状态码已经收到。</p>
+<p>3: 表示正在接收服务器传来的 body</p>
+<p>4: 表示服务器数据已经完全接收，或者本次接收已经失败了</p>
+<p>使用 xhr 对象发起带参数的 GET 请求时，只需在调用 xhr.open 期间，为 URL 地址指定参数即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.open(&#x27;GET&#x27;,&#x27;http://congtf.top/tags?id=1&amp;title=技术&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>这种在 URL 地址后面拼接的参数，叫做查询字符串</p>
+<p>GET 请求携带参数的本质</p>
+<p>无论使用 $.ajax()，还是使用 $.get()，又或者直接使用 xhr 对象发起 GET 请求，当需要携带参数的时候，本质上，都是直接将参数以查询字符串的形 式，追加到 URL 地址的后面，发送到服务器的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="title function_">get</span>(url, &#123; <span class="attr">name</span>: <span class="string">&quot;zs&quot;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;, <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;);</span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line">$.<span class="title function_">get</span>(url + <span class="string">&quot;?name=zs&amp;age=20&quot;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、XMLHttpRequest-Level2-的新特性"><a href="#三、XMLHttpRequest-Level2-的新特性" class="headerlink" title="三、XMLHttpRequest Level2 的新特性"></a>三、XMLHttpRequest Level2 的新特性</h2><p>旧版 XMLHttpRequest 的缺点：</p>
+<ul>
+<li>只支持文本数据的传输，无法用来读取和上传文件</li>
+<li>传送和接收数据时，没有进度信息，只能提示有没有完成</li>
+</ul>
+<p>XMLHttpRequest Level2 的新功能</p>
+<ul>
+<li>可以设置 HTTP 请求的时限</li>
+<li>可以使用 FormData</li>
+<li>可以上传文件</li>
+<li>可以获得数据传输的进度信息</li>
+</ul>
+<h3 id="1、设置-HTTP-请求时限"><a href="#1、设置-HTTP-请求时限" class="headerlink" title="1、设置 HTTP 请求时限"></a>1、设置 HTTP 请求时限</h3><p>有时，Ajax 操作很耗时，而且无法预知要花多少时间。如果网速很慢，用户可能要等很久。新版本的 XMLHttpRequest 对象，增加了 timeout 属性，可 以设置 HTTP 请求的时限：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="property">timeout</span> = <span class="number">3000</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面的语句，将最长等待时间设为 3000 毫秒。过了这个时限，就自动停止 HTTP 请求。与之配套的还有一个 timeout 事件，用来指定回调函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xhr.<span class="property">ontimeout</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">alert</span>(<span class="string">&quot;请求超时&quot;</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、FormData-对象管理表单数据"><a href="#2、FormData-对象管理表单数据" class="headerlink" title="2、FormData 对象管理表单数据"></a>2、FormData 对象管理表单数据</h3><p>Ajax 操作往往用来提交表单数据。为了方便表单处理，HTML5 新增了一个 FormData 对象，可以模拟表单操作：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.新建FormData对象</span></span><br><span class="line"><span class="keyword">const</span> fd = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span><br><span class="line"><span class="comment">// 2.为FormData添加表单项</span></span><br><span class="line">fd.<span class="title function_">append</span>(<span class="string">&quot;uname&quot;</span>, <span class="string">&quot;zs&quot;</span>);</span><br><span class="line">fd.<span class="title function_">append</span>(<span class="string">&quot;upwd&quot;</span>, <span class="string">&quot;123456&quot;</span>);</span><br><span class="line"><span class="comment">// 3.创建XHR对象</span></span><br><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line"><span class="comment">// 4.发请求</span></span><br><span class="line">xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;http://congtf.top&quot;</span>);</span><br><span class="line"><span class="comment">// 5.直接提交FormData对象，这与提交网页表单效果完全一样</span></span><br><span class="line">xhr.<span class="title function_">send</span>(fd);</span><br></pre></td></tr></table></figure>
+
+<p>FormData 对象也可以用来获取网页表单的值，示例代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取表单元素</span></span><br><span class="line"><span class="keyword">const</span> form = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#form1&quot;</span>);</span><br><span class="line"><span class="comment">// 监听表单元素的submit事件</span></span><br><span class="line">form.<span class="title function_">addEventListener</span>(<span class="string">&quot;submit&quot;</span>, <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">  e.<span class="title function_">preventDefault</span>();</span><br><span class="line">  <span class="comment">// 根据form表单创建FormData对象，会自动将表单数据填充到FormData对象中</span></span><br><span class="line">  <span class="keyword">const</span> fd = <span class="keyword">new</span> <span class="title class_">FormData</span>(form);</span><br><span class="line">  <span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">  xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;http://congtf.top&quot;</span>);</span><br><span class="line">  xhr.<span class="title function_">send</span>(fd);</span><br><span class="line">  xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、上传文件"><a href="#3、上传文件" class="headerlink" title="3、上传文件"></a>3、上传文件</h3><p>新版 XMLHttpRequest 对象，不仅可以发送文本信息，还可以上传文件</p>
+<p>实现步骤</p>
+<ol>
+<li><p>定义 UI 结构</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 文件选择框 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">id</span>=<span class="string">&quot;file1&quot;</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 上传按钮 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btnUpload&quot;</span>&gt;</span>上传文件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 显示上传到服务器上的图片 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">id</span>=<span class="string">&quot;img&quot;</span> <span class="attr">width</span>=<span class="string">&quot;800&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证是否选择了文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> btnUpload = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#btnUpload&quot;</span>);</span><br><span class="line">btn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> files = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#file1&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> (files.<span class="property">length</span> &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">alert</span>(<span class="string">&quot;请选择要上传的文件！&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 创建FormData对象</span></span><br><span class="line">  <span class="keyword">const</span> fd = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span><br><span class="line">  <span class="comment">// 追加文件</span></span><br><span class="line">  fd.<span class="title function_">append</span>(<span class="string">&quot;avatar&quot;</span>, files[<span class="number">0</span>]);</span><br><span class="line">  <span class="comment">// 创建xhr对象</span></span><br><span class="line">  <span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">  <span class="comment">// 发请求</span></span><br><span class="line">  xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;http://congtf.top&quot;</span>);</span><br><span class="line">  xhr.<span class="title function_">send</span>(fd);</span><br><span class="line">  xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (xhr.<span class="property">state</span> === <span class="number">4</span> &amp;&amp; xhr.<span class="property">status</span> === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> data = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(xhr.<span class="property">responseText</span>);</span><br><span class="line">      <span class="keyword">if</span> (data.<span class="property">status</span> === <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="comment">// 将服务器返回的图片地址设置为img标签的src属性</span></span><br><span class="line">        <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#img&quot;</span>).<span class="property">src</span> = <span class="string">&quot;http://congtf.top&quot;</span> + data.<span class="property">url</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 文件上传失败</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;data.message&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>向 FormData 中追加文件</p>
+</li>
+<li><p>使用 xhr 发起上传文件的请求</p>
+</li>
+<li><p>监听 onreadystatechange 事件</p>
+</li>
+</ol>
+<h3 id="4、显示文件上传进度"><a href="#4、显示文件上传进度" class="headerlink" title="4、显示文件上传进度"></a>4、显示文件上传进度</h3><p>新版本的 XMLHttpRequest 对象中，可以通过监听 xhr.upload.onprogress 事件，来获取到文件的上传进度。语法格式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line"><span class="comment">// 监听xhr.upload的onprogress事件</span></span><br><span class="line">xhr.<span class="property">upload</span>.<span class="property">onprogress</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="comment">// e.lengthComputable是一个布尔值，表示当前上传的资源是否具有可计算的长度</span></span><br><span class="line">  <span class="keyword">if</span> (e.<span class="property">lengthComputable</span>) &#123;</span><br><span class="line">    <span class="comment">// e.loaded 表示已传输的字节</span></span><br><span class="line">    <span class="comment">// e.total 表示需要传输的总字节</span></span><br><span class="line">    <span class="keyword">const</span> percentComplete = <span class="title class_">Math</span>.<span class="title function_">ceil</span>((e.<span class="property">loaded</span> / e.<span class="property">total</span>) * <span class="number">100</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、axios"><a href="#四、axios" class="headerlink" title="四、axios"></a>四、axios</h2><p>axios 是专注于网络数据请求的库</p>
+<p>相比于原生的 XMLHttpRequest 对象，axios 简单易用</p>
+<p>相比于 jQuery，axios 更加轻量化，只专注于网络数据请求</p>
+<p>axios 发起 GET 请求</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">axios</span><br><span class="line">  .<span class="title function_">get</span>(url, &#123;</span><br><span class="line">    <span class="attr">params</span>: &#123;</span><br><span class="line">      <span class="comment">/*参数*/</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(callback);</span><br></pre></td></tr></table></figure>
+
+<p>示例如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> paramsObj = &#123; <span class="attr">name</span>: <span class="string">&quot;zs&quot;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;;</span><br><span class="line">axios.<span class="title function_">get</span>(<span class="string">&quot;http:congtf.top&quot;</span>, &#123; <span class="attr">params</span>: paramsObj &#125;).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">res</span>) &#123;</span><br><span class="line">  <span class="comment">// axios默认包了一层data，res.data才是服务器返回的数据</span></span><br><span class="line">  <span class="keyword">const</span> result = res.<span class="property">data</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>axios 发起 POST 请求示例如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dataObj = &#123; <span class="attr">name</span>: <span class="string">&quot;zs&quot;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;;</span><br><span class="line">axios.<span class="title function_">post</span>(<span class="string">&quot;http:congtf.top&quot;</span>, dataObj).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">res</span>) &#123;</span><br><span class="line">  <span class="comment">// axios默认包了一层data，res.data才是服务器返回的数据</span></span><br><span class="line">  <span class="keyword">const</span> result = res.<span class="property">data</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>直接使用 axios 发起请求:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">axios</span>(&#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&quot;请求类型&quot;</span>,</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&quot;请求的url地址&quot;</span>,</span><br><span class="line">  <span class="attr">data</span>: &#123;</span><br><span class="line">    <span class="comment">/*POST数据*/</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">params</span>: &#123;</span><br><span class="line">    <span class="comment">/*GET参数*/</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;).<span class="title function_">then</span>(callback);</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、同源与跨域、防抖与节流"><a href="#五、同源与跨域、防抖与节流" class="headerlink" title="五、同源与跨域、防抖与节流"></a>五、同源与跨域、防抖与节流</h2><h3 id="1、同源策略"><a href="#1、同源策略" class="headerlink" title="1、同源策略"></a>1、同源策略</h3><p>如果两个页面的协议，域名和端口都相同，则两个页面具有相同的源</p>
+<p>例如，下表给出了相对于 <a target="_blank" rel="noopener" href="http://www.test.com/index.html">http://www.test.com/index.html</a> （没写端口号默认 是 80）页面的同源检测</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504104555104.png" alt="image-20230504104555104"></p>
+<p>同源策略（英文全称 Same origin policy）是浏览器提供的一个安全功能 MDN 官方给定的概念：同源策略限制了从同一个源加载的文档或脚本如何与来自 另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制</p>
+<p>通俗的理解：浏览器规定，A 网站的 JavaScript 不允许和非同源的网站 C 之间进行资源的交互，例如：</p>
+<ol>
+<li>无法读取非同源网页的 Cookie、LocalStorage 和 IndexedDB</li>
+<li>无法接触非同源网页的 DOM</li>
+<li>无法向非同源地址发送 Ajax 请求</li>
+</ol>
+<p>同源指的是两个 URL 的协议、域名、端口一致，反之，则是跨域</p>
+<p>出现跨域的根本原因：浏览器的同源策略不允许非同源的 URL 之间进行资源的交互</p>
+<p>浏览器对跨域请求的拦截</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504105321422.png" alt="image-20230504105321422"></p>
+<p>注意：浏览器允许发起跨域请求，但是，跨域请求回来的数据，会被浏览器 拦截，无法被页面获取到！</p>
+<p>如何实现跨域数据请求</p>
+<h3 id="2、JSONP"><a href="#2、JSONP" class="headerlink" title="2、JSONP"></a>2、JSONP</h3><p>出现的早，兼容性好（兼容低版本 IE）。是前端程序员为了解决跨域问题， 被迫想出来的一种临时解决方案。缺点是只支持 GET 请求，不支持 POST 请求。</p>
+<p>JSONP (JSON with Padding) 是 JSON 的一种“使用模式”，可用于解决主流浏览器的跨域数据访问的问题。</p>
+<p>JSONP 的实现原理</p>
+<p>由于浏览器同源策略的限制，网页中无法通过 Ajax 请求非同源的接口数据。 但是在网页中有一些标签天生具有跨域能力，比如：img link iframe script。因此，JSONP 的实现原理，就是通过 script 标签的 src 属性，请求跨<br>域的数据接口，并通过函数调用的形式，接收跨域接口响应回来的数据。</p>
+<p>JSONP 的使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 动态的创建一个script标签</span></span><br><span class="line"><span class="keyword">const</span> script <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;script&#x27;</span>)</span><br><span class="line"><span class="comment">// 设置script的src，设置回调函数</span></span><br><span class="line">script.<span class="property">src</span>=<span class="string">&#x27;http://loacalhost:3000/testAJAX?callback=abc&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">abc</span>(<span class="params">data</span>) &#123;</span><br><span class="line">  <span class="title function_">alert</span>(data.<span class="property">name</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将script添加到body中</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(script)</span><br><span class="line"><span class="comment">// 服务器中路由的处理</span></span><br><span class="line">router.<span class="title function_">get</span>(<span class="string">&#x27;/testAJAX&#x27;</span>,<span class="keyword">function</span>(<span class="params">req,res</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到请求&#x27;</span>)</span><br><span class="line">  <span class="keyword">const</span> callback = req.<span class="property">query</span>.<span class="property">callback</span></span><br><span class="line">  <span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>:<span class="string">&#x27;zs&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>:<span class="number">20</span></span><br><span class="line">  &#125;</span><br><span class="line">  res.<span class="title function_">send</span>(callback+<span class="string">&quot;(&quot;</span>+<span class="title class_">JSON</span>.<span class="title function_">stringfy</span>(obj)+<span class="string">&quot;)&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、CORS"><a href="#3、CORS" class="headerlink" title="3、CORS"></a>3、CORS</h3><p>CORS（Cross-Origin Resource Sharing），跨域资源共享。CORS 是官方的跨域解决方 案，它的特点是不需要在客户端做任何特殊的操作，完全在服务器中进行处理，支持 get 和 post 请求。跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些 源站通过浏览器有权限访问哪些资源</p>
+<p>CORS 怎么工作的？</p>
+<p>CORS 是通过设置一个响应头来告诉浏览器，该请求允许跨域，浏览器收到该响应 以后就会对响应放行</p>
+<p>CORS 的使用</p>
+<p>主要是服务器端的设置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">router.<span class="title function_">get</span>(<span class="string">&quot;/testAJAX&quot;</span>, <span class="keyword">function</span> (<span class="params">req, res</span>) &#123;</span><br><span class="line">  <span class="comment">// res.set(&quot;Access-Control-Allow-Origin&quot;,&quot;http://127.0.0.1:3000&quot;)</span></span><br><span class="line">  res.<span class="title function_">set</span>(<span class="string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="string">&quot;*&quot;</span>);</span><br><span class="line">  res.<span class="title function_">send</span>(<span class="string">&quot;返回的相应&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、防抖"><a href="#4、防抖" class="headerlink" title="4、防抖"></a>4、防抖</h3><p>防抖策略（debounce）是当事件被触发后，延迟 n 秒后再执行回调，如果 在这 n 秒内事件又被触发，则重新计时</p>
+<p><img src="https://myblog-1314160455.cos.ap-nanjing.myqcloud.com/image-20230504111044196.png" alt="image-20230504111044196"></p>
+<p>防抖的应用场景</p>
+<p>用户在输入框中连续输入一串字符时，可以通过防抖策略，只在输入完后， 才执行查询的请求，这样可以有效减少请求次数，节约请求资源</p>
+<p>防抖的基本原理是在一定时间内，将多次触发的函数调用合并为一次调用执行。当用户连续触发事件时，防抖函数会清空之前设定的定时器，并重新设定一个新的定时器来延迟函数的执行。只有当用户停止操作后，在设定的时间内没有再次触发事件，则函数才会被真正地执行一次</p>
+<p>实现一个基本的防抖函数步骤如下：</p>
+<ol>
+<li>在函数外部设置一个计时器变量（例如 timeoutId）和函数执行的延迟时间（例如 delay）</li>
+<li>当函数被触发时，清除之前设定的计时器</li>
+<li>重新设定一个计时器，并用它来延迟函数的执行</li>
+<li>如果在设定的延迟时间内再次触发了函数，则回到步骤 2</li>
+<li>如果在设定的延迟时间内没有再次触发函数，计时器会触发执行原始函数</li>
+</ol>
+<p>以下是一个基本的防抖函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">debounce</span>(<span class="params">func, delay</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> timeoutId;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> context = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">const</span> args = <span class="variable language_">arguments</span>;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timeoutId);</span><br><span class="line">    timeoutId = <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      func.<span class="title function_">apply</span>(context, args);</span><br><span class="line">    &#125;, delay);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该函数接受两个参数：要执行的函数以及防抖延迟时间。它返回一个新函数，该函数会在防抖延迟时间内被多次调用时只执行一次原始函数</p>
+<h3 id="5、节流"><a href="#5、节流" class="headerlink" title="5、节流"></a>5、节流</h3><p>节流策略（throttle），顾名思义，可以减少一段时间内事件的触发频率。</p>
+<p>节流的应用场景</p>
+<ol>
+<li>鼠标连续不断地触发某事件（如点击），只在单位时间内只触发一次</li>
+<li>懒加载时要监听计算滚动条的位置，但不必每次滑动都触发，可以降低计算 的频率，而不必去浪费 CPU 资源</li>
+</ol>
+<p>节流阀的概念</p>
+<p>高铁卫生间是否被占用，由红绿灯控制，红灯表示被占用，绿灯表示可使用</p>
+<p>假设每个人上卫生间都需要花费 5 分钟，则五分钟之内，被占用的卫生间无法被 其他人使用</p>
+<p>上一个人使用完毕后，需要将红灯重置为绿灯，表示下一个人可以使用卫生 间</p>
+<p>下一个人在上卫生间之前，需要先判断控制灯是否为绿色，来知晓能否上卫 生间</p>
+<p>类似的</p>
+<p>节流阀为空，表示可以执行下次操作；不为空，表示不能执行下次操作</p>
+<p>当前操作执行完，必须将节流阀重置为空，表示可以执行下次操作了</p>
+<p>每次执行操作前，必须先判断节流阀是否为空</p>
+<p>一个基本的节流函数示例如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">throttle</span>(<span class="params">func, delay</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> last = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">...args</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> now = +<span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">    <span class="keyword">if</span> (now - last &lt; delay) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    last = now;</span><br><span class="line">    func.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结防抖和节流的区别</p>
+<p>防抖：如果事件被频繁触发，防抖能保证只有最有一次触发生效！前面 N 多 次的触发都会被忽略！当事件被触发时，函数在固定时间间隔内不被执行，只有事件停止触发后，函数才会执行一次。适用于处理一些不需要连续响应的事件（如输入框输入、按钮点击等），可以避免函数被频繁调用，提高性能和稳定性。</p>
+<p>节流：如果事件被频繁触发，节流能够减少事件触发的频率，因此，节流是 有选择性地执行一部分事件！当事件被触发时，函数在固定时间间隔内最多只执行一次。适用于高频率事件（如滚动、窗口调整等），可以防止函数被频繁调用，减少不必要的计算，提高性能和响应速度</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag">技术</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-前端学习路线"
   class="article article-type-post"
   itemscope
